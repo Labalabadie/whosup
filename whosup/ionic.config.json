@@ -1,0 +1,7 @@
+{
+  "name": "Who'sUp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

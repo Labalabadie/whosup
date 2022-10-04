@@ -1,0 +1,30 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/home"></ion-back-button>
+		</ion-buttons>
+		<ion-title style="position: absolute; text-align: center; top: 0; left: 0; width: 100%; height: 100%">Agregar
+			New Event</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-row>
+		<ion-col>
+			<ion-card>
+				<ion-card-content>
+					<ion-input type="text" placeholder="Event name" [(ngModel)]="event.event_name"></ion-input>
+					<ion-input type="text" placeholder="Date Time" [(ngModel)]="event.event_datetime"></ion-input>
+					<ion-input type="text" placeholder="Location" [(ngModel)]="event.location"></ion-input>
+					<ion-input type="text" placeholder="Description" [(ngModel)]="event.description"></ion-input>
+          <ion-input type="text" placeholder="Participants" [(ngModel)]="event.participants"></ion-input>
+          <ion-input type="text" placeholder="Event Status" [(ngModel)]="event.event_status"></ion-input>
+          <ion-input type="text" placeholder="Nono List" [(ngModel)]="event.nonolist"></ion-input>
+				</ion-card-content>
+			</ion-card>
+		</ion-col>
+	</ion-row>
+	<ion-button style="text-transform: none" expand="block" (click)="savenewEvent()">Create Event
+					</ion-button>
+
+</ion-content>

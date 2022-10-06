@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# A Bash script that uses ssh to connect to your server using the private key ./whosup with the user ubuntu.
+# Remember the private key must be manually set in the file whosup in this directory.
+if [[ ! $1 ]]; then
+    echo "Usage: 0-connect_to_server.script <web-01>"
+    echo "or 0-connect_to_server.script <web-02>"
+    echo "or 0-conenct_to_server.script <lb-01>"
+    exit
+fi
+
+if [[ $1 == web-01 ]]; then
+    ssh -i ./whosup ubuntu@3.90.56.139
+elif [[ $1 ==  web-02 ]]; then
+    ssh -i ./whosup ubuntu@34.229.7.213
+elif [[ $1 ==  lb-01 ]]; then
+    ssh -i ./whosup ubuntu@34.235.143.178
+fi

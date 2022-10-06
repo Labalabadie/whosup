@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" style="--color: black; font-size: 20px; height: 100%;" [routerLink]="['/start']"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title style="color: #36BAFB; font-size: 30px; font-family: Poppins !important;">
+      Who's Up<ion-icon style="position: absolute; font-size: 30px; color: red; margin-top: 8px" name="pin-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">User</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+  <ion-row style="margin-bottom: -10px">
+    <ion-button style="--background: #EB2026; text-transform: none;font-size:25px; height: 50px; width: 100%" [routerLink]="['/login']">
+      Login
+    </ion-button>
+    
+  </ion-row>
+  
+    <ion-button style="--background: #EB2026; text-transform: none; font-size:25px; height: 50px; width:100%" >
+    Login Google
+  </ion-button>
+  </ion-card-content>
+</ion-card>
+  
+</ion-content>

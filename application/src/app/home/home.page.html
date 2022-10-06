@@ -1,0 +1,80 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title style="color: #fff; font-family: Poppins !important; font-size: 40px">
+      Who's Up<ion-icon style="position: absolute; font-size: 25
+px; margin-top: 8px; color: red" name="pin-outline"></ion-icon>
+    </ion-title>
+    <ion-button shape="round" slot="end" style="--color: black;" fill="clear">
+      <ion-icon style="font-size: 40px" name="search-outline"></ion-icon>
+    </ion-button>
+    <ion-button style="--color: black;font-size: 28px" shape="round" slot="end" fill="clear">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar animated="true" placeholder="Explore" style="text-align: left"></ion-searchbar>
+
+
+  <div id="container">
+    <strong>Eventos</strong>
+  </div>
+
+  <ion-list>
+
+		<ion-card *ngFor="let event of events">
+			<ion-card-content>
+				<p>{{event.event_name}}</p>
+				<p>{{event.event_datetime}}
+        <p>{{event.descritpion}}</p>
+        <p>{{event.location}}</p>
+        <p>{{event.participants}}</p>
+        <p>{{event.event_status}}</p>
+        <p>{{event.nonolist}}</p>
+			</ion-card-content>
+		</ion-card>
+	</ion-list>
+
+</ion-content>
+<ion-footer style="background-color: #6746C8">
+  <ion-grid style="text-align: center">
+    <ion-row>
+      <ion-col>
+        <div>
+          <ion-button shape="round" style="--color: black;" fill="clear">
+            <ion-icon style="font-size: 40px" name="home-sharp"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-button shape="round" style="--color: black;" fill="clear">
+            <ion-icon style="font-size: 40px" name="search-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-button shape="round" style="--color: black;" fill="clear" [routerLink]="['/newevent']">
+            <ion-icon style="font-size: 40px" name="add-circle-sharp"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-button shape="round" style="--color: black;" fill="clear">
+            <ion-icon style="font-size: 40px" name="location-sharp"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          <ion-button shape="round" style="--color: black;" fill="clear">
+            <ion-icon style="font-size: 40px" name="person-sharp"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

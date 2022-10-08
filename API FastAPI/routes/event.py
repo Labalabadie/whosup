@@ -12,9 +12,9 @@ f = Fernet(key)
 event = APIRouter()
 
 
-@event.get('/events', response_model=list[Event], tags=["Events"])
-def get_events():
-    return conn.execute(events.select()).fetchall()  # consulta a toda la tabla
+#@event.get('/events', response_model=list[Event], tags=["Events"])
+#def get_events():
+#    return conn.execute(events.select()).fetchall()  # consulta a toda la tabla
 
 
 @event.post('/events', response_model=Event, tags=["Events"])

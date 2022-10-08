@@ -1,1 +1,3 @@
 .DS_Store
+fastapi-mysql
+*/__pycache__

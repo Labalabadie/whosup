@@ -12,9 +12,9 @@ f = Fernet(key)
 user = APIRouter()
 
 
-@user.get('/users', response_model=list[User], tags=["Users"])
-def get_users():
-    return conn.execute(users.select()).fetchall()  # consulta a toda la tabla
+#@user.get('/users', response_model=list[User], tags=["Users"])
+#def get_users():
+#    return conn.execute(users.select()).fetchall()  # consulta a toda la tabla
 
 
 @user.post('/users', response_model=User, tags=["Users"])

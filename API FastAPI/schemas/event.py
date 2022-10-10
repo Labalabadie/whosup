@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
 
-class Event(BaseModel):
+class EventSchema(BaseModel):
     id: Optional[str]
     event_name: str
     event_datetime: str

@@ -1,0 +1,4 @@
+INFO:     Will watch for changes in these directories: ['/home/ubuntu/whosup/API FastAPI']
+ERROR:    [Errno 98] Address already in use
+INFO:     Will watch for changes in these directories: ['/home/ubuntu/whosup/API FastAPI']
+ERROR:    [Errno 98] Address already in use

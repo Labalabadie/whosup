@@ -1,4 +1,5 @@
 *.DS_Store
 fastapi-mysql
-*/__pycache__/*
+__pycache__/
+nohup.out
  

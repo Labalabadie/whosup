@@ -2,7 +2,7 @@ from sqlalchemy import Table, Column
 from sqlalchemy.sql.sqltypes import Integer, String
 from config.db import meta, engine
 
-events = Table("events", meta, Column(
+event = Table("event", meta, Column(
     "id", Integer, primary_key=True), ## unica
     Column("event_name", String(255)),
     Column("event_datetime", String(255)),

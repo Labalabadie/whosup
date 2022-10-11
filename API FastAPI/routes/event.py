@@ -48,5 +48,14 @@ def delete_event(id: str): ## Buscar la menar de desabilitarlo no borrarlo de la
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
 def update_event(id: str, this_event: EventSchema):
-    conn.execute(event.update().values(event_name=this_event.event_name, event_datetime=this_event.event_datetime, location=this_event.location, description=this_event.description, participants=this_event.participants ))
+    conn.execute(event.update().values(
+                 name=this_event.name, 
+                 event_host=this_event.event_host,
+                 event_datetime=this_event.event_datetime,
+                 location=this_event.location, 
+                 description=this_event.description,
+                 icon=this_event.icon,
+                 max_people=this_event.max_people, 
+                 participants=this_event.participants,
+                 config=this_event.config))
     return conn.execute(event.select().where(event.c.id == id)).first()

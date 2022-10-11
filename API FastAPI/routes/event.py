@@ -9,7 +9,7 @@ from cryptography.fernet import Fernet
 key = Fernet.generate_key()
 f = Fernet(key)
 
-event = APIRouter()
+eventAPI = APIRouter()
 
 
 #@event.get('/event', response_model=list[EventSchema], tags=["Events"])
@@ -17,7 +17,7 @@ event = APIRouter()
 #    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
 
 
-@event.post('/event', response_model=EventSchema, tags=["Events"])
+@eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(event: EventSchema):
     new_event = {"event_name": event.event_name,"event_datetime": event.event_datetime,"location": event.location, "description": event.description, "participants": event.participants, "event_status": event.event_status, "nonolist": event.nonolist  }
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
@@ -27,18 +27,18 @@ def create_event(event: EventSchema):
     return conn.execute(event.select().where(event.c.id == result.lastrowid)).first()
 
 
-@event.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
 def get_event(id: str):
     return conn.execute(event.select().where(event.c.id == id)).first()
 
 
-@event.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
+@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
 def delete_event(id: str): ## Buscar la menar de desabilitarlo no borrarlo de la base de datos directamente
     conn.execute(event.delete().where(event.c.id == id))
     return Response(status_code=HTTP_204_NO_CONTENT)
 
 
-@event.put('/event/{id}', response_model=EventSchema, tags=["Events"])
+@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
 def update_event(id: str, event: EventSchema):
     conn.execute(event.update().values(event_name=event.event_name, event_datetime=event.event_datetime, location=event.location, description=event.description, participants=event.participants ))
     return conn.execute(event.select().where(event.c.id == id)).first()

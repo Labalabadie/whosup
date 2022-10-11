@@ -13,6 +13,6 @@ user_data = Table("user_data", meta,
     #Column("login_token", String(255)),
     Column("created_at", DateTime, default=datetime.utcnow),
     Column("updated_at", DateTime, default=datetime.utcnow),
-    Column("status", Boolean))
+    Column("status", Boolean, default=True))
  
 meta.create_all(engine)

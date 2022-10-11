@@ -1,5 +1,6 @@
 from email.policy import default
 from sqlalchemy import Column
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
 from models.base_model import BaseModel
@@ -16,3 +17,4 @@ class User(BaseModel):
     status = Column(Boolean, default=True)
 
     # Relations --
+    hosted_events = relationship('Event', back_populates='owner')

@@ -1,6 +1,6 @@
 from email.policy import default
 from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from config.db import meta, engine
 from datetime import datetime
 

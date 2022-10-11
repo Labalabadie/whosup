@@ -8,7 +8,7 @@ event = Table("event", meta, Column(
     Column("event_datetime", String(255)),
     Column("location", String(255)),
     Column("description", String(255)),
-    Column("participants", Integer), ## related con user.id
+    Column("participants", String(255)), ## related con user.id
     Column("event_status", String(255)),
     Column("nonolist", String(255)))
 

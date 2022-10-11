@@ -3,6 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class EventSchema(BaseModel):
+    id: int
     name: str
 
     event_host: int
@@ -10,7 +11,7 @@ class EventSchema(BaseModel):
     location: str
     description: str
     icon: str
-    max_people: int
+    max_people: int = 1
     participants: str
     
     config: dict = None

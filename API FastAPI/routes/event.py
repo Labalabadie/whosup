@@ -30,10 +30,9 @@ def create_event(this_event: EventSchema):
                  "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(event.insert().values(new_event))
-    print(result.lastrowid)
-    print('ESTA')
+    print("NEW EVENT . id: ", result.lastrowid)
     # Ejecuta una consulta de la tabla de usuarios en donde el id de todos los usuarios coincida con el id que se acaba de guardar, solo va a traer el id que coincida. Y como devuelve una lista, con first() le digo que solamente devuelta el primero
-    return conn.execute(event.select().where(event.c.id == result.lastrowid)).first()
+    return {conn.execute(event.select().where(event.c.id == result.lastrowid)).first()}
 
 
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])

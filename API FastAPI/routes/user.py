@@ -23,7 +23,7 @@ def create_user(this_user: UserSchema):
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(user_data.insert().values(new_user))
-    print(result.lastrowid)
+    print("NEW USER . id: ", result.lastrowid)
     # Ejecuta una consulta de la tabla de usuarios en donde el id de todos los usuarios coincida con el id que se acaba de guardar, solo va a traer el id que coincida. Y como devuelve una lista, con first() le digo que solamente devuelta el primero
     return conn.execute(user_data.select().where(user_data.c.id == result.lastrowid)).first()
 
@@ -41,6 +41,9 @@ def delete_user(id: str):
 
 @userAPI.put('/user/{id}', response_model=UserSchema, tags=["Users"])
 def update_user(id: str, this_user: UserSchema):
-    conn.execute(user_data.update().values(name=this_user.name,
-                 email=this_user.email,phone=this_user.phone ,password=f.encrypt(this_user.password.encode("utf-8"))).where(user_data.c.id == id))
+    conn.execute(user_data.update().values(
+                 name=this_user.name,
+                 email=this_user.email,
+                 phone=this_user.phone,
+                 password=f.encrypt(this_user.password.encode("utf-8"))).where(user_data.c.id == id))
     return conn.execute(user_data.select().where(user_data.c.id == id)).first()

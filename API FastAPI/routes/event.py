@@ -18,8 +18,8 @@ eventAPI = APIRouter()
 
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
-def create_event(event: EventSchema):
-    new_event = {"event_name": event.event_name,"event_datetime": event.event_datetime,"location": event.location, "description": event.description, "participants": event.participants, "event_status": event.event_status, "nonolist": event.nonolist  }
+def create_event(this_event: EventSchema):
+    new_event = {"event_name": this_event.event_name,"event_datetime": this_event.event_datetime,"location": this_event.location, "description": this_event.description, "participants": this_event.participants, "event_status": this_event.event_status, "nonolist": this_event.nonolist  }
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(event.insert().values(new_event))
     print(result.lastrowid)
@@ -39,6 +39,6 @@ def delete_event(id: str): ## Buscar la menar de desabilitarlo no borrarlo de la
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
-def update_event(id: str, event: EventSchema):
-    conn.execute(event.update().values(event_name=event.event_name, event_datetime=event.event_datetime, location=event.location, description=event.description, participants=event.participants ))
+def update_event(id: str, this_event: EventSchema):
+    conn.execute(event.update().values(event_name=this_event.event_name, event_datetime=this_event.event_datetime, location=this_event.location, description=this_event.description, participants=this_event.participants ))
     return conn.execute(event.select().where(event.c.id == id)).first()

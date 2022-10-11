@@ -19,7 +19,7 @@ eventAPI = APIRouter()
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
-    new_event = {"name": this_event.event_name,
+    new_event = {"name": this_event.name,
                  "event_host": this_event.event_host,
                  "event_datetime": this_event.event_datetime,
                  "location": this_event.location, 

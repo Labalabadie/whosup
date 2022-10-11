@@ -1,12 +1,16 @@
+from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import BaseModel
 
-class Event(BaseModel):
-    id: Optional[str]
-    event_name: str
-    event_datetime: str
-    location: str
-    description: str
+class EventSchema(BaseModel):
+    name: str = ""
+
+    event_host: int
+    event_datetime: datetime = (datetime.now() + timedelta(hours=1))
+    location: str = "No location"
+    description: str = "Description"
+    icon: str = ""
+    max_people: int = 1
     participants: str
-    event_status: str
-    nonolist: str
+    
+    config: dict = None

@@ -18,9 +18,9 @@ userAPI = APIRouter()
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
-def create_user(user: UserSchema):
-    new_user = {"name": user.name, "email": user.email, "phone": user.phone}
-    new_user["password"] = f.encrypt(user.password.encode("utf-8"))
+def create_user(this_user: UserSchema):
+    new_user = {"name": this_user.name, "email": this_user.email, "phone": this_user.phone}
+    new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(user_data.insert().values(new_user))
     print(result.lastrowid)
@@ -40,7 +40,7 @@ def delete_user(id: str):
 
 
 @userAPI.put('/user/{id}', response_model=UserSchema, tags=["Users"])
-def update_user(id: str, user: UserSchema):
-    conn.execute(user_data.update().values(name=user.name,
-                 email=user.email,phone=user.phone ,password=f.encrypt(user.password.encode("utf-8"))).where(user_data.c.id == id))
+def update_user(id: str, this_user: UserSchema):
+    conn.execute(user_data.update().values(name=this_user.name,
+                 email=this_user.email,phone=this_user.phone ,password=f.encrypt(this_user.password.encode("utf-8"))).where(user_data.c.id == id))
     return conn.execute(user_data.select().where(user_data.c.id == id)).first()

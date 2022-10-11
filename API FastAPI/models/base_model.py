@@ -6,6 +6,7 @@ from config.db import meta
 Base = declarative_base(metadata=meta)
 
 class BaseModel(Base):
+    __abstract__ = True
     id = Column(String(60), primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)

@@ -51,7 +51,7 @@ def delete_user(id: str):
 def update_user(id: str, this_user: UserSchema):
     """ Update User """
 
-    conn.execute(user_data.update().values(
+    conn.execute(update(User).values(
                  name=this_user.name,
                  email=this_user.email,
                  phone=this_user.phone,

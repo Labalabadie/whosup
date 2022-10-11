@@ -1,6 +1,7 @@
 from sqlalchemy import Table, Column
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from config.db import meta, engine
+from datetime import datetime
 
 event = Table("event", meta, 
     Column("id", Integer, primary_key=True), ## unica

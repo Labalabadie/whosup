@@ -19,8 +19,7 @@ userAPI = APIRouter()
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
 def create_user(user: UserSchema):
-    new_user = {"name": user.name, "email": user.email, "phone": user.phone, 
-                "created_at": "status": True, }
+    new_user = {"name": user.name, "email": user.email, "phone": user.phone}
     new_user["password"] = f.encrypt(user.password.encode("utf-8"))
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(user_data.insert().values(new_user))

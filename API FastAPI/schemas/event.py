@@ -3,7 +3,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 class EventSchema(BaseModel):
-    id: Optional[str]
     name: str
 
     event_host: int

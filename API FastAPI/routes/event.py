@@ -24,8 +24,8 @@ def create_event(this_event: EventSchema):
                  "event_datetime": this_event.event_datetime,
                  "location": this_event.location, 
                  "description": this_event.description,
-                 "icon": this_event.description,
-                 "max_people": this_event.description, 
+                 "icon": this_event.icon,
+                 "max_people": this_event.max_people, 
                  "participants": this_event.participants,
                  "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!

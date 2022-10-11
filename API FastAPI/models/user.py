@@ -2,7 +2,7 @@ from email.policy import default
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
-from models.base_model import Base
+from models.base_model import BaseModel
 
 class User(BaseModel):
     __tablename__ = "user_data"

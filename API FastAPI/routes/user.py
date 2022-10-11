@@ -3,7 +3,7 @@ from config.db import conn
 from models.user import User
 from schemas.user import UserSchema
 from starlette.status import HTTP_204_NO_CONTENT
-
+from sqlalchemy import insert, select, update, delete
 from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()

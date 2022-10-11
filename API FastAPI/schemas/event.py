@@ -15,3 +15,4 @@ class EventSchema(BaseModel):
     participants: str
     
     config: dict = None
+ 

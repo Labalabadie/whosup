@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routes.user import user
-from routes.event import event
+from routes.user import userAPI
+from routes.event import eventAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 

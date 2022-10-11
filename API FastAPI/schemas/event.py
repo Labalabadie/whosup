@@ -6,7 +6,7 @@ class EventSchema(BaseModel):
     name: str
 
     event_host: int
-    event_datetime: datetime = (datetime.now() + timedelta(hours=1).time())
+    event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str
     description: str
     icon: str = ""

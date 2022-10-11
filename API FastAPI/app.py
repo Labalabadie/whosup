@@ -19,5 +19,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user)
-app.include_router(event)
+app.include_router(userAPI)
+app.include_router(eventAPI)

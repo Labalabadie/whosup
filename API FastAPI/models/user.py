@@ -17,4 +17,4 @@ class User(BaseModel):
     status = Column(Boolean, default=True)
 
     # Relations --
-    hosted_events = relationship('Event', back_populates='owner')
+    hosted_events = relationship('Event', back_populates='event_host')

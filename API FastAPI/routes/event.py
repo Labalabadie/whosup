@@ -19,7 +19,15 @@ eventAPI = APIRouter()
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
-    new_event = {"event_name": this_event.event_name,"event_datetime": this_event.event_datetime,"location": this_event.location, "description": this_event.description, "participants": this_event.participants, "event_status": this_event.event_status, "nonolist": this_event.nonolist  }
+    new_event = {"name": this_event.event_name,
+                 "event_host": this_event.event_host,
+                 "event_datetime": this_event.event_datetime,
+                 "location": this_event.location, 
+                 "description": this_event.description,
+                 "icon": this_event.description,
+                 "max_people": this_event.description, 
+                 "participants": this_event.participants,
+                 "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
     result = conn.execute(event.insert().values(new_event))
     print(result.lastrowid)

@@ -1,12 +1,16 @@
+import datetime
+import json
 from typing import Optional
 from pydantic import BaseModel
 
 class EventSchema(BaseModel):
     id: Optional[str]
-    event_name: str
-    event_datetime: str
+    name: str
+    event_host: str
+    event_datetime: datetime
     location: str
     description: str
+    icon: str
+    max_people: int
     participants: str
-    event_status: str
-    nonolist: str
+    config: json

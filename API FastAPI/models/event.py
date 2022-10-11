@@ -11,7 +11,7 @@ event = Table("event", meta,
     Column("event_datetime", DateTime),
     Column("location", String(255)),
     Column("description", String(255)),
-    Column("icon", String(15)),
+    Column("icon", String(2)),
     Column("max_people", Integer, default=1),
     Column("participants", String(255)), ## related con user.id
 

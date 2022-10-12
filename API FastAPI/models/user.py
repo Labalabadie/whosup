@@ -1,20 +1,21 @@
 from email.policy import default
-from sqlalchemy import Table, Column
+from sqlalchemy import Column
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
-from config.db import meta, engine
 from datetime import datetime
+from models.base_model import BaseModel
+from config.db import engine, meta
+class User(BaseModel):
+    __tablename__ = "user_data"
+    name = Column(String(255))
 
-user_data = Table("user_data", meta,
-    Column("id", Integer, primary_key=True),
-    Column("name", String(255)),
-
-    Column("email", String(255)),
-    Column("password", String(255)),
-    Column("phone", String(255)),
+    email = Column(String(255))
+    password = Column(String(255))
+    phone = Column(String(255))
 
     #Column("login_token", String(255)),
-    Column("created_at", DateTime, default=datetime.utcnow),
-    Column("updated_at", DateTime, default=datetime.utcnow),
-    Column("status", Boolean, default=True))
- 
-meta.create_all(engine)
+    status = Column(Boolean, default=True)
+
+    # Relations --
+    hosted_events = relationship('Event', back_populates='event_host')
+

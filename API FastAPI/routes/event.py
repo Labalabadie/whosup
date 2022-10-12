@@ -22,7 +22,7 @@ def create_event(this_event: EventSchema):
     """ Create new event """
 
     new_event = {"name": this_event.name,
-                 "event_host": this_event.event_host,
+                 "event_host_id": this_event.event_host_id,
                  "event_datetime": this_event.event_datetime,
                  "location": this_event.location, 
                  "description": this_event.description,
@@ -59,7 +59,7 @@ def update_event(id: str, this_event: EventSchema):
     
     conn.execute(update(Event).values(
                  name=this_event.name, 
-                 event_host=this_event.event_host,
+                 event_host_id=this_event.event_host_id,
                  event_datetime=this_event.event_datetime,
                  location=this_event.location, 
                  description=this_event.description,

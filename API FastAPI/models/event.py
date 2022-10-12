@@ -9,7 +9,7 @@ class Event(BaseModel):
     __tablename__ = "event" 
     name = Column(String(255))
 
-    event_host_id = Column(Integer, ForeignKey('user.id'), nullable=False) # user.id == User.id (class)
+    event_host_id = Column(Integer, ForeignKey('user_data.id'), nullable=False) # user.id == User.id (class)
     event_host = relationship("User", back_populates="hosted_events")
 
     event_datetime = Column(DateTime)
@@ -22,4 +22,3 @@ class Event(BaseModel):
     config = Column(JSON)
     status = Column(Boolean, default=True)
 
-meta.create_all(engine)

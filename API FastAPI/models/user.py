@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
 from models.base_model import BaseModel
-
+from config.db import engine, meta
 class User(BaseModel):
     __tablename__ = "user_data"
     name = Column(String(255))
@@ -19,4 +19,3 @@ class User(BaseModel):
     # Relations --
     hosted_events = relationship('Event', back_populates='event_host')
 
-meta.create_all(engine)

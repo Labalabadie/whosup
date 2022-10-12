@@ -13,4 +13,4 @@ class EventSchema(BaseModel):
     max_people: int = 1
     participants: str
     
-    config: dict = None
+    config: dict = {"Virtual":False}

@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from datetime import datetime
 from models.base_model import BaseModel
+from config.db import engine, meta
 
 class Event(BaseModel): 
     __tablename__ = "event" 
@@ -20,3 +21,5 @@ class Event(BaseModel):
 
     config = Column(JSON)
     status = Column(Boolean, default=True)
+
+meta.create_all(engine)

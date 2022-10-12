@@ -18,3 +18,5 @@ class User(BaseModel):
 
     # Relations --
     hosted_events = relationship('Event', back_populates='event_host')
+
+meta.create_all(engine)

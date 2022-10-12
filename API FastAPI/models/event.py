@@ -1,23 +1,24 @@
-from sqlalchemy import Table, Column
+from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
-from config.db import meta, engine
 from datetime import datetime
+from models.base_model import BaseModel
+from config.db import engine, meta
 
-event = Table("event", meta, 
-    Column("id", Integer, primary_key=True), ## unica
-    Column("name", String(255)),
+class Event(BaseModel): 
+    __tablename__ = "event" 
+    name = Column(String(255))
 
-    Column("event_host", Integer, nullable=False),
-    Column("event_datetime", DateTime),
-    Column("location", String(255)),
-    Column("description", String(255)),
-    Column("icon", String(2)),
-    Column("max_people", Integer, default=1),
-    Column("participants", String(255)), ## related con user.id
+    event_host_id = Column(Integer, ForeignKey('user_data.id'), nullable=False) # user.id == User.id (class)
+    event_host = relationship("User", back_populates="hosted_events")
 
-    Column("config", JSON),
-    Column("created_at", DateTime, default=datetime.utcnow),
-    Column("updated_at", DateTime, default=datetime.utcnow),
-    Column("status", Boolean, default=True))
+    event_datetime = Column(DateTime)
+    location = Column(String(255))
+    description = Column(String(255))
+    icon = Column(String(2))
+    max_people = Column(Integer, default=1)
+    participants = Column(String(255)) ## related con user.id
 
-meta.create_all(engine)
+    config = Column(JSON)
+    status = Column(Boolean, default=True)
+

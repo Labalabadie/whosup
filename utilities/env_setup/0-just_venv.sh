@@ -3,24 +3,6 @@
 COLOR='\033[0;35m'
 NOCOLOR='\033[0m'
 
-# Programs
-sudo apt-get update -y
-
-echo -e "${COLOR}Instalando: mysql${NOCOLOR}"
-sudo apt-get install -y mysql-server=8.0.30
-
-echo -e "${COLOR}Instalando: python${NOCOLOR}"
-sudo apt-get install -y python=3.8.10
-
-echo -e "${COLOR}Instalando: pip${NOCOLOR}"
-sudo apt-get install -y python3-pip
-
-
-
-# Python virtual environment
-echo -e "${COLOR}Instalando: venv${NOCOLOR}"
-sudo apt-get install -y python3-venv
-
 echo -e "${COLOR}Creando entorno virtual${NOCOLOR}"
 sudo python3 -m venv ./fastapi-mysql 
 sudo chown -R ubuntu:ubuntu ./fastapi-mysql/

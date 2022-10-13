@@ -11,6 +11,7 @@ export class HomePage implements OnInit {
 
   events = [];
 
+
   constructor(private eventcrudService: EventCrudService, private router: Router) {}
 
   ngOnInit() {
@@ -20,7 +21,7 @@ export class HomePage implements OnInit {
   		})
 	}
 
-  removeEvent(events) {
+  removeEvent(events,) {
     if (window.confirm('Are you sure')) {
       this.eventcrudService.deleteEvent(events.id)
       .subscribe(() => {
@@ -29,5 +30,10 @@ export class HomePage implements OnInit {
       )
     }
   }
+
+ // eventDetail(events) {
+ //     this.eventcrudService.getEvent(events.id)
+ //   this.router.navigate(['/eventdetail']);
+ // }
 
 }

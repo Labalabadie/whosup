@@ -1,46 +1,58 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
-from models.user import users
-from schemas.user import User
+from models.user import User
+from schemas.user import UserSchema
 from starlette.status import HTTP_204_NO_CONTENT
-
+from sqlalchemy import insert, select, update, delete
 from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 f = Fernet(key)
 
-user = APIRouter()
+userAPI = APIRouter()
 
-
-@user.get('/users', response_model=list[User], tags=["Users"])
+@userAPI.get('/user', tags=["Users"])
 def get_users():
-    return conn.execute(users.select()).fetchall()  # consulta a toda la tabla
+    return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
 
 
-@user.post('/users', response_model=User, tags=["Users"])
-def create_user(user: User):
-    new_user = {"name": user.name, "email": user.email, "phone": user.phone}
-    new_user["password"] = f.encrypt(user.password.encode("utf-8"))
-    # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
-    result = conn.execute(users.insert().values(new_user))
-    print(result.lastrowid)
-    # Ejecuta una consulta de la tabla de usuarios en donde el id de todos los usuarios coincida con el id que se acaba de guardar, solo va a traer el id que coincida. Y como devuelve una lista, con first() le digo que solamente devuelta el primero
-    return conn.execute(users.select().where(users.c.id == result.lastrowid)).first()
+@userAPI.post('/user', response_model=UserSchema, tags=["Users"])
+def create_user(this_user: UserSchema):
+    """ Create user """
+    
+    new_user = {"name": this_user.name, 
+                "email": this_user.email,
+                "phone": this_user.phone}
+
+    new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
+    result = conn.execute(insert(User).values(new_user)) # Realiza la conexion con la base de datos para insertar el nuevo usuario
+    print("NEW USER . id: ", result.lastrowid)
+    # Busca en la base de datos el ultimo usuario creado y lo retorna para confirmar que se creó
+    return conn.execute(select(User).where(User.id == result.lastrowid)).first()
 
 
-@user.get('/users/{id}', response_model=User, tags=["Users"])
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: str):
-    return conn.execute(users.select().where(users.c.id == id)).first()
+    """ Get user by id """
+
+    return conn.execute(select(User).where(User.id == id)).first()
 
 
-@user.delete('/users/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
+@userAPI.delete('/user/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
 def delete_user(id: str):
-    conn.execute(users.delete().where(users.c.id == id))
-    return Response(status_code=HTTP_204_NO_CONTENT)
+    """ Delete user """
+
+    conn.execute(delete(User).where(User.id == id))
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
-@user.put('/users/{id}', response_model=User, tags=["Users"])
-def update_user(id: str, user: User):
-    conn.execute(users.update().values(name=user.name,
-                 email=user.email,phone=user.phone ,password=f.encrypt(user.password.encode("utf-8"))).where(users.c.id == id))
-    return conn.execute(users.select().where(users.c.id == id)).first()
+@userAPI.put('/user/{id}', response_model=UserSchema, tags=["Users"])
+def update_user(id: str, this_user: UserSchema):
+    """ Update User """
+
+    conn.execute(update(User).values(
+                 name=this_user.name,
+                 email=this_user.email,
+                 phone=this_user.phone,
+                 password=f.encrypt(this_user.password.encode("utf-8"))).where(User.id == id))
+    return conn.execute(select(User).where(User.id == id)).first()

@@ -1,44 +1,70 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
-from models.events import events
-from schemas.event import Event
+from models.event import Event
+from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
-
+from sqlalchemy import insert, select, update, delete
 from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 f = Fernet(key)
 
-event = APIRouter()
+eventAPI = APIRouter()
 
 
-@event.get('/events', response_model=list[Event], tags=["Events"])
-def get_events():
-    return conn.execute(events.select()).fetchall()  # consulta a toda la tabla
+#@event.get('/event', response_model=list[EventSchema], tags=["Events"])
+#def get_events():
+#    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
 
 
-@event.post('/events', response_model=Event, tags=["Events"])
-def create_event(event: Event):
-    new_event = {"event_name": event.event_name,"event_datetime": event.event_datetime,"location": event.location, "description": event.description, "participants": event.participants, "event_status": event.event_status, "nonolist": event.nonolist  }
-    # Realiza la conexion con la base de datos para insertar el nuevo usuario, si devuelve un cursor en la consola es que esta bien!
-    result = conn.execute(events.insert().values(new_event))
-    print(result.lastrowid)
-    # Ejecuta una consulta de la tabla de usuarios en donde el id de todos los usuarios coincida con el id que se acaba de guardar, solo va a traer el id que coincida. Y como devuelve una lista, con first() le digo que solamente devuelta el primero
-    return conn.execute(events.select().where(events.c.id == result.lastrowid)).first()
+@eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
+def create_event(this_event: EventSchema):
+    """ Create new event """
+
+    new_event = {"name": this_event.name,
+                 "event_host_id": this_event.event_host_id,
+                 "event_datetime": this_event.event_datetime,
+                 "location": this_event.location, 
+                 "description": this_event.description,
+                 "icon": this_event.icon,
+                 "max_people": this_event.max_people, 
+                 "participants": this_event.participants,
+                 "config": this_event.config}
+    # Realiza la conexion con la base de datos para insertar el nuevo usuario
+    result = conn.execute(insert(Event).values(new_event))
+    print("NEW EVENT . id: ", result.lastrowid)
+    # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
+    return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@event.get('/events/{id}', response_model=Event, tags=["Events"])
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
 def get_event(id: str):
-    return conn.execute(events.select().where(events.c.id == id)).first()
+    """ Get event by id """
+
+    return conn.execute(select(Event).where(Event.id == id)).first()
 
 
-@event.delete('/events/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
-def delete_event(id: str): ## Buscar la menar de desabilitarlo no borrarlo de la base de datos directamente
-    conn.execute(events.delete().where(events.c.id == id))
-    return Response(status_code=HTTP_204_NO_CONTENT)
+@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
+def delete_event(id: str): 
+    """ Delete event """
+
+    # Buscar la manera de desabilitarlo no borrarlo de la base de datos directamente
+    conn.execute(delete(Event).where(Event.id == id))
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
-@event.put('/events/{id}', response_model=Event, tags=["Events"])
-def update_event(id: str, event: Event):
-    conn.execute(events.update().values(event_name=event.event_name, event_datetime=event.event_datetime, location=event.location, description=event.description, participants=event.participants ))
-    return conn.execute(events.select().where(events.c.id == id)).first()
+@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
+def update_event(id: str, this_event: EventSchema):
+    """ Update event """
+    
+    conn.execute(update(Event).values(
+                 name=this_event.name, 
+                 event_host_id=this_event.event_host_id,
+                 event_datetime=this_event.event_datetime,
+                 location=this_event.location, 
+                 description=this_event.description,
+                 icon=this_event.icon,
+                 max_people=this_event.max_people, 
+                 participants=this_event.participants,
+                 config=this_event.config))
+    return conn.execute(select(Event).where(Event.id == id)).first()

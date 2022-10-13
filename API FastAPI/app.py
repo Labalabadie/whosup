@@ -1,8 +1,10 @@
 from fastapi import FastAPI
-from routes.user import user
-from routes.event import event
+from routes.user import userAPI
+from routes.event import eventAPI
+from routes.group import groupAPI
+from routes.channel import channelAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from config.db import meta, engine
 
 app = FastAPI()
 
@@ -19,5 +21,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user)
-app.include_router(event)
+app.include_router(userAPI)
+app.include_router(eventAPI)
+app.include_router(groupAPI)
+app.include_router(channelAPI)
+
+meta.create_all(engine)

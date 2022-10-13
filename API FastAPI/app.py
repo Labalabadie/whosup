@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from routes.user import userAPI
 from routes.event import eventAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from config.db import meta, engine
 
 app = FastAPI()
 
@@ -21,3 +21,4 @@ app.add_middleware(
 
 app.include_router(userAPI)
 app.include_router(eventAPI)
+meta.create_all(engine)

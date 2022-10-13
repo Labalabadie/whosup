@@ -1,14 +1,17 @@
-from sqlalchemy import Table, Column
+from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from datetime import datetime
-from models.base_model import Base
+from models.base_model import BaseModel
+from config.db import engine, meta
 
-class Event(Base): 
+class Event(BaseModel): 
     __tablename__ = "event" 
-    id = Column(Integer, primary_key=True) ## unica
     name = Column(String(255))
 
-    event_host = Column(Integer, nullable=False)
+    event_host_id = Column(Integer, ForeignKey('user_data.id'), nullable=False) # user.id == User.id (class)
+    event_host = relationship("User", back_populates="hosted_events")
+
     event_datetime = Column(DateTime)
     location = Column(String(255))
     description = Column(String(255))
@@ -17,6 +20,5 @@ class Event(Base):
     participants = Column(String(255)) ## related con user.id
 
     config = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
     status = Column(Boolean, default=True)
+

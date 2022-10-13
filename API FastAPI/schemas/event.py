@@ -5,7 +5,7 @@ from pydantic import BaseModel
 class EventSchema(BaseModel):
     name: str = ""
 
-    event_host: int
+    event_host_id: int
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str = "No location"
     description: str = "Description"
@@ -13,4 +13,4 @@ class EventSchema(BaseModel):
     max_people: int = 1
     participants: str
     
-    config: dict = None
+    config: dict = {"Virtual":False}

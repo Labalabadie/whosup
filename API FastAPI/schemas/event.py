@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import BaseModel
@@ -13,4 +14,4 @@ class EventSchema(BaseModel):
     max_people: int = 1
     participants: str
     
-    config: dict = {"Virtual":False}
+    config: dict = {"online":False, "event_mode": "group", "group_id": 0, "channel_id": 0}

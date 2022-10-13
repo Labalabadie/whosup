@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 .DS_Store
 __pycache__/
-=======
 *.DS_Store
 fastapi-mysql
 **/__pycache__/
 nohup.out
- 
->>>>>>> f1d0825418ca19946fd14df023dd464930d7fdae

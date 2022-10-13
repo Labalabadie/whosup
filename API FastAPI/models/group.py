@@ -10,11 +10,8 @@ class Group(BaseModel):
     name = Column(String(255))
 
     description = Column(String(255))
-    admin = Column(Integer, ForeignKey('user_data.id'))
+    group_admin_id = Column(Integer, ForeignKey('user_data.id'), nullable=False)
+    group_admin = relationship('User', back_populates='admin_groups')
     
     #Column("login_token", String(255)),
     #status = Column(Boolean, default=True)
-
-    # Relations --
-    group_admin = relationship('User', back_populates='admin_groups')
-    group_admin_id = Column(Integer, ForeignKey('user_data.id'), nullable=False) # user.id == User.id (class)

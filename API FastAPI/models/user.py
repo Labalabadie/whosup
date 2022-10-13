@@ -19,4 +19,4 @@ class User(BaseModel):
     # Relations --
     hosted_events = relationship('Event', back_populates='event_host')
     admin_groups = relationship('Group', back_populates='group_admin')
-    admin_events = relationship('Group', back_populates='channel_admin')
+    admin_channels = relationship('Channel', back_populates='channel_admin')

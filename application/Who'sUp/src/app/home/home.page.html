@@ -27,11 +27,9 @@ px; margin-top: 8px; color: red" name="pin-outline"></ion-icon>
       <ion-label>
 				<p>{{event.event_name}}</p>
 				<p>{{event.event_datetime}}
-        <p>{{event.descritpion}}</p>
         <p>{{event.location}}</p>
         <p>{{event.participants}}</p>
-        <p>{{event.event_status}}</p>
-        <p>{{event.nonolist}}</p>
+        <p>{{event.description}}</p>
       </ion-label>
 			
 
@@ -40,6 +38,15 @@ px; margin-top: 8px; color: red" name="pin-outline"></ion-icon>
         <ion-icon name="trash" style="zoom:1.5"></ion-icon>
       </button>
     </div>
+
+    <div class="item-note" item-end>
+      <button ion-button clear [routerLink]="['/update/', event.id]">
+        <ion-icon name="create" style="zoom:1.5"></ion-icon>
+      </button>
+    </div>
+    
+
+    
   </ion-item>
 	</ion-list>
 

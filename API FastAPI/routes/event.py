@@ -4,17 +4,13 @@ from models.event import Event
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
-
-key = Fernet.generate_key()
-f = Fernet(key)
 
 eventAPI = APIRouter()
 
 
-#@event.get('/event', response_model=list[EventSchema], tags=["Events"])
-#def get_events():
-#    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
+@event.get('/event', tags=["Events"])
+def get_events():
+    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
 
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])

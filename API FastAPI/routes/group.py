@@ -4,17 +4,13 @@ from models.group import Group
 from schemas.group import GroupSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
-
-key = Fernet.generate_key()
-f = Fernet(key)
 
 groupAPI = APIRouter()
 
 
-#@user.get('/user', response_model=list[UserSchema], tags=["Users"])
-#def get_users():
-#    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
+@user.get('/user', tags=["Users"])
+def get_users():
+    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
 
 
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])

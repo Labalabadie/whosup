@@ -4,17 +4,13 @@ from models.channel import Channel
 from schemas.channel import ChannelSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
-
-key = Fernet.generate_key()
-f = Fernet(key)
 
 channelAPI = APIRouter()
 
 
-#@user.get('/user', response_model=list[UserSchema], tags=["Users"])
-#def get_users():
-#    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
+@user.get('/user', response_model=list[UserSchema], tags=["Users"])
+def get_users():
+    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
 
 
 @channelAPI.post('/channel', response_model=ChannelSchema, tags=["Channels"])

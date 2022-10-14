@@ -1,6 +1,6 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
-from typing import Optional, Dict, Union
+from typing import Optional, Dict, List, Union
 from pydantic import BaseModel
 
 class EventSchema(BaseModel):
@@ -12,6 +12,10 @@ class EventSchema(BaseModel):
     description: str = "Description"
     icon: str = ""
     max_people: int = 1
-    participants: str
+    participants: List[int]
     
-    config: Dict[str, Union[None, int, bool]] = {"online": False}
+    config: Dict[str, Union[None, int, bool]] = {
+        "online": False, 
+        "group_id": None, # None for no group
+        "channel_id": None # None for no channel
+    }

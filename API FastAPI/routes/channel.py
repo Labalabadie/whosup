@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
+from typing import List
 from models.channel import Channel
 from schemas.channel import ChannelSchema
 from starlette.status import HTTP_204_NO_CONTENT
@@ -8,9 +9,9 @@ from sqlalchemy import insert, select, update, delete
 channelAPI = APIRouter()
 
 
-@user.get('/user', response_model=list[UserSchema], tags=["Users"])
-def get_users():
-    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
+@channelAPI.get('/channel', response_model=List[ChannelSchema], tags=["Channels"])
+def get_all_channels():
+    return conn.execute(select(Channel)).fetchall()  # consulta a toda la tabla
 
 
 @channelAPI.post('/channel', response_model=ChannelSchema, tags=["Channels"])

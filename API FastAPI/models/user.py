@@ -21,7 +21,7 @@ class User(BaseModel):
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
 
-class AttendingEventRel(Base):
+"""class AttendingEventRel(Base):
     __tablename__ = "attending_event_rel"
     user_id = Column("user_id", ForeignKey)
-    event_id = Column("event_id", ForeignKey("user_data.id"))
+    event_id = Column("event_id", ForeignKey("user_data.id"))"""

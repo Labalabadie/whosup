@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
+from typing import List
 from models.event import Event
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
@@ -8,9 +9,9 @@ from sqlalchemy import insert, select, update, delete
 eventAPI = APIRouter()
 
 
-@event.get('/event', tags=["Events"])
-def get_events():
-    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
+@eventAPI.get('/event', response_model=EventSchema, tags=["Events"])
+def get_all_events():
+    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
 
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])

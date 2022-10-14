@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
+from typing import List
 from models.group import Group
 from schemas.group import GroupSchema
 from starlette.status import HTTP_204_NO_CONTENT
@@ -8,9 +9,9 @@ from sqlalchemy import insert, select, update, delete
 groupAPI = APIRouter()
 
 
-@user.get('/user', tags=["Users"])
-def get_users():
-    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
+@groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])
+def get_all_groups():
+    return conn.execute(select(Group)).fetchall()  # consulta a toda la tabla
 
 
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])

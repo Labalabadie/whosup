@@ -14,4 +14,7 @@ class EventSchema(BaseModel):
     max_people: int = 1
     participants: str
     
-    config: dict = {"online": False, "event_mode": 0, "group_id": 0, "channel_id": 0}
+    config: dict = {
+        "online": False, 
+        "group_id": Optional[int] = None, 
+        "channel_id": Optional[int]}

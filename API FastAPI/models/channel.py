@@ -1,10 +1,8 @@
-from email.policy import default
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
 from models.base_model import BaseModel
-from config.db import engine, meta
 
 class Channel(BaseModel):
     __tablename__ = "channel"

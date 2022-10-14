@@ -14,4 +14,4 @@ class EventSchema(BaseModel):
     max_people: int = 1
     participants: str
     
-    config: Dict[bool, Optional[int]] = None
+    config: Dict[bool, Optional[int]]

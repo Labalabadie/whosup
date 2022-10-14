@@ -15,7 +15,7 @@ class EventSchema(BaseModel):
     participants: List[int] = []
     
     config: Dict[str, Union[None, int, bool]] = {
-        "group_id": 123234,
+        "group_id": True,
         "online": False, 
          # None for no group
         "channel_id": 1244 # None for no channel

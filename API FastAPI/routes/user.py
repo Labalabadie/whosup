@@ -1,17 +1,18 @@
-from fastapi import APIRouter, Response, status
 from config.db import conn
+from cryptography.fernet import Fernet
+from typing import List
+from fastapi import APIRouter, Response, status
 from models.user import User
 from schemas.user import UserSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 f = Fernet(key)
 
 userAPI = APIRouter()
 
-@userAPI.get('/user', tags=["Users"])
+@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
 def get_users():
     return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
 

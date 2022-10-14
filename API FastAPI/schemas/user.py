@@ -1,10 +1,8 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel as pyBaseModel
 
-class UserSchema(BaseModel):
+class UserSchema(pyBaseModel):
     name: str = ""
     email: str = ""
     password: str = ""
     phone: str = ""
-
-    

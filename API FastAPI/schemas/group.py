@@ -5,5 +5,3 @@ class GroupSchema(BaseModel):
     name: str = ""
     admin: int = ""
     description: str = ""
-
-    

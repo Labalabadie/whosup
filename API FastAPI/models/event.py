@@ -18,7 +18,7 @@ class Event(BaseModel):
     description = Column(String(255))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
-    participants = Column(String(255)) ## related con user.id
+    participants = Column(JSON) ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)

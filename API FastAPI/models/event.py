@@ -19,6 +19,9 @@ class Event(BaseModel):
     max_people = Column(Integer, default=1)
     participants = Column(String(255)) ## related con user.id
 
+    group_id = Column(Integer, ForeignKey('group.id'))
+    channel_id = Column(Integer, ForeignKey('channel.id'))
+
     config = Column(JSON)
     status = Column(Boolean, default=True)
 

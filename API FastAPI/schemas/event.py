@@ -1,9 +1,13 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Union
-from pydantic import BaseModel
+from pydantic import BaseModel as pyBaseModel
 
-class EventSchema(BaseModel):
+class EventSchema(pyBaseModel):
+    
+    # id: int // inherited from BaseModel
+    # created_at: datetime // inherited from BaseModel
+    # updated_at: datetime // inherited from BaseModel
     name: str = "Event name"
 
     event_host_id: int
@@ -13,9 +17,9 @@ class EventSchema(BaseModel):
     icon: str = ""
     max_people: int = 1
     participants: List[int] = []
+    group_id: Optional[int] = None 
+    channel_id: Optional[int] = None
     
-    config: Dict[str, Union[None, int, bool]] = {
-        "online": False, 
-        "group_id": 0, # None for no group
-        "channel_id": 0 # None for no channel
+    config: Dict[str, Optional[bool]] = {
+        "online": False
     }

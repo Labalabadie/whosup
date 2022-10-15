@@ -9,7 +9,6 @@ class EventSchema(pyBaseModel):
     # created_at: datetime // inherited from BaseModel
     # updated_at: datetime // inherited from BaseModel
     name: str = "Event name"
-
     event_host_id: int
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str = "Location"

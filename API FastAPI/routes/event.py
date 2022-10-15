@@ -9,11 +9,6 @@ from sqlalchemy import insert, select, update, delete
 eventAPI = APIRouter()
 
 
-@eventAPI.get('/event', response_model=EventSchema, tags=["Events"])
-def get_all_events():
-    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
-
-
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
     """ Create new event """
@@ -32,6 +27,11 @@ def create_event(this_event: EventSchema):
     print("NEW EVENT . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
+
+
+@eventAPI.get('/event', response_model=EventSchema, tags=["Events"])
+def get_all_events():
+    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
 
 
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])

@@ -39,7 +39,7 @@ def get_all_users():
     return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
 
 
-@userAPI.get('/user/{id}', response_model=UserSchemaDetail, tags=["Users"])
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id, with Detail """
 

@@ -1,6 +1,5 @@
 from datetime import datetime
-
-from API FastAPI.schemas.user import UserSchemaDetail
+from schemas.user import UserSchemaDetail
 from config.db import conn
 from cryptography.fernet import Fernet
 from typing import List

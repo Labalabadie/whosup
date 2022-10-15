@@ -1,3 +1,4 @@
+from email.policy import default
 from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
@@ -19,8 +20,8 @@ class Event(BaseModel):
     max_people = Column(Integer, default=1)
     participants = Column(String(255)) ## related con user.id
 
-    group_id = Column(Integer, ForeignKey('group.id'))
-    channel_id = Column(Integer, ForeignKey('channel.id'))
+    group_id = Column(Integer, ForeignKey('group.id'), default=None)
+    channel_id = Column(Integer, ForeignKey('channel.id'), default=None)
 
     config = Column(JSON)
     status = Column(Boolean, default=True)

@@ -19,6 +19,6 @@ class EventSchema(pyBaseModel):
     group_id: Optional[int] = None 
     channel_id: Optional[int] = None
     
-    config: Dict[str, bool] = {
+    config: dict = {
         "online": False
     }

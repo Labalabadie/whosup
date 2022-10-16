@@ -1,10 +1,12 @@
 from typing import Optional
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel as pyBaseModel
 
-class UserSchema(BaseModel):
+class UserSchema(pyBaseModel):
+    id: int
     name: str = ""
     email: str = ""
     password: str = ""
     phone: str = ""
-
-    
+    created_at: datetime
+    updated_at: datetime

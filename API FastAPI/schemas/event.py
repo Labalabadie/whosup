@@ -1,17 +1,24 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Dict, List, Union
+from pydantic import BaseModel as pyBaseModel
 
-class EventSchema(BaseModel):
-    name: str = ""
-
+class EventSchema(pyBaseModel):
+    
+    id: int 
+    # created_at: datetime // inherited from BaseModel
+    # updated_at: datetime // inherited from BaseModel
+    name: str = "Event name"
     event_host_id: int
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
-    location: str = "No location"
+    location: str = "Location"
     description: str = "Description"
     icon: str = ""
     max_people: int = 1
-    participants: str
+    participants: List[int] = []
+    group_id: Optional[int] = None 
+    channel_id: Optional[int] = None
     
-    config: dict = {"online":False, "event_mode": "personal", "group_id": 0, "channel_id": 0}
+    config: dict = {
+        "online": False
+    }

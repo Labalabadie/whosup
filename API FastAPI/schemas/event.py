@@ -1,6 +1,6 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
-from typing import Optional, Dict, List, Union
+from typing import Optional, List, Union
 from pydantic import BaseModel as pyBaseModel
 
 class EventSchema(pyBaseModel):

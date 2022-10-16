@@ -29,7 +29,7 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@eventAPI.get('/event', response_model=EventSchema, tags=["Events"])
+@eventAPI.get('/event', response_model=List(EventSchema), tags=["Events"])
 def get_all_events():
     return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
 

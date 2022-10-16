@@ -28,6 +28,7 @@ def get_event(id: int):
     return conn.execute(select(Event).where(Event.id == id)).first()
 
 
+
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
     """ Create new event """

@@ -4,7 +4,7 @@ from cryptography.fernet import Fernet
 from typing import List
 from fastapi import APIRouter, Response, status
 from models.user import User
-from schemas.user import UserSchema
+from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
 
@@ -16,7 +16,6 @@ userAPI = APIRouter()
 # proximamente ...
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
 #def get_feed():
-
 
 
 
@@ -36,7 +35,12 @@ def get_inactive_users():
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
+    return conn.execute(select(User).where(User.id == id)).first()
 
+
+@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["User"])
+def get_event(id: int):
+    """ Get detailed info of the user  events """
     return conn.execute(select(User).where(User.id == id)).first()
 
 

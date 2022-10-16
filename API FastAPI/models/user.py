@@ -3,7 +3,8 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
+from models.event import AttendingEventRel
 
 class User(BaseModel):
     __tablename__ = "user_data"
@@ -16,12 +17,9 @@ class User(BaseModel):
     #Column("login_token", String(255)),
     status = Column(Boolean, default=True)
 
-    # Relations --
+    # Relationships --
     hosted_events = relationship('Event', back_populates='event_host')
+    attending_events = relationship("Event", secondary=AttendingEventRel, back_populates='participants')
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
 
-"""class AttendingEventRel(Base):
-    __tablename__ = "attending_event_rel"
-    user_id = Column("user_id", ForeignKey)
-    event_id = Column("event_id", ForeignKey("user_data.id"))"""

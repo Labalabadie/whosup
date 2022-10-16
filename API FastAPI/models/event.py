@@ -6,6 +6,13 @@ from datetime import datetime
 from models.base_model import BaseModel
 from config.db import engine, meta
 
+
+class AttendingEventRel(Base):
+    __tablename__ = "attending_event_rel"
+    user_id = Column("user_id", ForeignKey("user_data.id"))
+    event_id = Column("event_id", ForeignKey("event.id"))
+
+
 class Event(BaseModel): 
     __tablename__ = "event" 
     name = Column(String(255))
@@ -18,11 +25,10 @@ class Event(BaseModel):
     description = Column(String(255))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
-    participants = Column(JSON) ## related con user.id
+    participants = relationship("User", secondary=AttendingEventRel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)
 
     config = Column(JSON)
     status = Column(Boolean, default=True)
-

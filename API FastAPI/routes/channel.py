@@ -49,7 +49,7 @@ def update_channel(id: str, this_channel: ChannelSchema):
                  description=this_channel.description,
                  channel_admin_id=this_channel.channel_admin_id,
                  updated_at=datetime.now()
-                 ).where(User.id == id))
+                 ).where(Channel.id == id))
 
     return conn.execute(select(Channel).where(Channel.id == id)).first()
 

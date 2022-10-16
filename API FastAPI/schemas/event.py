@@ -5,7 +5,7 @@ from pydantic import BaseModel as pyBaseModel
 
 class EventSchema(pyBaseModel):
     
-    # id: int // inherited from BaseModel
+    id: int 
     # created_at: datetime // inherited from BaseModel
     # updated_at: datetime // inherited from BaseModel
     name: str = "Event name"

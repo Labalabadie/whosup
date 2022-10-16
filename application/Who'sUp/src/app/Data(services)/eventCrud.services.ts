@@ -5,14 +5,12 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 export class Event {
-    id?: string;
-	event_name?: string;
-	event_datetime?: string;
-	location?: string;
-	description?: string;
-	participants?: string;
-	event_status?: string;
-    nonolist?: string;
+  id: number;
+	event_name: string;
+	event_datetime: string;
+	location: string;
+	participants: string;
+  description: string;
 }
 
 @Injectable({

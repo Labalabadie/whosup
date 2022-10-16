@@ -24,10 +24,8 @@ export class NeweventPage implements OnInit {
       event_name: [''],
       event_datetime: [''],
       location: [''],
-      description: [''],
       participants: [''],
-      event_status: [''],
-      nonolist: ['']
+      description: ['']
     })
   }
 

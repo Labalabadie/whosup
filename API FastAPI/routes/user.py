@@ -1,20 +1,43 @@
-from fastapi import APIRouter, Response, status
+from datetime import datetime
 from config.db import conn
+from cryptography.fernet import Fernet
+from typing import List
+from fastapi import APIRouter, Response, status
 from models.user import User
 from schemas.user import UserSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 f = Fernet(key)
 
 userAPI = APIRouter()
 
+# proximamente ...
+#@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
+#def get_feed():
 
-#@user.get('/user', response_model=list[UserSchema], tags=["Users"])
-#def get_users():
-#    return conn.execute(user_data.select()).fetchall()  # consulta a toda la tabla
+
+
+
+
+@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
+def get_all_users():
+    """ Get all active elements """
+    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
+
+
+@userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
+def get_inactive_users():
+    """ All inactive """
+    return conn.execute(select(User).where(User.status == False)).fetchall()
+
+
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
+def get_user(id: int):
+    """ Get user by id """
+
+    return conn.execute(select(User).where(User.id == id)).first()
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
@@ -32,28 +55,26 @@ def create_user(this_user: UserSchema):
     return conn.execute(select(User).where(User.id == result.lastrowid)).first()
 
 
-@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
-def get_user(id: str):
-    """ Get user by id """
-
-    return conn.execute(select(User).where(User.id == id)).first()
-
-
-@userAPI.delete('/user/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
-def delete_user(id: str):
-    """ Delete user """
-
-    conn.execute(delete(User).where(User.id == id))
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
-
-
 @userAPI.put('/user/{id}', response_model=UserSchema, tags=["Users"])
-def update_user(id: str, this_user: UserSchema):
+def update_user(id: int, this_user: UserSchema):
     """ Update User """
 
     conn.execute(update(User).values(
                  name=this_user.name,
                  email=this_user.email,
                  phone=this_user.phone,
-                 password=f.encrypt(this_user.password.encode("utf-8"))).where(User.id == id))
+                 password=f.encrypt(this_user.password.encode("utf-8")),
+                 updated_at=datetime.now()).where(User.id == id))
+                 # updated_at ...
     return conn.execute(select(User).where(User.id == id)).first()
+
+
+@userAPI.delete('/user/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
+def delete_user(id: int):
+    """ Delete (deactivate) user """
+
+    #conn.execute(delete(User).where(User.id == id)) # <-- not delete but change to status=0 
+    conn.execute(update(User).values(
+        status=False,
+        updated_at=datetime.now()).where(User.id == id))   # check THIS
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

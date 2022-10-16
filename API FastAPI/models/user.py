@@ -1,10 +1,10 @@
 from email.policy import default
-from sqlalchemy import Column
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
-from models.base_model import BaseModel
-from config.db import engine, meta
+from models.base_model import BaseModel, Base
+
 class User(BaseModel):
     __tablename__ = "user_data"
     name = Column(String(255))
@@ -18,4 +18,10 @@ class User(BaseModel):
 
     # Relations --
     hosted_events = relationship('Event', back_populates='event_host')
+    admin_groups = relationship('Group', back_populates='group_admin')
+    admin_channels = relationship('Channel', back_populates='channel_admin')
 
+"""class AttendingEventRel(Base):
+    __tablename__ = "attending_event_rel"
+    user_id = Column("user_id", ForeignKey)
+    event_id = Column("event_id", ForeignKey("user_data.id"))"""

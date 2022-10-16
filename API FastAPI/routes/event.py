@@ -35,14 +35,14 @@ def get_all_events():
 
 
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
-def get_event(id: str):
+def get_event(id: int):
     """ Get event by id """
 
     return conn.execute(select(Event).where(Event.id == id)).first()
 
 
 @eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
-def delete_event(id: str): 
+def delete_event(id: int): 
     """ Delete event """
 
     # Buscar la manera de desabilitarlo no borrarlo de la base de datos directamente
@@ -51,7 +51,7 @@ def delete_event(id: str):
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
-def update_event(id: str, this_event: EventSchema):
+def update_event(id: int, this_event: EventSchema):
     """ Update event """
     
     conn.execute(update(Event).values(

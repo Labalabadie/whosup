@@ -13,6 +13,7 @@ class Group(BaseModel):
     description = Column(String(255))
     group_admin_id = Column(Integer, ForeignKey('user_data.id'), nullable=False)
     group_admin = relationship('User', back_populates='admin_groups')
+    status = Column(Boolean, default=True)
     
     #Column("login_token", String(255)),
     #status = Column(Boolean, default=True)

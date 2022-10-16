@@ -13,6 +13,9 @@ groupAPI = APIRouter()
 def get_all_groups():
     return conn.execute(select(Group)).fetchall()  # consulta a toda la tabla
 
+@groupAPI.get('/group', response_model=List[GroupSchema], tags=["Group"])
+def get_all_active_group():
+    return conn.execute(select(Group).where(Group.status == True)).fetchall() # TEST this
 
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])
 def create_group(this_group: GroupSchema):
@@ -39,7 +42,10 @@ def get_group(id: str):
 def delete_group(id: str):
     """ Delete group """
 
-    conn.execute(delete(Group).where(Group.id == id))
+    conn.execute(update(Group).values(
+        status=False,
+        updated_at=datetime.now()).where(Group.id == id))
+
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
@@ -50,7 +56,8 @@ def update_group(id: str, this_group: GroupSchema):
     conn.execute(update(Group).values(
                  name=this_group.name,
                  description=this_group.description,
-                 group_admin_id=this_group.group_admin_id
+                 group_admin_id=this_group.group_admin_id,
+                 updated_at=datetime.now()
                  ).where(Group.id == id))
 
     return conn.execute(select(Group).where(Group.id == id)).first()

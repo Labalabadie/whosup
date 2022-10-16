@@ -29,9 +29,13 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
+@eventAPI.get('/event/all', response_model=List[EventSchema], tags=["Events"])
 def get_all_events():
     return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
+
+@eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
+def get_all_active_events():
+    return conn.execute(select(Event).where(Event.status == True)).fetchall()  # Todos los elementos activos
 
 
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
@@ -45,8 +49,10 @@ def get_event(id: int):
 def delete_event(id: int): 
     """ Delete event """
 
-    # Buscar la manera de desabilitarlo no borrarlo de la base de datos directamente
-    conn.execute(delete(Event).where(Event.id == id))
+    conn.execute(update(Event).values(
+        status=False,
+        updated_at=datetime.now()).where(Event.id == id))
+
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
@@ -63,5 +69,6 @@ def update_event(id: int, this_event: EventSchema):
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
                  participants=this_event.participants,
-                 config=this_event.config))
+                 config=this_event.config),
+                 updated_at=datetime.now()).where(Event.id == id) # UPDATE THIS !!!!
     return conn.execute(select(Event).where(Event.id == id)).first()

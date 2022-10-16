@@ -10,8 +10,7 @@ class Channel(BaseModel):
 
     description = Column(String(255))
     channel_admin_id = Column(Integer, ForeignKey('user_data.id'), nullable=False)
-    #Column("login_token", String(255)),
-    #status = Column(Boolean, default=True)
+    status = Column(Boolean, default=True)
 
     # Relations --
     channel_admin = relationship('User', back_populates='admin_channels')

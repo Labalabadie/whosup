@@ -33,9 +33,13 @@ def create_user(this_user: UserSchema):
     return conn.execute(select(User).where(User.id == result.lastrowid)).first()
 
 
-@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
+@userAPI.get('/user/all', response_model=List[UserSchema], tags=["Users"])
 def get_all_users():
     return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
+
+@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
+def get_all_active_users():
+    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
 
 
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
@@ -50,7 +54,9 @@ def delete_user(id: int):
     """ Delete user """
 
     #conn.execute(delete(User).where(User.id == id)) # <-- not delete but change to status=0 
-    conn.execute(update(User).values(status=False).where(User.id == id))
+    conn.execute(update(User).values(
+        status=False,
+        updated_at=datetime.now()).where(User.id == id))   # check THIS
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 

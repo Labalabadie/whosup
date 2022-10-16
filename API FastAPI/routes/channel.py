@@ -13,6 +13,8 @@ channelAPI = APIRouter()
 def get_all_channels():
     return conn.execute(select(Channel)).fetchall()  # consulta a toda la tabla
 
+#def get_all_active_channels()
+
 
 @channelAPI.post('/channel', response_model=ChannelSchema, tags=["Channels"])
 def create_channel(this_channel: ChannelSchema):

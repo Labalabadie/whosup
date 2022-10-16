@@ -16,8 +16,8 @@ class EventSchema(pyBaseModel):
     icon: str = ""
     max_people: int = 1
     participants: List[int] = []
-    group_id: Optional[int] = None 
-    channel_id: Optional[int] = None
+    group_id: int = 0
+    channel_id: int = 0
     
     config: dict = {
         "online": False

@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
@@ -11,9 +12,18 @@ channelAPI = APIRouter()
 
 @channelAPI.get('/channel', response_model=List[ChannelSchema], tags=["Channels"])
 def get_all_channels():
-    return conn.execute(select(Channel)).fetchall()  # consulta a toda la tabla
+    return conn.execute(select(Channel).where(Channel.status == True)).fetchall()  # consulta a toda la tabla
 
-#def get_all_active_channels()
+
+@channelAPI.get('/channel/inactive', response_model=List[ChannelSchema], tags=["Channels"])
+def get_inactive_channels():
+    return conn.execute(select(Channel).where(Channel.status == False)).fetchall()  # consulta a toda la tabla
+
+
+@channelAPI.get('/channel/{id}', response_model=ChannelSchema, tags=["Channels"])
+def get_channel(id: str):
+    """ Get channel by id """
+    return conn.execute(select(Channel).where(Channel.id == id)).first()
 
 
 @channelAPI.post('/channel', response_model=ChannelSchema, tags=["Channels"])
@@ -24,25 +34,10 @@ def create_channel(this_channel: ChannelSchema):
                 "description": this_channel.description,
                 "channel_admin_id": this_channel.channel_admin_id}
 
-    result = conn.execute(insert(Group).values(new_group)) # Realiza la conexion con la base de datos para insertar el nuevo canal
+    result = conn.execute(insert(Channel).values(new_channel)) # Realiza la conexion con la base de datos para insertar el nuevo canal
     print("NEW CHANNEL . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo grupo canal y lo retorna para confirmar que se creó
     return conn.execute(select(Channel).where(Channel.id == result.lastrowid)).first()
-
-
-@channelAPI.get('/channel/{id}', response_model=ChannelSchema, tags=["Channels"])
-def get_channel(id: str):
-    """ Get channel by id """
-
-    return conn.execute(select(Channel).where(Channel.id == id)).first()
-
-
-@channelAPI.delete('/channel/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Channels"])
-def delete_channel(id: str):
-    """ Delete channel """
-
-    conn.execute(delete(Channel).where(Channel.id == id))
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
 @channelAPI.put('/channel/{id}', response_model=ChannelSchema, tags=["Channels"])
@@ -52,7 +47,19 @@ def update_channel(id: str, this_channel: ChannelSchema):
     conn.execute(update(Channel).values(
                  name=this_channel.name,
                  description=this_channel.description,
-                 channel_admin_id=this_channel.channel_admin_id
+                 channel_admin_id=this_channel.channel_admin_id,
+                 updated_at=datetime.now()
                  ).where(User.id == id))
 
     return conn.execute(select(Channel).where(Channel.id == id)).first()
+
+
+@channelAPI.delete('/channel/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Channels"])
+def delete_channel(id: str):
+    """ Delete (deactivate) channel """
+
+    conn.execute(update(Channel).values(
+        status=False,
+        updated_at=datetime.now()).where(Channel.id == id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

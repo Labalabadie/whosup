@@ -9,15 +9,24 @@ from sqlalchemy import insert, select, update, delete
 groupAPI = APIRouter()
 
 
-@groupAPI.get('/group/all', response_model=List[GroupSchema], tags=["Groups"])
-def get_all_groups():
-    """ All active events """
-    return conn.execute(select(Group)).fetchall()  # consulta a toda la tabla
-
 
 @groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])
-def get_all_active_group():
+def get_all_groups():
+    """ All active groups """
     return conn.execute(select(Group).where(Group.status == True)).fetchall() # TEST this
+
+
+@groupAPI.get('/group/inactive', response_model=List[GroupSchema], tags=["Groups"])
+def get_inactive_groups():
+    """ All inactive """
+    return conn.execute(select(Group).where(Group.status == False)).fetchall()  # consulta a toda la tabla
+
+
+@groupAPI.get('/group/{id}', response_model=GroupSchema, tags=["Groups"])
+def get_group(id: str):
+    """ Get group by id """
+
+    return conn.execute(select(Group).where(Group.id == id)).first()
 
 
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])
@@ -32,13 +41,6 @@ def create_group(this_group: GroupSchema):
     print("NEW GROUP . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo grupo creado y lo retorna para confirmar que se creó
     return conn.execute(select(Group).where(Group.id == result.lastrowid)).first()
-
-
-@groupAPI.get('/group/{id}', response_model=GroupSchema, tags=["Groups"])
-def get_group(id: str):
-    """ Get group by id """
-
-    return conn.execute(select(Group).where(Group.id == id)).first()
 
 
 @groupAPI.put('/group/{id}', response_model=GroupSchema, tags=["Groups"])

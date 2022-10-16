@@ -22,17 +22,15 @@ userAPI = APIRouter()
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
-def get_all_active_users():
+def get_all_users():
     """ Get all active elements """
-
     return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
 
 
-@userAPI.get('/user/all', response_model=List[UserSchema], tags=["Users"])
-def get_all_users():
-    """ Get all elements, active or inactive """
-
-    return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
+@userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
+def get_inactive_users():
+    """ All inactive """
+    return conn.execute(select(User).where(User.status == False)).fetchall()
 
 
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])

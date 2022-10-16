@@ -10,17 +10,22 @@ eventAPI = APIRouter()
 
 
 
-
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
-def get_all_active_events():
+def get_all_events():
     """ All active events """
     return conn.execute(select(Event).where(Event.status == True)).fetchall()  
 
 
-@eventAPI.get('/event/all', response_model=List[EventSchema], tags=["Events"])
-def get_all_events():
-    """ All elements, active or inactive """
-    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
+@eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
+def get_inactive_events():
+    """ All inactive """
+    return conn.execute(select(Event).where(Event.status == False)).fetchall() 
+
+
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    """ Get event by id """
+    return conn.execute(select(Event).where(Event.id == id)).first()
 
 
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
@@ -42,12 +47,6 @@ def create_event(this_event: EventSchema):
     # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
-
-@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
-def get_event(id: int):
-    """ Get event by id """
-
-    return conn.execute(select(Event).where(Event.id == id)).first()
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])

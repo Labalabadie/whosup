@@ -18,6 +18,30 @@ userAPI = APIRouter()
 #def get_feed():
 
 
+
+
+
+@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
+def get_all_active_users():
+    """ Get all active elements """
+
+    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
+
+
+@userAPI.get('/user/all', response_model=List[UserSchema], tags=["Users"])
+def get_all_users():
+    """ Get all elements, active or inactive """
+
+    return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
+
+
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
+def get_user(id: int):
+    """ Get user by id """
+
+    return conn.execute(select(User).where(User.id == id)).first()
+
+
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
 def create_user(this_user: UserSchema):
     """ Create user """
@@ -33,33 +57,6 @@ def create_user(this_user: UserSchema):
     return conn.execute(select(User).where(User.id == result.lastrowid)).first()
 
 
-@userAPI.get('/user/all', response_model=List[UserSchema], tags=["Users"])
-def get_all_users():
-    return conn.execute(select(User)).fetchall()  # consulta a toda la tabla
-
-@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
-def get_all_active_users():
-    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
-
-
-@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
-def get_user(id: int):
-    """ Get user by id, with Detail """
-
-    return conn.execute(select(User).where(User.id == id)).first()
-
-
-@userAPI.delete('/user/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
-def delete_user(id: int):
-    """ Delete user """
-
-    #conn.execute(delete(User).where(User.id == id)) # <-- not delete but change to status=0 
-    conn.execute(update(User).values(
-        status=False,
-        updated_at=datetime.now()).where(User.id == id))   # check THIS
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
-
-
 @userAPI.put('/user/{id}', response_model=UserSchema, tags=["Users"])
 def update_user(id: int, this_user: UserSchema):
     """ Update User """
@@ -72,3 +69,14 @@ def update_user(id: int, this_user: UserSchema):
                  updated_at=datetime.now()).where(User.id == id))
                  # updated_at ...
     return conn.execute(select(User).where(User.id == id)).first()
+
+
+@userAPI.delete('/user/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
+def delete_user(id: int):
+    """ Delete (deactivate) user """
+
+    #conn.execute(delete(User).where(User.id == id)) # <-- not delete but change to status=0 
+    conn.execute(update(User).values(
+        status=False,
+        updated_at=datetime.now()).where(User.id == id))   # check THIS
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

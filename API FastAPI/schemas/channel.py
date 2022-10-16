@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 class ChannelSchema(BaseModel):
     name: str = ""
-    admin: int = ""
+    channel_admin_id: int = ""
     description: str = ""

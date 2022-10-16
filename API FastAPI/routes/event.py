@@ -9,6 +9,20 @@ from sqlalchemy import insert, select, update, delete
 eventAPI = APIRouter()
 
 
+
+
+@eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
+def get_all_active_events():
+    """ All active events """
+    return conn.execute(select(Event).where(Event.status == True)).fetchall()  
+
+
+@eventAPI.get('/event/all', response_model=List[EventSchema], tags=["Events"])
+def get_all_events():
+    """ All elements, active or inactive """
+    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
+
+
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
     """ Create new event """
@@ -29,31 +43,11 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@eventAPI.get('/event/all', response_model=List[EventSchema], tags=["Events"])
-def get_all_events():
-    return conn.execute(select(Event)).fetchall()  # consulta a toda la tabla
-
-@eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
-def get_all_active_events():
-    return conn.execute(select(Event).where(Event.status == True)).fetchall()  # Todos los elementos activos
-
-
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
 def get_event(id: int):
     """ Get event by id """
 
     return conn.execute(select(Event).where(Event.id == id)).first()
-
-
-@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
-def delete_event(id: int): 
-    """ Delete event """
-
-    conn.execute(update(Event).values(
-        status=False,
-        updated_at=datetime.now()).where(Event.id == id))
-
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
@@ -69,6 +63,20 @@ def update_event(id: int, this_event: EventSchema):
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
                  participants=this_event.participants,
-                 config=this_event.config),
-                 updated_at=datetime.now()).where(Event.id == id) # UPDATE THIS !!!!
+                 config=this_event.config,
+                 group_id=this_event.group_id,
+                 channel_id=this_event.channel_id,
+                 updated_at=datetime.now()).where(Event.id == id)) # UPDATE THIS !!!!
+
     return conn.execute(select(Event).where(Event.id == id)).first()
+
+
+@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
+def delete_event(id: int): 
+    """ Delete (deactivate) event """
+
+    conn.execute(update(Event).values(
+        status=False,
+        updated_at=datetime.now()).where(Event.id == id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

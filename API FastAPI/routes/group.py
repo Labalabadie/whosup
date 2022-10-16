@@ -9,13 +9,16 @@ from sqlalchemy import insert, select, update, delete
 groupAPI = APIRouter()
 
 
-@groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])
+@groupAPI.get('/group/all', response_model=List[GroupSchema], tags=["Groups"])
 def get_all_groups():
+    """ All active events """
     return conn.execute(select(Group)).fetchall()  # consulta a toda la tabla
 
-@groupAPI.get('/group', response_model=List[GroupSchema], tags=["Group"])
+
+@groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])
 def get_all_active_group():
     return conn.execute(select(Group).where(Group.status == True)).fetchall() # TEST this
+
 
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])
 def create_group(this_group: GroupSchema):
@@ -38,17 +41,6 @@ def get_group(id: str):
     return conn.execute(select(Group).where(Group.id == id)).first()
 
 
-@groupAPI.delete('/group/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Groups"])
-def delete_group(id: str):
-    """ Delete group """
-
-    conn.execute(update(Group).values(
-        status=False,
-        updated_at=datetime.now()).where(Group.id == id))
-
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
-
-
 @groupAPI.put('/group/{id}', response_model=GroupSchema, tags=["Groups"])
 def update_group(id: str, this_group: GroupSchema):
     """ Update Group """
@@ -61,3 +53,14 @@ def update_group(id: str, this_group: GroupSchema):
                  ).where(Group.id == id))
 
     return conn.execute(select(Group).where(Group.id == id)).first()
+
+
+@groupAPI.delete('/group/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Groups"])
+def delete_group(id: str):
+    """ Delete (deactivate) group """
+
+    conn.execute(update(Group).values(
+        status=False,
+        updated_at=datetime.now()).where(Group.id == id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

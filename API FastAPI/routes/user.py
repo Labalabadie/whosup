@@ -54,7 +54,7 @@ def get_user_info(id: int):
         User.admin_channels, 
         User.admin_groups, 
         Event, Group, Channel
-        ).join(Event, Group, Channel)).where(User.id == id)all()
+        ).join(Event, Group, Channel)).where(User.id == id).all()
     #admin_channel_list = conn.execute(select(User.admin_channels, Event).join(Event)).all()
     #admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Event)).all()
     

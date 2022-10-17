@@ -20,7 +20,7 @@ class UserSchemaDetail(pyBaseModel):
     phone: str = ""
     created_at: datetime
     updated_at: datetime
-    hosted_events: List
-    attending_events: List
-    admin_channels: List
-    admin_groups: List
+    hosted_events: any
+    attending_events: any
+    admin_channels: any
+    admin_groups: any

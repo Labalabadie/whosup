@@ -39,7 +39,7 @@ def get_user(id: int):
 
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["User"])
-def get_event(id: int):
+def get_user_info(id: int):
     """ Get detailed info of the user  events """
     return conn.execute(select(User).where(User.id == id)).first()
 

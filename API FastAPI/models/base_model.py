@@ -14,8 +14,8 @@ class BaseModel(Base):
     def to_dict(self): 
         return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
 
-    def _get(self, id=NULL):
-        if id is not NULL:
+    def _get(self, id=None):
+        if id is not None:
             conn.execute(select(self.__class__).where(self.__class__.id == id))
         else:
             conn.execute(select(self.__class__))

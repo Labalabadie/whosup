@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
-from models.event import Event, AttendingEventRel
+from models.event import Event
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete

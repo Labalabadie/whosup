@@ -29,6 +29,7 @@ def get_all_users():
 @userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
 def get_inactive_users():
     """ All inactive """
+    print(User.hosted_events)
     return conn.execute(select(User).where(User.status == False)).fetchall()
 
 
@@ -38,9 +39,10 @@ def get_user(id: int):
     return conn.execute(select(User).where(User.id == id)).first()
 
 
-@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["User"])
+@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
+
     return conn.execute(select(User).where(User.id == id)).first()
 
 

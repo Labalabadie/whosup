@@ -9,8 +9,8 @@ from config.db import engine, meta
 
 class AttendingEventRel(Base):
     __tablename__ = "attending_event_rel"
-    user_id = Column("user_id", Integer, ForeignKey("user_data.id"))
-    event_id = Column("event_id", Integer, ForeignKey("event.id"))
+    user_id = Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True)
+    event_id = Column("event_id", Integer, ForeignKey("event.id"), primary_key=True)
 
 
 class Event(BaseModel): 

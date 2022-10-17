@@ -1,10 +1,14 @@
 from datetime import datetime
+
+from webbrowser import Grail
 from config.db import conn
 from cryptography.fernet import Fernet
 from typing import List
 from fastapi import APIRouter, Response, status
 from models.user import User, attending_event_rel
 from models.event import Event
+from models.group import Group
+from models.channel import Channel
 from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete, join
@@ -43,8 +47,18 @@ def get_user(id: int):
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
-    print (conn.execute(select(User.hosted_events, Event).join(Event)).all())
-    return conn.execute(select(User).where(User.id == id)).first()
+    public_data = conn.execute(select(User).where(User.id == id)).first()
+    print(public_data, type(public_data))
+    private_data = conn.execute(select(
+        User.hosted_events, 
+        User.admin_channels, 
+        User.admin_groups, 
+        Event, Group, Channel
+        ).join(Event, Group, Channel)).where(User.id == id)all()
+    #admin_channel_list = conn.execute(select(User.admin_channels, Event).join(Event)).all()
+    #admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Event)).all()
+    
+    return public_data + private_data 
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

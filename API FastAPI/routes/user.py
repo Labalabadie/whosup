@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from flask import jsonify
 from webbrowser import Grail
 from config.db import conn
 from cryptography.fernet import Fernet
@@ -49,23 +49,12 @@ def get_user_info(id: int):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    print("PUBLIC DATA:")
-    print(public_data)
-    print(type(public_data))
-
     hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
-    admin_channel_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
+    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
-    
-    private_data = {"hosted_events": hosted_events,
-                    "admin_groups": admin_groups_list,
-                    "admin_channels": admin_channel_list
-    }
 
-    print("PRIVATE DATA:")
-    print(private_data)
-    print(type(private_data))
-    return public_data + private_data 
+    print (User.to_dict)
+    return jsonify(User.to_dict)
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

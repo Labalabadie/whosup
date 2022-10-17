@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
-from models.event import Event
+from models.event import Event, attending_event_rel
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
@@ -40,7 +40,6 @@ def create_event(this_event: EventSchema):
                  "description": this_event.description,
                  "icon": this_event.icon,
                  "max_people": this_event.max_people, 
-                 "participants": this_event.participants,
                  "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario
     result = conn.execute(insert(Event).values(new_event))

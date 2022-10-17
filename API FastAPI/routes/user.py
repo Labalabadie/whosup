@@ -1,9 +1,12 @@
 from datetime import datetime
+
+from API FastAPI.models.event import AttendingEventRel
 from config.db import conn
 from cryptography.fernet import Fernet
 from typing import List
 from fastapi import APIRouter, Response, status
 from models.user import User
+from models.event import Event, attending_event_rel
 from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
@@ -29,20 +32,20 @@ def get_all_users():
 @userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
 def get_inactive_users():
     """ All inactive """
-    print(User.hosted_events)
     return conn.execute(select(User).where(User.status == False)).fetchall()
 
 
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
+
     return conn.execute(select(User).where(User.id == id)).first()
 
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
-
+    print (conn.execute(Select(User, Event).join(Event).join(AttendingEventRel).filter(User.id == id)).all())
     return conn.execute(select(User).where(User.id == id)).first()
 
 

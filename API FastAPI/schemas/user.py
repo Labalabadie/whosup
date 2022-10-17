@@ -1,4 +1,4 @@
-from typing import List
+from typing import any
 from datetime import datetime
 from pydantic import BaseModel as pyBaseModel
 

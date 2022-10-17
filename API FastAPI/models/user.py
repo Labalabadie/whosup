@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from datetime import datetime
 from models.base_model import BaseModel
-from models.event import AttendingEventRel
+from models.event import attending_event_rel
 
 class User(BaseModel):
     __tablename__ = "user_data"

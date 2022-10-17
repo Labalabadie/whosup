@@ -7,9 +7,12 @@ from models.base_model import BaseModel, Base
 from config.db import engine, meta
 
 
-attending_event_rel = Table('attending_event_rel',
-Column("user_id", Integer, ForeignKey("user_data.id")),
-Column("event_id", Integer, ForeignKey("event.id")))
+attending_event_rel = Table(
+    'attending_event_rel',
+    Base.metadata,
+    Column("user_id", Integer, ForeignKey("user_data.id")),
+    Column("event_id", Integer, ForeignKey("event.id"))
+)
 
 
 class Event(BaseModel): 

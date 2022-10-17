@@ -4,13 +4,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from datetime import datetime
 from models.base_model import BaseModel, Base
+from models.user import attending_event_rel
 from config.db import engine, meta
-
-
-class AttendingEventRel(Base):
-    __tablename__ = "attending_event_rel"
-    user_id = Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True)
-    event_id = Column("event_id", Integer, ForeignKey("event.id"), primary_key=True)
 
 
 class Event(BaseModel): 
@@ -25,7 +20,7 @@ class Event(BaseModel):
     description = Column(String(255))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
-    participants = relationship("User", secondary=AttendingEventRel, back_populates='attending_events') ## related con user.id
+    participants = relationship("User", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)

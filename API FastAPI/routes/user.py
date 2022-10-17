@@ -48,7 +48,11 @@ def get_user(id: int):
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
-    print("PUBLIC DATA:" + public_data, type(public_data))
+
+    print("PUBLIC DATA:")
+    print(public_data)
+    print(type(public_data))
+
     hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
     admin_channel_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
@@ -58,7 +62,9 @@ def get_user_info(id: int):
                     "admin_channels": admin_channel_list
     }
 
-    print("PRIVATE DATA:" + private_data, type(private_data))
+    print("PRIVATE DATA:")
+    print(private_data)
+    print(type(private_data))
     return public_data + private_data 
 
 

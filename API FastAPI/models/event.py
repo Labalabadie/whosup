@@ -1,5 +1,5 @@
 from email.policy import default
-from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from datetime import datetime

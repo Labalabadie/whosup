@@ -7,7 +7,7 @@ from models.user import User, attending_event_rel
 from models.event import Event
 from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
-from sqlalchemy import insert, select, update, delete
+from sqlalchemy import insert, select, update, delete, join
 
 key = Fernet.generate_key()
 f = Fernet(key)
@@ -43,7 +43,7 @@ def get_user(id: int):
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
-    print (conn.execute(select(User.hosted_events)))
+    print (conn.execute(select(User.hosted_events, Event).join(Event)).all())
     return conn.execute(select(User).where(User.id == id)).first()
 
 

@@ -11,12 +11,14 @@ class BaseModel(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    def to_dict(self): 
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
+    @staticmethod
+    def to_dict(cls): 
+        return {c.name: getattr(cls, c.name) for c in cls.__table__.columns} 
     ##
 
-    def _get(self, id=None):
+    @staticmethod
+    def _get(cls, id=None):
         if id is not None:
-            conn.execute(select(self.__class__).where(self.__class__.id == id))
+            conn.execute(select(cls).where(cls.id == id))
         else:
-            conn.execute(select(self.__class__))
+            conn.execute(select(cls))

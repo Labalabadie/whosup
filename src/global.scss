@@ -1,0 +1,447 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+@font-face {   
+    font-family: 'Poppins';    //This is what we are going to call
+    src: url('./assets/fonts/Poppins-Regular.ttf');
+}
+@font-face {   
+	font-family: 'Quicksand';    //This is what we are going to call
+	src: url('./assets/fonts/Quicksand-Regular.ttf');
+}
+
+* {
+	box-sizing: border-box;
+	font-family: "Poppins", sans-serif;
+}
+html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+ion-content {
+	font-size: 14px;
+	font-family: "Poppins", sans-serif;
+	color: rgb(33, 33, 33, 1);
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+h1, h3, h4, h5 {
+	text-align: left;
+	align-self: center;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	margin-right: auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+h1 {
+	color: rgba(255, 255, 255, 1);
+	font-size: 24px;
+	text-align: left;
+	font-family: "Quicksand", sans-serif;
+	font-weight: 700;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+h3 {
+	font-size: 16px;
+	font-weight: 500;
+}
+h4 {
+	font-size: 14px;
+	font-weight: 400;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 2px;
+}
+h5 {
+	font-weight: 500;
+	font-size: 12px;
+}
+
+
+/* HEADER / TOP BAR */
+
+ion-header {
+	display: flex;
+	position: relative;
+	top: 0;
+	left: 0;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 75px;
+	width: 100%;
+	background-color: rgba(12, 179, 190, 1);
+	box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.35);
+	align-self: stretch;
+	align-items: center;
+	flex-grow: 0;
+	padding: 15px;
+	gap: 10px;
+}
+.trailing-icons {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 20px;
+}
+.icon-for-header {
+	color: white;
+	font-size: 30px;
+	--ionicon-stroke-width: 40px;
+	display: flex;
+	align-items: center;
+	align-content: center;
+}
+ion-footer .icon-for-header {
+	font-size: 36px;
+}
+button {
+	background-color: transparent;
+}
+
+
+main {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: flex-start;
+	background-color: rgba(245, 245, 245, 1);
+	align-items: flex-start;
+	width: 100%;
+	min-height: 100%;
+	align-self: stretch;
+	flex-grow: 0;
+	margin-bottom: auto;
+	flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+	.main {
+		width: auto;
+		align-self: stretch;
+		flex-grow: 1;
+	}
+}
+
+/* ICONS */
+
+.notification-icon {
+	min-width: 24px;
+	min-height: 30px;
+	background-image: url("../src/assets/images/notification-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px;
+	border: none;
+	cursor: pointer;
+}
+ion-header div .search-icon {
+	min-width: 24px;
+	min-height: 30px;
+	background-size: 22px;
+}
+.emoji {
+	display: flex;
+	position: relative;
+	min-width: 10px;
+	min-height: 10px;
+	background-image: url("../src/assets/images/emoji.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	max-width: 20px;
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: -15px;
+}
+@media (max-width: 640px) {
+	.emoji {
+		margin-bottom: auto;
+		margin-right: auto;
+		height: auto;
+		align-self: center;
+	}
+}
+
+/* EVENT INSTANCE BOX */
+
+.event-instance {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	width: auto;
+	align-self: stretch;
+	padding: 10px;
+	gap: 10px;
+}
+@media (max-width: 640px) {
+	.event-instance {
+		width: auto;
+		flex-grow: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 5px;
+		align-self: stretch;
+	}
+}
+.event-title {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	width: auto;
+	flex-grow: 1;
+	margin: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+@media (max-width: 640px) {
+	.event-title {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: -5px;
+		width: auto;
+		flex-grow: 1;
+	}
+}
+.event-photo {
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.event-pic {
+	display: flex;
+	position: relative;
+	min-width: 60px;
+	min-height: 60px;
+	background-image: url("../src/assets/images/event-profile-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	max-width: 60px;
+	border: none;
+	cursor: pointer;
+	padding: 10px;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+@media (max-width: 640px) {
+	.event-pic {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: auto;
+		height: auto;
+		align-self: center;
+	}
+}
+.event-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	align-items: center;
+	align-content: center;
+}
+@media (max-width: 640px) {
+	.event-details {
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+.calendar-icon {
+	display: flex;
+	position: relative;
+	min-width: 40px;
+	min-height: 40px;
+	background-image: url("../src/assets/images/calendar-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 100%;
+	max-width: 50px;
+	border: none;
+}
+.sub-detail {
+	display: flex;
+	flex-direction: row;
+	max-width: 100%;
+	justify-content: space-between;
+	align-self: stretch;
+	width: auto;
+	align-items: flex-start;
+	align-content: center;
+	margin-top: auto;
+	gap: 4px;
+}
+.pin-icon {
+	display: flex;
+	position: relative;
+	min-width: 8px;
+	min-height: 14px;
+	background-image: url("../src/assets/images/pin-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 8px;
+	border: none;
+}
+.computer-icon {
+	display: flex;
+	position: relative;
+	min-width: 16px;
+	min-height: 14px;
+	background-image: url("../src/assets/images/computer-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 16px;
+	border: none;
+}
+.participant-count {
+	font-size: 11px;
+	margin: 0;
+}
+
+
+/* FOOTER / BOTTOM BAR */
+
+ion-footer {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	flex-direction: row;
+	justify-content: center;
+	align-self: stretch;
+	width: 100%;
+	height: 75px;
+	padding-top: 15px;
+	padding-right: 30px;
+	padding-bottom: 15px;
+	padding-left: 30px;
+	background-color: rgba(12, 179, 190, 1);
+	gap: 30px;
+}
+ul {
+	list-style-type: none;
+	width: 100%;
+	height: auto;
+	padding: 0;
+	margin: 0;
+}
+ion-footer ul li {
+	padding: 10px;
+}
+.active {
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 30px;
+}
+.menu {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: auto;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	gap: 10px;
+}
+@media (max-width: 640px) {
+	.menu {
+		width: auto;
+		flex-grow: 1;
+		height: auto;
+	}
+}
+.home-icon {
+	display: flex;
+	min-width: 30px;
+	min-height: 30px;
+	background-image: url("../src/assets/images/home-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	border: none;
+	cursor: pointer;
+}
+.search-icon {
+	display: flex;
+	min-width: 30px;
+	min-height: 30px;
+	background-image: url("../src/assets/images/search-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	border: none;
+	cursor: pointer;
+}
+.new-event-icon {
+	display: flex;
+	min-width: 35px;
+	min-height: 35px;
+	background-image: url("../src/assets/images/new-event-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	border: none;
+	cursor: pointer;
+}
+.map-icon {
+	display: flex;
+	min-width: 30px;
+	min-height: 30px;
+	background-image: url("../src/assets/images/map-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	border: none;
+	cursor: pointer;
+}
+.person-icon {
+	display: flex;
+	min-width: 30px;
+	min-height: 30px;
+	background-image: url("../src/assets/images/person-icon.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	border: none;
+	cursor: pointer;
+}

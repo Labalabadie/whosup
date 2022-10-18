@@ -1,0 +1,104 @@
+<!-- TOP BAR -->
+<ion-header>
+	<h1>Who’sUp</h1>
+	<div class="trailing-icons">
+		<ion-icon name="search-outline" class="icon-for-header"></ion-icon>
+		<ion-icon name="notifications-outline" class="icon-for-header"></ion-icon>
+	</div>
+</ion-header>
+
+<!-- MAIN -->
+<ion-content>
+<!-- <ion-searchbar animated="true" placeholder="Explore" style="text-align: left"></ion-searchbar> -->
+<main>
+	<div class="my-events">
+		<h4>My events</h4>
+		<!-- link to user events -->
+		<a class="link" [routerLink]="['/user/']">Show all<div class="arrowlink-icon"></div></a>
+	</div>
+
+<!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
+	<div class="banner">
+		<!-- LITTLE EVENT PREVIEW -->
+		<div class="little-user-event">
+			<div class="event-photo">
+				<div class="event-pic"></div>
+				<div class="emoji"></div>
+			</div>
+			<div class="event-details">
+				<div class="calendar-icon"></div>
+				<div class="sub-detail">
+					<div class="pin-icon"></div>
+					<p class="participant-count">50/100</p>
+				</div>
+			</div>
+		</div>
+		<!-- FIN BANNER -->
+	</div>
+
+	<h4>Open events</h4>
+<!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
+<ion-list>
+	<item *ngFor="let event of events">	
+		<div class="event-instance">
+			<div class="event-photo">
+				<div class="event-pic"></div>
+				<div class="emoji"></div>
+			</div>
+			<div class="event-title">
+				<!-- EVENT NAME -->
+				<h3>{{event.name}}</h3>
+				<!-- EVENT DESCRIPTION -->
+				<h5>{{event.description}}</h5>
+			</div>
+			<div class="event-details">
+				<!-- EVENT DATE -->
+				<div class="calendar-icon">{{event.event_datetime}}</div>
+				<div class="sub-detail">
+					<!-- LOCATION OR ONLINE -->
+					<!-- if config.online = true, show pin-icon, else, show computer-icon -->
+					<div class="pin-icon">{{event.location}}</div>
+					<!-- PARTICIPANT COUNT -->
+					<div class="participant-count">6/{{event.max_people}}</div>
+				</div>
+			</div>
+		</div>
+	</item>
+</ion-list>
+
+<!--<ion-list>
+	<ion-item *ngFor="let event of events">
+		<ion-label>
+			<p>{{event.name}}</p>
+			<p>{{event.event_datetime}}
+			<p>{{event.location}}</p>
+			<p>{{event.max_people}}</p>
+			<p>{{event.description}}</p>
+		</ion-label>
+	
+	<div class="item-note" item-end>
+		<button ion-button clear (click)="removeEvent(event)">
+			<ion-icon name="trash" style="zoom:1.5"></ion-icon>
+		</button>
+	</div>
+	<div class="item-note" item-end>
+		<button ion-button clear [routerLink]="['/update/', event.id]">
+			<ion-icon name="create" style="zoom:1.5"></ion-icon>
+		</button>
+	</div>
+</ion-item>
+</ion-list>-->
+
+</main>
+</ion-content>
+
+<!-- BOTTOM BAR -->
+<ion-footer>
+	<ul class="menu">
+		<li class="active"><a class="home-icon" [routerLink]="['/home/']"></a></li>
+		<li><a [routerLink]="['/explore/']"><ion-icon name="search-outline" class="icon-for-header"></ion-icon></a></li>
+		<li><a class="new-event-icon" [routerLink]="['/newevent/']"></a></li>
+		<li><a class="map-icon" [routerLink]="['/map/']"></a></li>
+		<li><a class="person-icon" [routerLink]="['/user/']"></a></li>
+	</ul>
+</ion-footer>

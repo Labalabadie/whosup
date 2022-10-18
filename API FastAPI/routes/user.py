@@ -50,15 +50,14 @@ def get_user(id: int):
 @userAPI.get('/user/{id}/info', response_model=UserSchema, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
-    public_data = conn.execute(select(User).where(User.id == id)).first()
+    public_data = conn.execute(select(User).where(User.id == id)).all()
     
 
     hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    print(object_as_dict(public_data))
-    print(public_data.__dict__)
+    print(object_as_dict(public_data[0]))
     return public_data
 
 

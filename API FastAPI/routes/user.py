@@ -3,7 +3,8 @@ from webbrowser import Grail
 from config.db import conn
 from cryptography.fernet import Fernet
 from typing import List
-from fastapi import APIRouter, Response, status, jsonable_encoder
+from fastapi import APIRouter, Response, status, 
+from fastapi.encoders import jsonable_encoder
 from models.user import User, attending_event_rel
 from models.event import Event
 from models.group import Group

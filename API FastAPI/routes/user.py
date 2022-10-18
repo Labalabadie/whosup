@@ -65,7 +65,8 @@ def get_user_info(id: int):
 
     my_dic = {}
     for key in public_data.keys():
-            my_dic.__setattr__(key, public_data.__getattribute__(key))
+            my_dic[key] = public_data.__getattribute__(key))
+    my_dic[hosted_events] = hosted_events
 
     print("hostedevent:", end="")
     print(hosted_events)
@@ -73,7 +74,8 @@ def get_user_info(id: int):
     print(public_data)
     print("My Dic:", end="")
     print(my_dic)
-    return JSONResponse (jsonable_encoder(my_dic))
+    
+    return JSONResponse(jsonable_encoder(my_dic))
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
 def create_user(this_user: UserSchema):

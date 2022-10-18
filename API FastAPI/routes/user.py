@@ -62,8 +62,9 @@ def get_user_info(id: int):
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
     my_dic = {}
-    for key in :
+    for key in User.attrs():
             my_dic[key] = public_data.__getattribute__(key)
+
     my_dic["hosted_events"] = hosted_events_list
     my_dic["admin_channels"] = admin_channels_list
     my_dic["admin_groups"] = admin_groups_list

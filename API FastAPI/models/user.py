@@ -28,3 +28,26 @@ class User(BaseModel):
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
 
+    @classmethod
+    def attrs(cls, str=None):
+        """ Returns a list of or attributes for the given class """
+        base_attrs = cls.super().attrs()
+
+        public_attrs = [
+                "name",
+                "email",
+                "phone",
+                "status"]
+
+        priv_attrs = [
+                "hosted_events",
+                "attending_events",
+                "admin_groups",
+                "admin_channels"]
+        
+        sys_excl = ["password"]
+
+        if str == None:
+            return base_attrs + public_attrs
+        elif str == "priv":
+            return base_attrs + public_attrs + priv_attrs

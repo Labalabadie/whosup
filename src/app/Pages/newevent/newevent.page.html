@@ -14,12 +14,12 @@
 			<div class="event-pic"></div>
 			<div class="emoji"></div>
 		</div>
-			<!--<input type="text" name="event_name" [(ngModel)]="event_name" placeholder="Event name" class="textfield" required>-->
+			<!--<input type="text" name="event.name" [(ngModel)]="event.name" placeholder="Event name" class="textfield" required>-->
 				<div class="edit-icon"></div>
 	</div>
 
 <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-<input formControlName="event_name" type="text" placeholder="Event name" class="field" required>
+<input formControlName="name" type="text" placeholder="Event name" class="field" required>
 
 	<ion-input formControlName="event_datetime" type="text" placeholder="Datetime" class="field" required><ion-icon name="calendar-outline"></ion-icon><ion-icon name="time-outline"></ion-icon></ion-input>
 

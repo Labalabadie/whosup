@@ -52,7 +52,7 @@ def get_user(id: int):
 
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
-def get_user_info(id: int):
+def get_user_info(id: int, this_user: UserSchemaDetail):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
     
@@ -61,13 +61,18 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
+    this_user.hosted_events = 
+
+    for key in public_data.keys():
+        this_user.__setattr__(public_data.__getattribute__(key))
+
 
     ret_dict = obj_to_dict(public_data)
     ret_dict['created_at'] = ret_dict['created_at'].isoformat()
     ret_dict['updated_at'] = ret_dict['updated_at'].isoformat()
-    print(ret_dict)
-    print(json.dumps(ret_dict))
-    return json.dumps(ret_dict)
+
+    print(this_user)
+    return this_user
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

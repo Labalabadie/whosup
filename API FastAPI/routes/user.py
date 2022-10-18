@@ -55,7 +55,7 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    print(public_data.__table__.c.keys())
+    print(public_data.to_dict())
     return public_data
 
 

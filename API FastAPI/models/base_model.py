@@ -12,7 +12,9 @@ class BaseModel(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 
-
+    def to_dict(self):
+        return {c.key: getattr(self, c.key)
+                for c in inspect(self).mapper.column_attrs}
 """ def to_dict(self): 
         return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
     ##

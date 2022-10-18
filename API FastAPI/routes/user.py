@@ -64,7 +64,7 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
     this_user.hosted_events = [1, 2]
 
     for key in public_data.keys():
-        if key == "created_at" or key == 'updated_at'
+        if key == "created_at" or key == 'updated_at':
             this_user.__setattr__(public_data.__getattribute__(key).isoformat())
         else:
             this_user.__setattr__(public_data.__getattribute__(key))

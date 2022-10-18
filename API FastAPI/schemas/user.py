@@ -18,7 +18,7 @@ class UserSchemaDetail(pyBaseModel):
     email: str = ""
     password: str = ""
     phone: str = ""
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime | str
+    updated_at: datetime | str
     hosted_events: Any
 

@@ -53,26 +53,21 @@ def get_user(id: int):
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int, this_user: UserSchemaDetail):
-    """ Get detailed info of the user  events """
+    """ Get detailed info of the user """
+
     public_data = conn.execute(select(User).where(User.id == id)).first()
-    print("this_user")
-    print(this_user)
 
-    hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
-    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
-    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
+    hosted_events = conn.execute(select(User, User.hosted_events, Event).join(Event).where(User.id == id)).all()
 
-    this_user.hosted_events = [1, 2]
+    """admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
+    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()"""
 
-    for key in public_data.keys():
-        if key == "created_at" or key == 'updated_at':
-            this_user.__setattr__(public_data.__getattribute__(key).isoformat())
-        else:
+    """for key in public_data.keys():
             this_user.__setattr__(public_data.__getattribute__(key))
-
-    print("this_user")
-    return public_data
-
+    return public_data"""
+    
+    print hosted_events
+    return hosted_events
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
 def create_user(this_user: UserSchema):

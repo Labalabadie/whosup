@@ -24,8 +24,12 @@ userAPI = APIRouter()
 #def get_feed():
 
 def obj_to_dict(obj):
-    return {ret_dict[key]: obj.__getattribute__(key)
-            for key in obj.keys()}
+
+    ret_dict = {}
+    
+    for key in obj.keys()
+        ret_dict[key] = obj.__getattribute__(key)
+            
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])

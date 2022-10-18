@@ -50,10 +50,10 @@ def create_event(this_event: EventSchema):
 
 
 @eventAPI.post('/event/{id}/join', tags=["Events"])
-def join_event(event_id: int, user_id: int):
+def join_event(user_id: int):
     """ Join event by ID """
     return conn.execute(insert(attending_event_rel)
-                        .values(user_id=user_id, event_id=event_id))
+                        .values(user_id=user_id, event_id=id))
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)

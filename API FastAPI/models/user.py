@@ -49,5 +49,7 @@ class User(BaseModel):
 
         if str == None:
             return base_attrs + public_attrs
-        elif str == "priv":
+        elif str == "all":
             return base_attrs + public_attrs + priv_attrs
+        elif str == "rel":
+            return priv_attrs

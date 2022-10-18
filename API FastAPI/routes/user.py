@@ -63,7 +63,12 @@ def get_user_info(id: int):
     for key in User.attrs():
             my_dic[key] = public_data.__getattribute__(key)
 
-    my_dic["hosted_events"] = hosted_events_list
+    my_dic["hosted_events"] = []
+
+    for row in hosted_events_list:
+        for key in Event.attrs():
+            my_dic["hosted_events"].append(row[key])
+
     my_dic["admin_channels"] = admin_channels_list
     my_dic["admin_groups"] = admin_groups_list
 

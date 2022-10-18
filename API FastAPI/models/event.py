@@ -1,4 +1,5 @@
 from email.policy import default
+from operator import iconcat
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
@@ -27,3 +28,32 @@ class Event(BaseModel):
 
     config = Column(JSON)
     status = Column(Boolean, default=True)
+
+    @classmethod
+    def attrs(cls, str=None):
+        """ Returns a list of or attributes for the given class """
+        base_attrs = BaseModel.attrs()
+
+        public_attrs = [
+                "name",
+                "event_host_id",
+                "event_host",
+                "event_datetime",
+                "location",
+                "description",
+                "icon",
+                "max_people",
+                "group_id",
+                "channel_id",
+                "config",
+                "status"]
+
+        rel_attrs = [
+                "participants"]
+
+        if str == None:
+            return base_attrs + public_attrs
+        elif str == "all":
+            return base_attrs + public_attrs + rel_attrs
+        elif str == "rel":
+            return rel_attrs

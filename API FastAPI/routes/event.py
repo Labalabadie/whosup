@@ -2,6 +2,7 @@ from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
 from models.event import Event
+from models.user import attending_event_rel
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
@@ -48,8 +49,14 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
+@eventAPI.post('/event/{id}/{user_id}/join', tags=["Events"])
+def get_event(event_id: int, user_id: int):
+    """ Join event by ID """
+    return conn.execute(insert(attending_event_rel)
+                        .values(user_id=user_id, event_id=event_id))
 
-@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
+
+@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)
 def update_event(id: int, this_event: EventSchema):
     """ Update event """
     
@@ -61,10 +68,7 @@ def update_event(id: int, this_event: EventSchema):
                  description=this_event.description,
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
-                 participants=this_event.participants,
                  config=this_event.config,
-                 group_id=this_event.group_id,
-                 channel_id=this_event.channel_id,
                  updated_at=datetime.now()).where(Event.id == id)) # UPDATE THIS !!!!
 
     return conn.execute(select(Event).where(Event.id == id)).first()

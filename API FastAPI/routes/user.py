@@ -56,6 +56,7 @@ def get_user_info(id: int):
 
     user = User()
     print(user.to_dict())
+    print(user._get())
     return json.dumps(user._get())
 
 

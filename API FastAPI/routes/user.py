@@ -83,6 +83,12 @@ def get_user_info(id: int):
         for key in Event.attrs():
             my_dic["hosted_events"][i][key] = getattr(row, key)
 
+    my_dic["attending_events"] = []
+    for i, row in enumerate(attending_events_list):
+        my_dic["attending_events"].append({})
+        for key in Event.attrs():
+            my_dic["attending_events"][i][key] = getattr(row, key)
+
     print(attending_events_list)
     return JSONResponse(jsonable_encoder(my_dic))
 

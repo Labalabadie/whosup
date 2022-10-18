@@ -52,7 +52,7 @@ def get_user(id: int):
 
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
-def get_user_info(id: int, this_user: UserSchemaDetail):
+def get_user_info(id: int):
     """ Get detailed info of the user """
 
     public_data = conn.execute(select(User).where(User.id == id)).first()

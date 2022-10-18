@@ -37,7 +37,6 @@ class Event(BaseModel):
         public_attrs = [
                 "name",
                 "event_host_id",
-                "event_host",
                 "event_datetime",
                 "location",
                 "description",

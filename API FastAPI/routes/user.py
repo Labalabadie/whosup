@@ -65,8 +65,8 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
     """for key in public_data.keys():
             this_user.__setattr__(public_data.__getattribute__(key))
     return public_data"""
-    
-    print hosted_events
+
+    print(hosted_events)
     return hosted_events
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

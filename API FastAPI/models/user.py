@@ -8,7 +8,6 @@ attending_event_rel = Table(
     Base.metadata,
     Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True),
     Column("event_id", Integer, ForeignKey("event.id"), primary_key=True),
-    extend_existing=True
 )
 
 class User(BaseModel):

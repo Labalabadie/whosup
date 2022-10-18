@@ -55,25 +55,38 @@ def get_user_info(id: int):
     """ Get detailed info of the user """
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    hosted_events_list = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
+    # One to many relationship join query
+    hosted_events_list = conn.execute(
+        select(User.hosted_events, Event)
+        .join(Event)
+        .where(User.id == id)).all()
+
+    # Many to many relationship
+    attending_events_list = conn.execute(
+        select(User.attending_events, attending_event_rel, Event)
+        .join(attending_event_rel)
+        .join(Event)
+        .where(User.id == id)).all()
+
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
+
 
     my_dic = {}
     for key in User.attrs():
             my_dic[key] = public_data.__getattribute__(key)
 
+    """ this loops parses only needed attrs from the relational query response """
     my_dic["hosted_events"] = []
-
     for i, row in enumerate(hosted_events_list):
         my_dic["hosted_events"].append({})
         for key in Event.attrs():
             my_dic["hosted_events"][i][key] = getattr(row, key)
 
-    my_dic["admin_channels"] = admin_channels_list
-    my_dic["admin_groups"] = admin_groups_list
-
+    print(attending_events_list)
     return JSONResponse(jsonable_encoder(my_dic))
+
+
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):

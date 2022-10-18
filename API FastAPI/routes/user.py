@@ -11,6 +11,7 @@ from models.event import Event
 from models.group import Group
 from models.channel import Channel
 from schemas.user import UserSchema, UserSchemaDetail
+from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete, join, inspect
 import json
@@ -25,7 +26,6 @@ userAPI = APIRouter()
 #def get_feed():
 
 def obj_to_dict(obj):
-
     ret_dict = {}
     for key in obj.keys():
         ret_dict[key] = obj.__getattribute__(key)
@@ -58,22 +58,15 @@ def get_user_info(id: int):
 
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
+    hosted_events = conn.execute(select(User, User.hosted_events, Event).join(Event).where(User.id == id)).all()
 
     """admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()"""
 
     my_dic = {}
-    for key in public_data.keys():
+    for key in UserSchemaDetail.keys():
             my_dic[key] = public_data.__getattribute__(key)
     my_dic["hosted_events"] = hosted_events
-
-    print("hostedevent:", end="")
-    print(hosted_events)
-    print("Public Data:", end="")
-    print(public_data)
-    print("My Dic:", end="")
-    print(my_dic)
 
     return JSONResponse(jsonable_encoder(my_dic))
 

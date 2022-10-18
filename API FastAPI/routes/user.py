@@ -3,7 +3,7 @@ from webbrowser import Grail
 from config.db import conn
 from cryptography.fernet import Fernet
 from typing import List
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status, jsonable_encoder
 from models.user import User, attending_event_rel
 from models.event import Event
 from models.group import Group
@@ -53,11 +53,11 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
+    user = User()
 
-
-    print(User.to_dict())
-    print(User._get())
-    return json.dumps(User._get())
+    print(user.to_dict())
+    print(user._get())
+    return json.dumps(user._get())
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

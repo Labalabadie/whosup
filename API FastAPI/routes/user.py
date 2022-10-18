@@ -74,10 +74,9 @@ def get_user_info(id: int):
     print(hosted_events_list)
     # Many to many relationship
     attending_events_list = conn.execute(
-        select(User.attending_events, attending_event_rel, Event)
-        .join(attending_event_rel, User.id == attending_event_rel.c.user_id)
+        select(attending_event_rel, Event)
         .join(Event, attending_event_rel.c.event_id == Event.id)
-        .where(User.id == id)).all()
+        .where(attending_event_rel.c.user_id == id)).all()
 
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()

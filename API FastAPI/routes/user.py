@@ -56,7 +56,7 @@ def get_user_info(id: int):
 
     user = User()
     print(user.to_dict())
-    return json.dumps(User._get())
+    return json.dumps(user._get())
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

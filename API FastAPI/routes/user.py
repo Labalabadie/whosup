@@ -71,7 +71,7 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
 
 
     print("this_user")
-    return this_user
+    return public_data
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

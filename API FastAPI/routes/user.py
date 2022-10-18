@@ -64,8 +64,8 @@ def get_user_info(id: int):
     # Many to many relationship
     attending_events_list = conn.execute(
         select(User.attending_events, attending_event_rel, Event)
-        .join(attending_event_rel)
-        .join(Event)
+        .join(attending_event_rel, User.id == attending_event_rel.user_id)
+        .join(Event, attending_event_rel.event_id == Event.id)
         .where(User.id == id)).all()
 
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()

@@ -61,15 +61,14 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    this_user.hosted_events = 
+    this_user.hosted_events = [1, 2]
 
     for key in public_data.keys():
-        this_user.__setattr__(public_data.__getattribute__(key))
+        if key == "created_at" or key == 'updated_at'
+            this_user.__setattr__(public_data.__getattribute__(key).isoformat())
+        else:
+            this_user.__setattr__(public_data.__getattribute__(key))
 
-
-    ret_dict = obj_to_dict(public_data)
-    ret_dict['created_at'] = ret_dict['created_at'].isoformat()
-    ret_dict['updated_at'] = ret_dict['updated_at'].isoformat()
 
     print(this_user)
     return this_user

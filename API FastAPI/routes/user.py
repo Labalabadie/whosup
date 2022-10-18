@@ -30,7 +30,6 @@ def obj_to_dict(obj):
     for key in obj.keys():
         ret_dict[key] = obj.__getattribute__(key)
     return ret_dict
-            
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
@@ -48,18 +47,17 @@ def get_inactive_users():
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
-
     return conn.execute(select(User).where(User.id == id)).first()
 
 
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user """
-
     public_data = conn.execute(select(User).where(User.id == id)).first()
-    hosted_events_list = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
-    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
-    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
+
+    hosted_events_list = conn.execute(select(User.hosted_events, Event.id).join(Event).where(User.id == id)).all()
+    admin_channels_list = conn.execute(select(User.admin_channels, Channel.id).join(Channel).where(User.id == id)).all()
+    admin_groups_list = conn.execute(select(User.admin_groups, Group.id).join(Group).where(User.id == id)).all()
 
     my_dic = {}
     for key in User.attrs():
@@ -74,7 +72,6 @@ def get_user_info(id: int):
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):
     """ Create user """
-    
     new_user = {"name": this_user.name, 
                 "email": this_user.email,
                 "phone": this_user.phone}

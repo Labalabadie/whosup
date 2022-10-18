@@ -23,7 +23,9 @@ userAPI = APIRouter()
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
 #def get_feed():
 
-
+def object_as_dict(obj):
+    return {c.key: getattr(obj, c.key)
+            for c in inspect(obj).mapper.column_attrs}
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
@@ -55,7 +57,8 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    print(public_data.to_dict())
+    print(object_as_dict(public_data))
+    print(public_data.__dict__)
     return public_data
 
 

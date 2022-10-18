@@ -68,7 +68,7 @@ def get_user_info(id: int):
     for i, row in enumerate(hosted_events_list):
         my_dic["hosted_events"].append({})
         for key in Event.attrs():
-            my_dic["hosted_events"][i][key] = row.getattr(key)
+            my_dic["hosted_events"][i][key] = getattr(row, key)
 
     my_dic["admin_channels"] = admin_channels_list
     my_dic["admin_groups"] = admin_groups_list

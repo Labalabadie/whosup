@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
 from models.event import Event
-from models.user import attending_event_rel
+from models.user import User, attending_event_rel
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
@@ -52,8 +52,11 @@ def create_event(this_event: EventSchema):
 @eventAPI.post('/event/{event_id}/join', tags=["Events"])
 def join_event(event_id: int, user_id: int):
     """ Join event by ID """
-    return conn.execute(insert(attending_event_rel)
-                        .values(user_id=user_id, event_id=event_id))
+    conn.execute(insert(attending_event_rel)
+                 .values(user_id=user_id, event_id=event_id)
+                 .prefix_with("IGNORE", dialect="mysql"))
+
+    return conn.execute(select(attending_event_rel).where(User.id == user_id)).first()
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)

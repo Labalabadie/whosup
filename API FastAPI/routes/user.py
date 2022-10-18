@@ -64,7 +64,7 @@ def get_user_info(id: int):
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()"""
 
     my_dic = {}
-    for key in UserSchemaDetail.keys():
+    for key in UserSchemaDetail.dict.keys():
             my_dic[key] = public_data.__getattribute__(key)
     my_dic["hosted_events"] = hosted_events
 

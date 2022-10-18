@@ -56,7 +56,8 @@ def join_event(event_id: int, user_id: int):
                  .values(user_id=user_id, event_id=event_id)
                  .prefix_with("IGNORE", dialect="mysql"))
 
-    return conn.execute(select(attending_event_rel).where(User.id == user_id)).first()
+    return conn.execute(select(attending_event_rel)
+                        .where(attending_event_rel.c.user_id == user_id)).first()
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)

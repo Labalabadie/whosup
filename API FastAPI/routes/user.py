@@ -55,7 +55,8 @@ def get_user(id: int):
 def get_user_info(id: int, this_user: UserSchemaDetail):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
-    
+    print("this_user")
+    print(this_user)
 
     hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
@@ -68,7 +69,6 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
             this_user.__setattr__(public_data.__getattribute__(key).isoformat())
         else:
             this_user.__setattr__(public_data.__getattribute__(key))
-
 
     print("this_user")
     return public_data

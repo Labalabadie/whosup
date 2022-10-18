@@ -32,21 +32,18 @@ def get_user_info(id: int):
     """ Get detailed info of the user """
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    # One to many relationship join query
-    hosted_events_list = conn.execute(
+    hosted_events_list = conn.execute( # One to many relationship join query
         select(User.hosted_events, Event)
         .join(Event)
         .where(User.id == id)).all()
 
-    # Many to many relationship
-    attending_events_list = conn.execute(
+    attending_events_list = conn.execute( # Many to many relationship join query
         select(attending_event_rel, Event)
         .join(Event, attending_event_rel.c.event_id == Event.id)
         .where(attending_event_rel.c.user_id == id)).all()
 
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
-
 
     my_dic = {}
     for key in User.attrs():
@@ -67,6 +64,11 @@ def get_user_info(id: int):
 
     return JSONResponse(jsonable_encoder(my_dic))
 
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
+def get_user(id: int):
+    """ Get user by id """
+    return conn.execute(select(User).where(User.id == id)).first()
+
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
 def get_all_users():
@@ -78,14 +80,6 @@ def get_all_users():
 def get_inactive_users():
     """ All inactive """
     return conn.execute(select(User).where(User.status == False)).fetchall()
-
-
-@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
-def get_user(id: int):
-    """ Get user by id """
-    return conn.execute(select(User).where(User.id == id)).first()
-
-
 
 
 # CREATE, UPDATE, DELETE ----

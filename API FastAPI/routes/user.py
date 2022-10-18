@@ -61,6 +61,7 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
+    public_data.__setattr__(hosted_events, [1,2])
     print(obj_to_dict(public_data))
     return public_data
 

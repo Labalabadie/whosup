@@ -69,9 +69,9 @@ def unjoin_event(event_id: int, user_id: int):
                 .where(attending_event_rel.c.user_id == user_id)
                 .where(attending_event_rel.c.event_id == event_id))
 
-    print(event)
+    print(event.first())
 
-    if event is not None:
+    if event.first() is not None:
         conn.execute(delete(attending_event_rel)
                 .where(attending_event_rel.c.user_id == user_id)
                 .where(attending_event_rel.c.event_id == event_id))

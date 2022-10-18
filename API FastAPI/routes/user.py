@@ -70,7 +70,7 @@ def get_user_info(id: int, this_user: UserSchemaDetail):
             this_user.__setattr__(public_data.__getattribute__(key))
 
 
-    print(this_user)
+    print("this_user")
     return this_user
 
 

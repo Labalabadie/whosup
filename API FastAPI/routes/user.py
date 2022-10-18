@@ -51,7 +51,7 @@ def get_user(id: int):
     return conn.execute(select(User).where(User.id == id)).first()
 
 
-@userAPI.get('/user/{id}/info', response_model=UserSchema, tags=["Users"])
+@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()

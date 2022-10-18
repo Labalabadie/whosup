@@ -49,13 +49,13 @@ def get_user(id: int):
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
+    
 
     hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
-    public_data = public_data[0]
-    data_dict = {column: str(getattr(public_data, column)) for column in public_data.__table__.c.keys()}
-    print(data_dict)
+
+    print(data_dict.__table__.c.keys()}
     return public_data
 
 

@@ -1,13 +1,12 @@
-from email.policy import default
 from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
-from datetime import datetime
 from models.base_model import BaseModel, Base
 
 attending_event_rel = Table(
     "attending_event_rel",
     Base.metadata,
+    extend_existing=True,
     Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True),
     Column("event_id", Integer, ForeignKey("event.id"), primary_key=True)
 )

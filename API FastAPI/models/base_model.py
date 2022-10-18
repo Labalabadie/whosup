@@ -13,6 +13,7 @@ class BaseModel(Base):
 
     def to_dict(self): 
         return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
+    ##
 
     def _get(self, id=None):
         if id is not None:

@@ -1,5 +1,4 @@
 from datetime import datetime
-from flask import jsonify
 from webbrowser import Grail
 from config.db import conn
 from cryptography.fernet import Fernet
@@ -12,6 +11,7 @@ from models.channel import Channel
 from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete, join
+import json
 
 key = Fernet.generate_key()
 f = Fernet(key)
@@ -53,8 +53,8 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    print (User.to_dict)
-    return jsonify(User.to_dict)
+    print(User.to_dict)
+    return json.dumps(User._get())
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

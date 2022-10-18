@@ -71,7 +71,7 @@ def get_user_info(id: int):
         select(User.hosted_events, Event)
         .join(Event)
         .where(User.id == id)).all()
-    print(hosted_events_list)
+
     # Many to many relationship
     attending_events_list = conn.execute(
         select(attending_event_rel, Event)
@@ -80,7 +80,7 @@ def get_user_info(id: int):
 
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
-    print(attending_events_list)
+
 
     my_dic = {}
     for key in User.attrs():

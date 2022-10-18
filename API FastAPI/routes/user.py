@@ -55,9 +55,9 @@ def get_user_info(id: int):
     """ Get detailed info of the user """
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    hosted_events_list = conn.execute(select(User.hosted_events, Event.id).join(Event).where(User.id == id)).all()
-    admin_channels_list = conn.execute(select(User.admin_channels, Channel.id).join(Channel).where(User.id == id)).all()
-    admin_groups_list = conn.execute(select(User.admin_groups, Group.id).join(Group).where(User.id == id)).all()
+    hosted_events_list = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
+    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
+    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
     my_dic = {}
     for key in User.attrs():

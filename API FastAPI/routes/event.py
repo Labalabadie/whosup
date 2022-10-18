@@ -70,7 +70,7 @@ def unjoin_event(event_id: int, user_id: int):
                 .where(attending_event_rel.c.event_id == event_id))
 
     if event is not None:
-        conn.execute(delete((attending_event_rel)
+        conn.execute(delete(attending_event_rel)
                 .where(attending_event_rel.c.user_id == user_id)
                 .where(attending_event_rel.c.event_id == event_id))
         return Response(status_code=HTTP_204_NO_CONTENT) # Successfully deleted

@@ -11,7 +11,7 @@ from models.group import Group
 from models.channel import Channel
 from schemas.user import UserSchema, UserSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT
-from sqlalchemy import insert, select, update, delete, join
+from sqlalchemy import insert, select, update, delete, join, inspect
 import json
 
 key = Fernet.generate_key()

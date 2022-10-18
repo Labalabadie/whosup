@@ -64,9 +64,10 @@ def join_event(event_id: int, user_id: int):
 @eventAPI.delete('/event/{event_id}/join', tags=["Events"])
 def unjoin_event(event_id: int, user_id: int):
     """ Unjoin event by ID """
-    conn.execute(delete(attending_event_rel)
+    print(conn.execute(delete(attending_event_rel)
                 .where(attending_event_rel.c.user_id == user_id)
-                .where(attending_event_rel.c.event_id == event_id))
+                .where(attending_event_rel.c.event_id == event_id)))
+
 
     return Response(status_code=HTTP_204_NO_CONTENT)
 

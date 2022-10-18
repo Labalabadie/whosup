@@ -49,8 +49,8 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@eventAPI.post('/event/{id}/{user_id}/join', tags=["Events"])
-def get_event(event_id: int, user_id: int):
+@eventAPI.post('/event/{id}/join', tags=["Events"])
+def join_event(event_id: int, user_id: int):
     """ Join event by ID """
     return conn.execute(insert(attending_event_rel)
                         .values(user_id=user_id, event_id=event_id))

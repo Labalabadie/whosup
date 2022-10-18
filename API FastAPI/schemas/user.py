@@ -21,6 +21,4 @@ class UserSchemaDetail(pyBaseModel):
     created_at: datetime
     updated_at: datetime
     hosted_events: Any
-    attending_events: Any
-    admin_channels: Any
-    admin_groups: Any
+

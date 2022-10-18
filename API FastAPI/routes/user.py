@@ -58,6 +58,7 @@ def get_user_info(id: int):
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
     print(public_data.keys())
+    public_data.hosted_events = hosted_events
     return public_data
 
 

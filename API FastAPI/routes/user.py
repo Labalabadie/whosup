@@ -57,20 +57,20 @@ def get_user_info(id: int):
     """ Get detailed info of the user """
 
     public_data = conn.execute(select(User).where(User.id == id)).first()
-
-    hosted_events = conn.execute(select(User, User.hosted_events, Event).join(Event).where(User.id == id)).all()
-
-    """admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
-    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()"""
+    hosted_events_list = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
+    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
+    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
     my_dic = {}
-    for key in UserSchemaDetail.__dict__.keys():
+    for key in :
             my_dic[key] = public_data.__getattribute__(key)
-    my_dic["hosted_events"] = hosted_events
+    my_dic["hosted_events"] = hosted_events_list
+    my_dic["admin_channels"] = admin_channels_list
+    my_dic["admin_groups"] = admin_groups_list
 
     return JSONResponse(jsonable_encoder(my_dic))
 
-@userAPI.post('/user', response_model=UserSchema, tags=["Users"])
+@userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):
     """ Create user """
     

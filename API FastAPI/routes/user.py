@@ -5,6 +5,7 @@ from cryptography.fernet import Fernet
 from typing import List
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from models.user import User, attending_event_rel
 from models.event import Event
 from models.group import Group
@@ -57,17 +58,22 @@ def get_user_info(id: int):
 
     public_data = conn.execute(select(User).where(User.id == id)).first()
 
-    hosted_events = conn.execute(select(User, User.hosted_events, Event).join(Event).where(User.id == id)).all()
+    hosted_events = conn.execute(select(User.hosted_events, Event).join(Event).where(User.id == id)).all()
 
     """admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()"""
 
-    """for key in public_data.keys():
-            this_user.__setattr__(public_data.__getattribute__(key))
-    return public_data"""
+    my_dic = {}
+    for key in public_data.keys():
+            my_dic.__setattr__(public_data.__getattribute__(key))
 
+    print("hostedevent:", end="")
     print(hosted_events)
-    return hosted_events
+    print("Public Data:", end="")
+    print(public_data)
+    print("My Dic:", end="")
+    print(my_dic)
+    return JSONResponse (jsonable_encoder(my_dic))
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])
 def create_user(this_user: UserSchema):

@@ -25,11 +25,22 @@ userAPI = APIRouter()
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
 #def get_feed():
 
-def obj_to_dict(obj):
-    ret_dict = {}
-    for key in obj.keys():
-        ret_dict[key] = obj.__getattribute__(key)
-    return ret_dict
+def unpack(obj, attrs):
+    ret = {}
+    for key in attrs:
+        ret[key] = getattr(obj, key)
+    return ret
+
+def unpack_many(obj, attrs):
+    """ unpacks a List of Rows object into a List of Dicts
+        obj = Listo of rows
+        attrs = list of attributes to unpack """
+    ret = []
+    for i, row in enumerate(obj):
+        ret.append({})
+        for key in attrs:
+            ret[i][key] = getattr(row, key)
+
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
@@ -89,7 +100,6 @@ def get_user_info(id: int):
         for key in Event.attrs():
             my_dic["attending_events"][i][key] = getattr(row, key)
 
-    print(attending_events_list)
     return JSONResponse(jsonable_encoder(my_dic))
 
 

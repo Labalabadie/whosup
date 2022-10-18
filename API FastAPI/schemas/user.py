@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 from datetime import datetime
 from pydantic import BaseModel as pyBaseModel
 
@@ -18,7 +18,7 @@ class UserSchemaDetail(pyBaseModel):
     email: str = ""
     password: str = ""
     phone: str = ""
-    created_at: datetime | str
-    updated_at: datetime | str
-    hosted_events: Any
+    created_at: Union
+    updated_at: Union[str, datetime]
+    hosted_events: Union[str, datetime]
 

@@ -61,6 +61,16 @@ def join_event(event_id: int, user_id: int):
                         .where(attending_event_rel.c.event_id == event_id)).first()
 
 
+@eventAPI.delete('/event/{event_id}/join', tags=["Events"])
+def unjoin_event(event_id: int, user_id: int):
+    """ Unjoin event by ID """
+    conn.execute(delete(attending_event_rel)
+                .where(attending_event_rel.c.user_id == user_id)
+                .where(attending_event_rel.c.event_id == event_id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT)
+
+
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)
 def update_event(id: int, this_event: EventSchema):
     """ Update event """

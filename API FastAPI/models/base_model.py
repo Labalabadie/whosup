@@ -10,13 +10,15 @@ class BaseModel(Base):
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
-
-    def to_dict(self): 
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
+    
+    @classmethod
+    def to_dict(cls): 
+        return {c.name: getattr(cls, c.name) for c in cls.__table__.columns} 
     ##
 
-    def _get(self, id=None):
+    @classmethod
+    def _get(cls, id=None):
         if id is not None:
-            conn.execute(select(self.__class__).where(self.__class__.id == id))
+            conn.execute(select(cls.__class__).where(cls.__class__.id == id))
         else:
-            conn.execute(select(self.__class__))
+            conn.execute(select(cls.__class__))

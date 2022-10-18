@@ -61,7 +61,7 @@ def get_user_info(id: int):
 
     ret_dict = {}
     for key in public_data.keys():
-        ret_dict[key] = public_data.__getattribute__("key")
+        ret_dict[key] = public_data.__getattribute__(key)
 
     print(ret_dict)
     return public_data

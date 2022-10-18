@@ -10,6 +10,7 @@ from models.user import User, attending_event_rel
 from models.event import Event
 from models.group import Group
 from models.channel import Channel
+from models.util import unpack, unpack_many
 from schemas.user import UserSchema, UserSchemaDetail
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT
@@ -25,42 +26,7 @@ userAPI = APIRouter()
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
 #def get_feed():
 
-def unpack(obj, attrs):
-    ret = {}
-    for key in attrs:
-        ret[key] = getattr(obj, key)
-    return ret
-
-def unpack_many(obj, attrs):
-    """ unpacks a List of Rows object into a List of Dicts
-        obj = Listo of rows
-        attrs = list of attributes to unpack """
-    ret = []
-    for i, row in enumerate(obj):
-        ret.append({})
-        for key in attrs:
-            ret[i][key] = getattr(row, key)
-
-
-
-@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
-def get_all_users():
-    """ Get all active elements """
-    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
-
-
-@userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
-def get_inactive_users():
-    """ All inactive """
-    return conn.execute(select(User).where(User.status == False)).fetchall()
-
-
-@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
-def get_user(id: int):
-    """ Get user by id """
-    return conn.execute(select(User).where(User.id == id)).first()
-
-
+# GET -----------------------
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user """
@@ -93,16 +59,32 @@ def get_user_info(id: int):
         for key in Event.attrs():
             my_dic["hosted_events"][i][key] = getattr(row, key)
 
-    my_dic["attending_events"] = []
-    for i, row in enumerate(attending_events_list):
-        my_dic["attending_events"].append({})
-        for key in Event.attrs():
-            my_dic["attending_events"][i][key] = getattr(row, key)
+    my_dic["attending_events"] = unpack_many(attending_event_rel, Event.attrs())
 
     return JSONResponse(jsonable_encoder(my_dic))
 
 
+@userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
+def get_all_users():
+    """ Get all active elements """
+    return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
 
+
+@userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
+def get_inactive_users():
+    """ All inactive """
+    return conn.execute(select(User).where(User.status == False)).fetchall()
+
+
+@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
+def get_user(id: int):
+    """ Get user by id """
+    return conn.execute(select(User).where(User.id == id)).first()
+
+
+
+
+# CREATE, UPDATE, DELETE ----
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):
     """ Create user """

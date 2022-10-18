@@ -62,7 +62,9 @@ def get_user_info(id: int):
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
 
-    retdict = obj_to_dict(public_data)
+    ret_dict = obj_to_dict(public_data)
+    ret_dict['created_at'] = ret_dict['created_at'].isoformat()
+    ret_dict['updated_at'] = ret_dict['updated_at'].isoformat()
     return json.dumps(retdict)
 
 

@@ -31,7 +31,7 @@ class User(BaseModel):
     @classmethod
     def attrs(cls, str=None):
         """ Returns a list of or attributes for the given class """
-        base_attrs = cls.super().attrs()
+        base_attrs = BaseModel.attrs()
 
         public_attrs = [
                 "name",

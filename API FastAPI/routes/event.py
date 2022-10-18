@@ -64,12 +64,18 @@ def join_event(event_id: int, user_id: int):
 @eventAPI.delete('/event/{event_id}/join', tags=["Events"])
 def unjoin_event(event_id: int, user_id: int):
     """ Unjoin event by ID """
-    print(conn.execute(delete(attending_event_rel)
+
+    event = conn.execute(select((attending_event_rel)
                 .where(attending_event_rel.c.user_id == user_id)
                 .where(attending_event_rel.c.event_id == event_id)))
 
+    if event is not None:
+        conn.execute(delete(event))
+        return Response(status_code=HTTP_204_NO_CONTENT) # Successfully deleted
 
-    return Response(status_code=HTTP_204_NO_CONTENT)
+    else:
+        return Response(status_code=HTTP_404_NOT_FOUND)
+
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)

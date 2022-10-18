@@ -54,10 +54,10 @@ def get_user_info(id: int):
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
 
-    user = User()
-    print(user.to_dict())
-    print(user._get())
-    return json.dumps(user._get())
+
+    print(User.to_dict())
+    print(User._get())
+    return json.dumps(User._get())
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

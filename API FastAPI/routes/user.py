@@ -65,6 +65,8 @@ def get_user_info(id: int):
     ret_dict = obj_to_dict(public_data)
     ret_dict['created_at'] = ret_dict['created_at'].isoformat()
     ret_dict['updated_at'] = ret_dict['updated_at'].isoformat()
+    print(ret_dict)
+    print(json.dumps(ret_dict))
     return json.dumps(ret_dict)
 
 

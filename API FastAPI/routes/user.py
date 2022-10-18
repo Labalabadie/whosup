@@ -65,7 +65,7 @@ def get_user_info(id: int):
 
     my_dic = {}
     for key in public_data.keys():
-            my_dic.__setattr__(public_data.__getattribute__(key))
+            my_dic.__setattr__(key, public_data.__getattribute__(key))
 
     print("hostedevent:", end="")
     print(hosted_events)

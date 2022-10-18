@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Integer, Column, String, DateTime
+from sqlalchemy import insert, select, update, delete, join
 from config.db import meta, conn
 
 Base = declarative_base(metadata=meta)

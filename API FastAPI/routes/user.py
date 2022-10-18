@@ -45,7 +45,7 @@ def get_user(id: int):
     return conn.execute(select(User).where(User.id == id)).first()
 
 
-@userAPI.get('/user/{id}/info', tags=["Users"])
+@userAPI.get('/user/{id}/info', response_model=UserSchema, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user  events """
     public_data = conn.execute(select(User).where(User.id == id)).first()
@@ -54,11 +54,9 @@ def get_user_info(id: int):
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    user = User()
-
-    print(user.to_dict())
-    print(user._get())
-    return json.dumps(user._get())
+    data_dict = {column: str(getattr(public_data, column)) for column in public_data.__table__.c.keys()}
+    print(data_dict)
+    return public_data
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"])

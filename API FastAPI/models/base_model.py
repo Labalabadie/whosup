@@ -11,7 +11,9 @@ class BaseModel(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    def to_dict(self): 
+
+
+""" def to_dict(self): 
         return {c.name: getattr(self, c.name) for c in self.__table__.columns} 
     ##
 
@@ -20,4 +22,4 @@ class BaseModel(Base):
         if id is not None:
             conn.execute(select(self.__class__).where(self.__class__.id == id))
         else:
-            conn.execute(select(self.__class__))
+            conn.execute(select(self.__class__))"""

@@ -59,7 +59,6 @@ def join_event(event_id: int, user_id: int):
     new = conn.execute(select(attending_event_rel)
                         .where(attending_event_rel.c.user_id == user_id)
                         .where(attending_event_rel.c.event_id == event_id)).first()
-
     return new or Response(status_code=HTTP_404_NOT_FOUND)
 
 @eventAPI.delete('/event/{event_id}/join', tags=["Events"])

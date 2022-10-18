@@ -1,10 +1,10 @@
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Integer, Column, String, DateTime
-from config.db import meta, conn
+from config.db import meta, conn, Base
 from sqlalchemy import insert, select, update, delete, join
 
-Base = declarative_base(metadata=meta)
+
 
 class BaseModel(Base):
     __abstract__ = True

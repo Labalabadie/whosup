@@ -27,7 +27,7 @@ def obj_to_dict(obj):
 
     ret_dict = {}
     
-    for key in obj.keys()
+    for key in obj.keys():
         ret_dict[key] = obj.__getattribute__(key)
             
 

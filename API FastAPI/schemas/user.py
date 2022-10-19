@@ -24,5 +24,7 @@ class UserSchemaDetail(pyBaseModel):
     hosted_events: Any
     admin_groups: Any
     admin_channels: Any
+    contacts: Any
+    in_contacts_of: Any
 
 

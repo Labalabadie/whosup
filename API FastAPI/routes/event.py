@@ -1,22 +1,62 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
+from typing import List
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from models.event import Event
+from models.user import User, attending_event_rel
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from sqlalchemy import insert, select, update, delete
-from cryptography.fernet import Fernet
-
-key = Fernet.generate_key()
-f = Fernet(key)
 
 eventAPI = APIRouter()
 
 
-#@event.get('/event', response_model=list[EventSchema], tags=["Events"])
-#def get_events():
-#    return conn.execute(event.select()).fetchall()  # consulta a toda la tabla
+# GET -----------------------
+"""@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    Get event by id 
+    return conn.execute(select(Event).where(Event.id == id)).first()
+"""
+
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    """ Get event by id """
+    public_data = conn.execute(select(User).where(User.id == id)).first()
+
+    participants_list = conn.execute( # Many to many relationship join query
+        select(attending_event_rel, User)
+        .join(User, attending_event_rel.c.user_id == User.id)
+        .where(attending_event_rel.c.event_id == id)).all()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = public_data.__getattribute__(key)
+
+    # This loops parses only needed attrs from the relational query response
+    dic["participants"] = []
+    for i, row in enumerate(participants_list):
+        dic["participants"].append({})
+        for key in User.attrs():
+            dic["participants"][i][key] = getattr(row, key)
+
+    return JSONResponse(jsonable_encoder(dic))
 
 
+@eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
+def get_all_events():
+    """ All active events """
+    return conn.execute(select(Event).where(Event.status == True)).fetchall()  
+
+
+@eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
+def get_inactive_events():
+    """ All inactive """
+    return conn.execute(select(Event).where(Event.status == False)).fetchall() 
+
+
+# CREATE, UPDATE, DELETE ----
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
     """ Create new event """
@@ -28,7 +68,6 @@ def create_event(this_event: EventSchema):
                  "description": this_event.description,
                  "icon": this_event.icon,
                  "max_people": this_event.max_people, 
-                 "participants": this_event.participants,
                  "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario
     result = conn.execute(insert(Event).values(new_event))
@@ -37,24 +76,8 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
-@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
-def get_event(id: str):
-    """ Get event by id """
-
-    return conn.execute(select(Event).where(Event.id == id)).first()
-
-
-@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
-def delete_event(id: str): 
-    """ Delete event """
-
-    # Buscar la manera de desabilitarlo no borrarlo de la base de datos directamente
-    conn.execute(delete(Event).where(Event.id == id))
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
-
-
-@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"])
-def update_event(id: str, this_event: EventSchema):
+@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)
+def update_event(id: int, this_event: EventSchema):
     """ Update event """
     
     conn.execute(update(Event).values(
@@ -65,6 +88,49 @@ def update_event(id: str, this_event: EventSchema):
                  description=this_event.description,
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
-                 participants=this_event.participants,
-                 config=this_event.config))
+                 config=this_event.config,
+                 updated_at=datetime.now()).where(Event.id == id)) # UPDATE THIS !!!!
+
     return conn.execute(select(Event).where(Event.id == id)).first()
+
+
+@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
+def delete_event(id: int): 
+    """ Delete (deactivate) event """
+
+    conn.execute(update(Event).values(
+        status=False,
+        updated_at=datetime.now()).where(Event.id == id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
+
+
+# JOIN & UNJOIN -------------
+@eventAPI.post('/event/{event_id}/join', tags=["Events"])
+def join_event(event_id: int, user_id: int):
+    """ Join event by ID """
+    conn.execute(insert(attending_event_rel)
+                 .values(user_id=user_id, event_id=event_id)
+                 .prefix_with("IGNORE", dialect="mysql"))
+    
+    new = conn.execute(select(attending_event_rel)
+                        .where(attending_event_rel.c.user_id == user_id)
+                        .where(attending_event_rel.c.event_id == event_id)).first()
+    return new or Response(status_code=HTTP_404_NOT_FOUND)
+
+@eventAPI.delete('/event/{event_id}/join', tags=["Events"])
+def unjoin_event(event_id: int, user_id: int):
+    """ Unjoin event by ID """
+
+    event = conn.execute(select(attending_event_rel)
+                .where(attending_event_rel.c.user_id == user_id)
+                .where(attending_event_rel.c.event_id == event_id)).first()
+
+    if event is not None:
+        conn.execute(delete(attending_event_rel)
+                .where(attending_event_rel.c.user_id == user_id)
+                .where(attending_event_rel.c.event_id == event_id))
+        return Response(status_code=HTTP_204_NO_CONTENT) # Successfully deleted
+
+    else:
+        return Response(status_code=HTTP_404_NOT_FOUND)

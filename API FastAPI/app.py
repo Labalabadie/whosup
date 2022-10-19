@@ -3,6 +3,7 @@ from routes.user import userAPI
 from routes.event import eventAPI
 from routes.group import groupAPI
 from routes.channel import channelAPI
+from routes.notification import notificationAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config.db import meta, engine
 
@@ -25,5 +26,6 @@ app.include_router(userAPI)
 app.include_router(eventAPI)
 app.include_router(groupAPI)
 app.include_router(channelAPI)
+app.include_router(notificationAPI)
 
 meta.create_all(engine)

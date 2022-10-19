@@ -22,7 +22,7 @@ f = Fernet(key)
 
 userAPI = APIRouter()
 
-
+# QUERIES -------------------
 events_feed_qry = (select(Event)
                     .where(Event.status == True))
 
@@ -35,6 +35,7 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
                     .where(attending_event_rel.c.user_id == id))
 
 
+# FEED ----------------------
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """

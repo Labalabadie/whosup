@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, ForeignKey
-from models.user_rel import attending_event_rel, contact_rel
+from models.user_rel import attending_event_rel#, contact_rel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from models.base_model import BaseModel, Base

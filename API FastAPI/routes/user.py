@@ -116,7 +116,7 @@ def get_user_info(id: int):
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
-    return conn.execute(select(User).where(User.id == id)).first()
+    return conn.execute(select(User).where(User.id == id)).first() or Response(status_code=HTTP_404_NOT_FOUND)
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])

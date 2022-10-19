@@ -38,11 +38,13 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
+                        .join(Event, attending_event_rel.c.event_id == Event.id)
                         .filter(Event.event_host_id != id)
+                        .filter(Event.attending_event_rel.c.user_id != id)
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query
-                        select(User.hosted_events, Event)
+                        select(User.hosted_events, Event) 
                         .join(Event)
                         .where(User.id == id)).all()
 
@@ -51,9 +53,9 @@ def get_feed(id: int):
                         .join(Event, attending_event_rel.c.event_id == Event.id)
                         .where(attending_event_rel.c.user_id == id)).all()
 
-    dic = {}                            # Response dictionary
-    dic["events_feed"] = []             # Main events feed, List of events
-    #dic["my_events"] = {}              # To be used in Topbar with my events, hosted and attending
+    dic = {}                    # Response dictionary
+    dic["events_feed"] = []     # Main events feed, List of events
+    #dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
 
     for i, row in enumerate(events_feed):
         dic["events_feed"].append({})

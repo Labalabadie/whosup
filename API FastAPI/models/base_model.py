@@ -10,7 +10,7 @@ class BaseModel(Base):
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
-
+    status = Column(Boolean, default=True)
 
     def to_dict(self):
         return {c.key: getattr(self, c.key)

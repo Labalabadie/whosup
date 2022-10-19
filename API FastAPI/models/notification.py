@@ -9,7 +9,6 @@ from config.db import engine, meta
 class Notification(BaseModel): 
     __tablename__ = "notification" 
     text = Column(String(255))
-    status = Column(Boolean, default=True)
 
     
     @classmethod

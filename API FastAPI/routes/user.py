@@ -40,7 +40,7 @@ def get_feed(id: int):
     events_feed = conn.execute(select(Event)
                         .join(Event, attending_event_rel.c.event_id == Event.id)
                         .filter(Event.event_host_id != id)
-                        .filter(Event.attending_event_rel.c.user_id != id)
+                        .filter(attending_event_rel.c.user_id != id)
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query

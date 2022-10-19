@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
 
 @Component({
   selector: 'app-eventdetail',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventdetailPage implements OnInit {
 
-  constructor() { }
+ 
+
+  events = [];
+
+  constructor(private eventcrudService: EventCrudService) { }
 
   ngOnInit() {
-  }
+   
+      this.eventcrudService.getEvent
+    
+    
+
+
+}
 
 }

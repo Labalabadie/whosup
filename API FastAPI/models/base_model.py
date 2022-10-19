@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlalchemy import Integer, Column, String, DateTime
-from sqlalchemy.sql.sqltypes import Boolean, Integer,  String, DateTime, JSON
 from config.db import meta, conn, Base
 from sqlalchemy import insert, select, update, delete, join
 
@@ -11,7 +10,6 @@ class BaseModel(Base):
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
-    status = Column(Boolean, default=True)
 
     def to_dict(self):
         return {c.key: getattr(self, c.key)

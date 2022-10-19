@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from models.event import Event
 from models.user import User, attending_event_rel
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_405_METHOD_NOT_ALLOWED
 from sqlalchemy import insert, select, update, delete
 
 eventAPI = APIRouter()
@@ -119,6 +119,11 @@ def delete_event(id: int):
 @eventAPI.post('/event/{event_id}/join', tags=["Events"])
 def join_event(event_id: int, user_id: int):
     """ Join event by ID """
+    event = conn.execute(select(Event).where(Event.id == event_id)).first()
+
+    if event.id == user_id:
+        return Response(status_code=HTTP_405_METHOD_NOT_ALLOWED)
+
     conn.execute(insert(attending_event_rel)
                  .values(user_id=user_id, event_id=event_id)
                  .prefix_with("IGNORE", dialect="mysql"))

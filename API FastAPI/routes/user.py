@@ -22,6 +22,7 @@ f = Fernet(key)
 
 userAPI = APIRouter()
 
+
 # QUERIES -------------------
 events_feed_qry = (select(Event)
                     .where(Event.status == True))
@@ -39,9 +40,18 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = conn.execute(events_feed_qry).all()
-    hosted_events_list = conn.execute(hosted_events_qry).all()
-    attending_events_list = conn.execute(attending_events_qry).all()
+    events_feed = conn.execute(select(Event)
+                        .where(Event.status == True)).all()
+
+    hosted_events_list = conn.execute( # One to many relationship join query
+                        select(User.hosted_events, Event) 
+                        .join(Event)
+                        .where(User.id == id)).all()
+
+    attending_events_list = conn.execute( # Many to many relationship join query
+                        select(attending_event_rel, Event)
+                        .join(Event, attending_event_rel.c.event_id == Event.id)
+                        .where(attending_event_rel.c.user_id == id)).all()
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
@@ -75,9 +85,13 @@ def get_user_info(id: int):
     if public_data is None:
         return Response(status_code=HTTP_404_NOT_FOUND)
 
-    hosted_events_list = conn.execute(hosted_events_qry).all()
-    print(hosted_events_list)
-    attending_events_list = conn.execute(attending_events_qry).all()
+    hosted_events_list = conn.execute(select(User.hosted_events, Event) # One to many relationship join query
+                                    .join(Event)
+                                    .where(User.id == id)).all()
+                            
+    attending_events_list = conn.execute(select(attending_event_rel, Event) # Many to many relationship join query
+                    .join(Event, attending_event_rel.c.event_id == Event.id)
+                    .where(attending_event_rel.c.user_id == id)).all()
 
     """contacts_list = conn.execute( # Many to many relationship join query
         select(contact_rel, User)

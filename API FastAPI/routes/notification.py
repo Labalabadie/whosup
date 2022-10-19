@@ -28,7 +28,7 @@ def get_notification(id: int):
 def create_notification(this_notification: NotificationSchema):
     """ Create new notification """
 
-    new_notification = {"text"}
+    new_notification = {"text": this_notification.text}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario
     result = conn.execute(insert(Notification).values(new_notification))
     print("NEW NOTIFICATION . id: ", result.lastrowid)

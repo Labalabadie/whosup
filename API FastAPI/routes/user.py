@@ -14,7 +14,7 @@ from models.util import unpack, unpack_many
 from schemas.user import UserSchema, UserSchemaDetail
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
-from sqlalchemy import insert, select, update, delete, join, inspect
+from sqlalchemy import insert, select, update, delete, join, inspect, and_, or_, not_
 import json
 
 key = Fernet.generate_key()

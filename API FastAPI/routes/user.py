@@ -42,16 +42,15 @@ def get_feed(id: int):
     hosted_events_list = conn.execute(hosted_events_qry).all()
     attending_events_list = conn.execute(attending_events_qry).all()
 
-    # This loop creates a dict from the query object's basic attributes (not relational)
-    dic = {}
+    dic = {}                    # Response dictionary
+    dic["events_feed"] = []     # Main events feed, List of events
+    dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
 
-    dic["events_feed"] = []
     for i, row in enumerate(events_feed):
         dic["events_feed"].append({})
         for key in Event.attrs():
             dic["events_feed"][i][key] = getattr(row, key)
 
-    """ these loops parse only needed attrs from the relational query response """
     dic["my_events"]["hosted_events"] = []
     for i, row in enumerate(hosted_events_list):
         dic["my_events"]["hosted_events"].append({})

@@ -13,12 +13,21 @@
 <main>
 	<div class="my-events">
 		<h4>My events</h4>
+		
+	
 		<!-- link to user events -->
 		<a class="link" [routerLink]="['/user/']">Show all<div class="arrowlink-icon"></div></a>
 	</div>
 
 <!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
 	<div class="banner">
+		<ion-item *ngFor="let feed of events.attending_events">	
+			{{feed.name}}
+			</ion-item>
+			<ion-item *ngFor="let feed of events.hosted_events">	
+				{{feed.name}}
+				</ion-item>
+		
 		<!-- LITTLE EVENT PREVIEW -->
 		<div class="little-user-event">
 			<div class="event-photo">
@@ -39,7 +48,7 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<item *ngFor="let event of events">	
+	<ion-item *ngFor="let feed of events.events_feed">	
 		<div class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic"></div>
@@ -47,24 +56,24 @@
 			</div>
 			<div class="event-title">
 				<!-- EVENT NAME -->
-				<h3>{{event.name}}</h3>
+				<h3>{{feed.name}}</h3>
 				<!-- EVENT DESCRIPTION -->
-				<h5>{{event.description}}</h5>
+				<h5>{{feed.description}}</h5>
 			</div>
 			<div class="event-details">
 				<!-- EVENT DATE -->
-				<div class="calendar-icon">{{event.event_datetime}}</div>
+				<div class="calendar-icon">{{feed.event_datetime}}</div>
 				<div class="sub-detail">
 					<!-- LOCATION OR ONLINE -->
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
-					<div class="pin-icon">{{event.location}}</div>
+					<div class="pin-icon">{{feed.location}}</div>
 					<!-- PARTICIPANT COUNT -->
 					<!-- script to count participant ids to show here -->
-					<div class="participant-count">6/{{event.max_people}}</div>
+					<div class="participant-count">6/{{feed.max_people}}</div>
 				</div>
 			</div>
 		</div>
-	</item>
+	</ion-item>
 </ion-list>
 
 <!--<ion-list>

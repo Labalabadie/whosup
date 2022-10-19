@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from models.event import Event
 from models.user import User, attending_event_rel
 from schemas.event import EventSchema
@@ -10,11 +12,52 @@ from sqlalchemy import insert, select, update, delete
 eventAPI = APIRouter()
 
 
+# GET -----------------------
+"""@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    Get event by id 
+    return conn.execute(select(Event).where(Event.id == id)).first()
+"""
+
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    """ Get event by id """
+    public_data = conn.execute(select(User).where(User.id == id)).first()
+    if public_data is None:
+        return Response(status_code=HTTP_404_NOT_FOUND)
+
+    participants_list = conn.execute( # Many to many relationship join query
+        select(attending_event_rel, User)
+        .join(User, attending_event_rel.c.user_id == User.id)
+        .where(attending_event_rel.c.event_id == id)).all()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = public_data.__getattribute__(key)
+
+    # This loops parses only needed attrs from the relational query response
+    dic["participants"] = []
+    for i, row in enumerate(participants_list):
+        dic["participants"].append({})
+        for key in User.attrs():
+            dic["participants"][i][key] = getattr(row, key)
+
+    return JSONResponse(jsonable_encoder(dic))
+
 
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
 def get_all_events():
     """ All active events """
-    return conn.execute(select(Event).where(Event.status == True)).fetchall()  
+    public_data =  conn.execute(select(Event).where(Event.status == True)).fetchall()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = public_data.__getattribute__(key)
+
+    return JSONResponse(jsonable_encoder(dic))
+
 
 
 @eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
@@ -23,13 +66,7 @@ def get_inactive_events():
     return conn.execute(select(Event).where(Event.status == False)).fetchall() 
 
 
-@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
-def get_event(id: int):
-    """ Get event by id """
-    return conn.execute(select(Event).where(Event.id == id)).first()
-
-
-
+# CREATE, UPDATE, DELETE ----
 @eventAPI.post('/event', response_model=EventSchema, tags=["Events"])
 def create_event(this_event: EventSchema):
     """ Create new event """
@@ -49,6 +86,36 @@ def create_event(this_event: EventSchema):
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
 
 
+@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)
+def update_event(id: int, this_event: EventSchema):
+    """ Update event """
+    
+    conn.execute(update(Event).values(
+                 name=this_event.name, 
+                 event_host_id=this_event.event_host_id,
+                 event_datetime=this_event.event_datetime,
+                 location=this_event.location, 
+                 description=this_event.description,
+                 icon=this_event.icon,
+                 max_people=this_event.max_people, 
+                 config=this_event.config,
+                 updated_at=datetime.now()).where(Event.id == id))
+
+    return conn.execute(select(Event).where(Event.id == id)).first()
+
+
+@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
+def delete_event(id: int): 
+    """ Delete (deactivate) event """
+
+    conn.execute(update(Event).values(
+        status=False,
+        updated_at=datetime.now()).where(Event.id == id))
+
+    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
+
+
+# JOIN & UNJOIN -------------
 @eventAPI.post('/event/{event_id}/join', tags=["Events"])
 def join_event(event_id: int, user_id: int):
     """ Join event by ID """
@@ -77,33 +144,3 @@ def unjoin_event(event_id: int, user_id: int):
 
     else:
         return Response(status_code=HTTP_404_NOT_FOUND)
-
-
-
-@eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)
-def update_event(id: int, this_event: EventSchema):
-    """ Update event """
-    
-    conn.execute(update(Event).values(
-                 name=this_event.name, 
-                 event_host_id=this_event.event_host_id,
-                 event_datetime=this_event.event_datetime,
-                 location=this_event.location, 
-                 description=this_event.description,
-                 icon=this_event.icon,
-                 max_people=this_event.max_people, 
-                 config=this_event.config,
-                 updated_at=datetime.now()).where(Event.id == id)) # UPDATE THIS !!!!
-
-    return conn.execute(select(Event).where(Event.id == id)).first()
-
-
-@eventAPI.delete('/event/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=["Events"])
-def delete_event(id: int): 
-    """ Delete (deactivate) event """
-
-    conn.execute(update(Event).values(
-        status=False,
-        updated_at=datetime.now()).where(Event.id == id))
-
-    return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

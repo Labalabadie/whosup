@@ -6,7 +6,7 @@ from typing import List
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models.user import User, attending_event_rel, contact_rel
+from models.user import User, attending_event_rel#, contact_rel
 from models.event import Event
 from models.group import Group
 from models.channel import Channel

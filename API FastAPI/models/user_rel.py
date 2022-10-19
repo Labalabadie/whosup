@@ -11,9 +11,9 @@ attending_event_rel = Table(
 )
 
 
-contact_rel = Table(
+"""contact_rel = Table(
     "contact_rel",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("user_data.id", index=True), primary_key=True),
     Column("contact_id", Integer, ForeignKey("user_data.id"), primary_key=True)
-)
+)"""

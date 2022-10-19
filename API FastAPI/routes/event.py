@@ -23,6 +23,8 @@ def get_event(id: int):
 def get_event(id: int):
     """ Get event by id """
     public_data = conn.execute(select(User).where(User.id == id)).first()
+    if public_data is None:
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
     participants_list = conn.execute( # Many to many relationship join query
         select(attending_event_rel, User)
@@ -47,7 +49,15 @@ def get_event(id: int):
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
 def get_all_events():
     """ All active events """
-    return conn.execute(select(Event).where(Event.status == True)).fetchall()  
+    public_data =  conn.execute(select(Event).where(Event.status == True)).fetchall()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = public_data.__getattribute__(key)
+
+    return JSONResponse(jsonable_encoder(dic))
+
 
 
 @eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
@@ -89,7 +99,7 @@ def update_event(id: int, this_event: EventSchema):
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
                  config=this_event.config,
-                 updated_at=datetime.now()).where(Event.id == id)) # UPDATE THIS !!!!
+                 updated_at=datetime.now()).where(Event.id == id))
 
     return conn.execute(select(Event).where(Event.id == id)).first()
 

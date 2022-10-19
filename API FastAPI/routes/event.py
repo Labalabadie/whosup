@@ -3,7 +3,7 @@ from config.db import conn
 from typing import List
 from models.event import Event
 from models.user import User, attending_event_rel
-from schemas.event import EventSchema
+from schemas.event import EventSchema, EventSchemaDetail
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from sqlalchemy import insert, select, update, delete
 
@@ -11,6 +11,37 @@ eventAPI = APIRouter()
 
 
 # GET -----------------------
+"""@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    Get event by id 
+    return conn.execute(select(Event).where(Event.id == id)).first()
+"""
+
+@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
+def get_event(id: int):
+    """ Get event by id """
+    public_data = conn.execute(select(User).where(User.id == id)).first()
+
+    participants_list = conn.execute( # Many to many relationship join query
+        select(attending_event_rel, User)
+        .join(User, attending_event_rel.c.user_id == User.id)
+        .where(attending_event_rel.c.event_id == id)).all()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    my_dic = {}
+    for key in User.attrs():
+            my_dic[key] = public_data.__getattribute__(key)
+
+    # This loops parses only needed attrs from the relational query response
+    my_dic["participants"] = []
+    for i, row in enumerate(participants_list):
+        my_dic["participants"].append({})
+        for key in Event.attrs():
+            my_dic["participants"][i][key] = getattr(row, key)
+
+    return JSONResponse(jsonable_encoder(my_dic))
+
+
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
 def get_all_events():
     """ All active events """
@@ -21,12 +52,6 @@ def get_all_events():
 def get_inactive_events():
     """ All inactive """
     return conn.execute(select(Event).where(Event.status == False)).fetchall() 
-
-
-@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
-def get_event(id: int):
-    """ Get event by id """
-    return conn.execute(select(Event).where(Event.id == id)).first()
 
 
 # CREATE, UPDATE, DELETE ----

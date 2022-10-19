@@ -30,18 +30,18 @@ def get_event(id: int):
         .where(attending_event_rel.c.event_id == id)).all()
 
     # This loop creates a dict from the query object's basic attributes (not relational)
-    my_dic = {}
+    dic = {}
     for key in User.attrs():
-            my_dic[key] = public_data.__getattribute__(key)
+            dic[key] = public_data.__getattribute__(key)
 
     # This loops parses only needed attrs from the relational query response
-    my_dic["participants"] = []
+    dic["participants"] = []
     for i, row in enumerate(participants_list):
-        my_dic["participants"].append({})
+        dic["participants"].append({})
         for key in User.attrs():
-            my_dic["participants"][i][key] = getattr(row, key)
+            dic["participants"][i][key] = getattr(row, key)
 
-    return JSONResponse(jsonable_encoder(my_dic))
+    return JSONResponse(jsonable_encoder(dic))
 
 
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])

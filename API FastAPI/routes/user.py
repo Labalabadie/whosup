@@ -6,7 +6,7 @@ from typing import List
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models.user import User, attending_event_rel
+from models.user import User, attending_event_rel, contact_rel
 from models.event import Event
 from models.group import Group
 from models.channel import Channel
@@ -42,27 +42,47 @@ def get_user_info(id: int):
         .join(Event, attending_event_rel.c.event_id == Event.id)
         .where(attending_event_rel.c.user_id == id)).all()
 
+    contacts_list = conn.execute( # Many to many relationship join query
+        select(contact_rel, User)
+        .join(User, contact_rel.c.user_id == User.id)
+        .where(contact_rel.c.user_id == id)).all()
+
+    in_contacts_of_list = conn.execute(
+        select(contact_rel)
+        .where(contact_rel.c.contact_id == id)
+        .with_entities(contact_rel.c.user_id)).all()
+
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
 
-    my_dic = {}
+    dic = {}
     for key in User.attrs():
-            my_dic[key] = public_data.__getattribute__(key)
+            dic[key] = public_data.__getattribute__(key)
 
-    """ this loops parses only needed attrs from the relational query response """
-    my_dic["hosted_events"] = []
+    """ these loops parse only needed attrs from the relational query response """
+    dic["hosted_events"] = []
     for i, row in enumerate(hosted_events_list):
-        my_dic["hosted_events"].append({})
+        dic["hosted_events"].append({})
         for key in Event.attrs():
-            my_dic["hosted_events"][i][key] = getattr(row, key)
+            dic["hosted_events"][i][key] = getattr(row, key)
 
-    my_dic["attending_events"] = []
+    dic["attending_events"] = []
     for i, row in enumerate(attending_events_list):
-        my_dic["attending_events"].append({})
+        dic["attending_events"].append({})
         for key in Event.attrs():
-            my_dic["attending_events"][i][key] = getattr(row, key)
+            dic["attending_events"][i][key] = getattr(row, key)
 
-    return JSONResponse(jsonable_encoder(my_dic))
+    dic["contacts"] = []
+    for i, row in enumerate(contacts_list):
+        dic["contacts"].append({})
+        for key in User.attrs(): # This gets the format from the list of attrs
+            dic["contacts"][i][key] = getattr(row, key)
+
+    dic["in_contacts_of"] = []
+    for elem in in_contacts_of_list:
+        dic["in_contacts_of"].append(elem)
+
+    return JSONResponse(jsonable_encoder(dic))
 
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):

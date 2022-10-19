@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Response, status
 from config.db import conn
 from typing import List
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from models.event import Event
 from models.user import User, attending_event_rel
 from schemas.event import EventSchema

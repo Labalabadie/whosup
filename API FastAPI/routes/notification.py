@@ -11,7 +11,7 @@ notificationAPI = APIRouter()
 
 
 @notificationAPI.get('/notification', response_model=List[NotificationSchema], tags=["Notification"])
-def get_all_notification():
+def get_all_notifications():
     """ All notifications """
     return conn.execute(select(Notification)).fetchall()  
 

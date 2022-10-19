@@ -38,10 +38,10 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
-                        .select_from(attending_event_rel)
-                        .join(attending_event_rel.c.user_id)
+                        .select_from(User)
+                        .join(User.attending_events)
                         .filter(Event.event_host_id != id)
-                        .filter(attending_event_rel.c.user_id != id)
+                        .filter(User.id != id)
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query

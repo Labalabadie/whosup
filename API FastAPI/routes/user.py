@@ -38,14 +38,17 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = conn.execute(events_feed_qry).fetchall()
+    events_feed = conn.execute(events_feed_qry).all()
     hosted_events_list = conn.execute(hosted_events_qry).all()
     attending_events_list = conn.execute(attending_events_qry).all()
 
     # This loop creates a dict from the query object's basic attributes (not relational)
     dic = {}
-    for key in User.attrs():
-            dic["events_feed"][key] = events_feed.__getattribute__(key)
+    dic["events_feed"] = []
+    for i, row in enumerate(events_feed):
+        dic["events_feed"].append({})
+        for key in Event.attrs():
+            dic["events_feed"][i][key] = events_feed.__getattribute__(key)
 
     """ these loops parse only needed attrs from the relational query response """
     dic["my_events"]["hosted_events"] = []

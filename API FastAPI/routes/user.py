@@ -55,24 +55,24 @@ def get_feed(id: int):
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
-    dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
+    #dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
 
     for i, row in enumerate(events_feed):
         dic["events_feed"].append({})
         for key in Event.attrs():
             dic["events_feed"][i][key] = getattr(row, key)
 
-    dic["my_events"]["hosted_events"] = []
+    dic["hosted_events"] = []
     for i, row in enumerate(hosted_events_list):
-        dic["my_events"]["hosted_events"].append({})
+        dic["hosted_events"].append({})
         for key in Event.attrs():
-            dic["my_events"]["hosted_events"][i][key] = getattr(row, key)
+            dic["hosted_events"][i][key] = getattr(row, key)
 
-    dic["my_events"]["attending_events"] = []
+    dic["attending_events"] = []
     for i, row in enumerate(attending_events_list):
-        dic["my_events"]["attending_events"].append({})
+        dic["attending_events"].append({})
         for key in Event.attrs():
-            dic["my_events"]["attending_events"][i][key] = getattr(row, key)
+            dic["attending_events"][i][key] = getattr(row, key)
     
     return JSONResponse(jsonable_encoder(dic))
 

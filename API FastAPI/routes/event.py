@@ -47,7 +47,15 @@ def get_event(id: int):
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
 def get_all_events():
     """ All active events """
-    return conn.execute(select(Event).where(Event.status == True)).fetchall()  
+    public_data =  conn.execute(select(Event).where(Event.status == True)).fetchall()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = public_data.__getattribute__(key)
+
+    return JSONResponse(jsonable_encoder(dic))
+
 
 
 @eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])

@@ -22,31 +22,54 @@ f = Fernet(key)
 
 userAPI = APIRouter()
 
-@userAPI.get('/user/{id}/feed', response_model=List[EventSchemaDetail], tags=["Users"])
+
+events_feed_qry = (select(Event)
+                    .where(Event.status == True))
+
+hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query
+                    .join(Event)
+                    .where(User.id == id))
+
+attending_events_qry = (select(attending_event_rel, Event) # Many to many relationship join query
+                    .join(Event, attending_event_rel.c.event_id == Event.id)
+                    .where(attending_event_rel.c.user_id == id))
+
+
+@userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    attending_events_list = conn.execute( # Many to many relationship join query
-        select(attending_event_rel, Event)
-        .join(Event, attending_event_rel.c.event_id == Event.id)
-        .where(attending_event_rel.c.user_id == id)).all()
+    events_feed = conn.execute(events_feed_qry).fetchall()
+    hosted_events_list = conn.execute(hosted_events_qry).all()
+    attending_events_list = conn.execute(attending_events_qry).all()
+
+    # This loop creates a dict from the query object's basic attributes (not relational)
+    dic = {}
+    for key in User.attrs():
+            dic[key] = events_feed.__getattribute__(key)
+
+    """ these loops parse only needed attrs from the relational query response """
+    dic["hosted_events"] = []
+    for i, row in enumerate(hosted_events_list):
+        dic["hosted_events"].append({})
+        for key in Event.attrs():
+            dic["hosted_events"][i][key] = getattr(row, key)
+
+    dic["attending_events"] = []
+    for i, row in enumerate(attending_events_list):
+        dic["attending_events"].append({})
+        for key in Event.attrs():
+            dic["attending_events"][i][key] = getattr(row, key)
     
-    feed = conn.
+    return JSONResponse(jsonable_encoder(dic))
+
 
 # GET -----------------------
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user """
     public_data = conn.execute(select(User).where(User.id == id)).first()
-
-    hosted_events_list = conn.execute( # One to many relationship join query
-        select(User.hosted_events, Event)
-        .join(Event)
-        .where(User.id == id)).all()
-
-    attending_events_list = conn.execute( # Many to many relationship join query
-        select(attending_event_rel, Event)
-        .join(Event, attending_event_rel.c.event_id == Event.id)
-        .where(attending_event_rel.c.user_id == id)).all()
+    hosted_events_list = conn.execute(hosted_events_qry).all()
+    attending_events_list = conn.execute(attending_events_qry).all()
 
     """contacts_list = conn.execute( # Many to many relationship join query
         select(contact_rel, User)

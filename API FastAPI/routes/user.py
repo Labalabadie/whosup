@@ -60,7 +60,7 @@ def get_feed(id: int):
         for key in Event.attrs():
             dic["my_events"]["attending_events"][i][key] = getattr(row, key)
     
-    return JSONResponse(jsonable_encoder(dic)) or Response(HTTP_404_NOT_FOUND)
+    return JSONResponse(jsonable_encoder(dic))
 
 
 # GET -----------------------
@@ -116,9 +116,7 @@ def get_user_info(id: int):
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
-    response = conn.execute(select(User).where(User.id == id)).first()
-    print(response)
-    return response or Response(HTTP_404_NOT_FOUND)
+    return conn.execute(select(User).where(User.id == id)).first() or Response(HTTP)
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])

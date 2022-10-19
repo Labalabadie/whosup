@@ -42,7 +42,7 @@ def get_user_info(id: int):
         .join(Event, attending_event_rel.c.event_id == Event.id)
         .where(attending_event_rel.c.user_id == id)).all()
 
-    contacts_list = conn.execute( # Many to many relationship join query
+    """contacts_list = conn.execute( # Many to many relationship join query
         select(contact_rel, User)
         .join(User, contact_rel.c.user_id == User.id)
         .where(contact_rel.c.user_id == id)).all()
@@ -50,7 +50,7 @@ def get_user_info(id: int):
     in_contacts_of_list = conn.execute(
         select(contact_rel)
         .where(contact_rel.c.contact_id == id)
-        .with_entities(contact_rel.c.user_id)).all()
+        .with_entities(contact_rel.c.user_id)).all()"""
 
     admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
     admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
@@ -72,7 +72,7 @@ def get_user_info(id: int):
         for key in Event.attrs():
             dic["attending_events"][i][key] = getattr(row, key)
 
-    dic["contacts"] = []
+    """dic["contacts"] = []
     for i, row in enumerate(contacts_list):
         dic["contacts"].append({})
         for key in User.attrs(): # This gets the format from the list of attrs
@@ -80,7 +80,7 @@ def get_user_info(id: int):
 
     dic["in_contacts_of"] = []
     for elem in in_contacts_of_list:
-        dic["in_contacts_of"].append(elem)
+        dic["in_contacts_of"].append(elem)"""
 
     return JSONResponse(jsonable_encoder(dic))
 

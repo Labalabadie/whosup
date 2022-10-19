@@ -2,34 +2,53 @@
 	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
 	<h1>New event</h1>
 	<div class="trailing-icons">
-		<button type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
+		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
 	</div>
 </ion-header>
   
 <ion-content>
 <main>
+	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
 			<div class="event-pic"></div>
 			<div class="emoji"></div>
 		</div>
-			<!--<input type="text" name="event.name" [(ngModel)]="event.name" placeholder="Event name" class="textfield" required>-->
-				<div class="edit-icon"></div>
+		<!-- NAME FIELD -->
+		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required>
+		<div class="edit-icon"></div>
 	</div>
 
-<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-<input formControlName="name" type="text" placeholder="Event name" class="field" required>
-
+<!-- DATE FIELD -->
+	<section type="button" required>
+		<ion-modal [keepContentsMounted]="true">
+			<ion-datetime class="field" placeholder="Select a date" id="datetime" displayFormat="DD/MM/YYYY" min="2022-11-04" max="2023-12-04" value="2022-11-04T15:03:46.789"></ion-datetime>
+		</ion-modal>
+	</section>
 	<ion-input formControlName="event_datetime" type="text" placeholder="Datetime" class="field" required><ion-icon name="calendar-outline"></ion-icon><ion-icon name="time-outline"></ion-icon></ion-input>
 
+<!-- PLACE AND ONLINE BUTTONS -->
+<!-- necesita un script para cambiarle la clase al que este onclick -->
+<div class="place-or-online">
+	<button type="button" class="unselected-button" value="click">
+		<div class="pin-outlined-icon"></div>
+		<div class="buttontext">Place</div>
+	</button>
+
+	<button type="button" class="unselected-button" value="click">
+		<div class="computer-icon-black"></div>
+		<div class="buttontext">Online</div>
+	</button>
+</div>
+
+<!-- LOCATION FIELD -->
 	<ion-input formControlName="location" type="text" placeholder="Location" class="field" required></ion-input>
-
-	<ion-input formControlName="participants" type="number" placeholder="Participants" class="textfield" required><ion-icon name="person-outline"></ion-icon></ion-input><ion-icon name="information-circle-outline"></ion-icon>
-
+<!-- MAX PEOPLE FIELD -->
+	<h4>Max people</h4>
+	<ion-input formControlName="max_people" type="number" placeholder="Max people" class="field" required><ion-icon name="person-outline"></ion-icon><ion-icon name="information-circle-outline"></ion-icon></ion-input>
+<!-- DESCRIPTION FIELD -->
 	<ion-input formControlName="description" type="text" placeholder="Description" class="textfield"></ion-input>
-
-<ion-button type="submit" color="danger" expand="block" style="text-transform: none;">Create</ion-button>
 
 </form>
 </main>

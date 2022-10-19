@@ -255,10 +255,9 @@ ion-header div .search-icon {
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: cover;
-	max-width: 60px;
+	max-width: 80px;
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 	margin-right: auto;
 	margin-top: auto;
 	margin-bottom: auto;
@@ -323,16 +322,21 @@ ion-header div .search-icon {
 	background-size: 8px;
 	border: none;
 }
-.computer-icon {
+.computer-icon, .computer-icon-black {
 	display: flex;
 	position: relative;
 	min-width: 16px;
 	min-height: 14px;
-	background-image: url("../src/assets/images/computer-icon.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 16px;
 	border: none;
+}
+.computer-icon {
+	background-image: url("../src/assets/images/computer-icon.png");
+}
+.computer-icon-black {
+	background-image: url("../src/assets/images/computer-icon-black.png");
 }
 .participant-count {
 	font-size: 11px;

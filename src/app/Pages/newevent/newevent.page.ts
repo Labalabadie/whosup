@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { EventCrudService } from '../../Data(services)/eventCrud.services';
 
 @Component({
@@ -9,6 +9,7 @@ import { EventCrudService } from '../../Data(services)/eventCrud.services';
   templateUrl: './newevent.page.html',
   styleUrls: ['./newevent.page.scss'],
 })
+
 
 export class NeweventPage implements OnInit {
 
@@ -23,7 +24,7 @@ export class NeweventPage implements OnInit {
     this.eventForm = this.formBuilder.group({
 			id: 0,
       name: [''],
-      event_datetime: ['2023-10-17T19:57:43.794367'],
+      event_datetime: [''],
       location: [''],
 			max_people: [''],
 			participants: [],
@@ -34,7 +35,7 @@ export class NeweventPage implements OnInit {
     })
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onSubmit() {
     if (!this.eventForm.valid) {

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
-import { Storage } from '@capacitor/storage'
-import { Signup } from 'src/app/Models/signup.model';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit , NgZone} from '@angular/core';
+import { UserCrudService } from '../../Data(services)/userCrud.services';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder } from "@angular/forms";
 
 @Component({
   selector: 'app-signup',
@@ -11,15 +10,45 @@ import { NgForm } from '@angular/forms';
 })
 export class SignupPage implements OnInit {
 
-  signupUser: Signup = new Signup();
+  userForm: FormGroup;
 
-  constructor(public alertController: AlertController,
-    public navCtrl: NavController,) { }
+
+    constructor(
+      private router: Router,
+      public formBuilder: FormBuilder,
+      private zone: NgZone,
+      private userCrudService: UserCrudService    
+    ) {
+      this.userForm = this.formBuilder.group({
+        id: 0,
+        name: [''],
+        phone: [],
+        email: [''],
+        password: [''],
+        checkpassword: [''],
+				created_at: [''],
+				updated_at: ['']
+      })
+    }
+
 
   ngOnInit() {
   }
+  onSubmit() {
+    if (!this.userForm.valid) {
+      return false;
+    } else {
+      this.userCrudService.createUser(this.userForm.value)
+        .subscribe((response) => {
+          this.zone.run(() => {
+            this.userForm.reset();
+            this.router.navigate(['/home']);
+          })
+        });
+    }
+  }
 
-  async Name(){
+ /* async Name(){
 	  if(this.signupUser.name == null){
 		const alert = await this.alertController.create({
 			header: 'Datos incompletos',
@@ -91,7 +120,7 @@ export class SignupPage implements OnInit {
         const user = {
         name: signupForm.value.name,
         mail: signupForm.value.mail,
-        phone: signupForm.value.movil,
+        phone: signupForm.value.phone,
         password: signupForm.value.password,
         checkpassword: signupForm.value.checkpassword
         };
@@ -104,4 +133,6 @@ export class SignupPage implements OnInit {
       Storage.set({ key: key2, value });
         this.navCtrl.navigateRoot('home');
       }
+
+     */ 
     }

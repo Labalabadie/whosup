@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Integer, Column, String, DateTime
+from sqlalchemy.sql.sqltypes import Boolean, Integer,  String, DateTime, JSON
 from config.db import meta, conn, Base
 from sqlalchemy import insert, select, update, delete, join
 

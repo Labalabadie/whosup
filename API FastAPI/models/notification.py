@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
+from sqlalchemy.sql.sqltypes import Boolean, Integer,  String, DateTime, JSON
 from datetime import datetime
 from models.base_model import BaseModel, Base
 from config.db import engine, meta

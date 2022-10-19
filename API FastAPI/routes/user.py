@@ -159,7 +159,6 @@ def update_user(id: int, this_user: UserSchema):
                  phone=this_user.phone,
                  password=f.encrypt(this_user.password.encode("utf-8")),
                  updated_at=datetime.now()).where(User.id == id))
-                 # updated_at ...
     return conn.execute(select(User).where(User.id == id)).first()
 
 

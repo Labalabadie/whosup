@@ -45,20 +45,20 @@ def get_feed(id: int):
     # This loop creates a dict from the query object's basic attributes (not relational)
     dic = {}
     for key in User.attrs():
-            dic[key] = events_feed.__getattribute__(key)
+            dic["events_feed"][key] = events_feed.__getattribute__(key)
 
     """ these loops parse only needed attrs from the relational query response """
-    dic["hosted_events"] = []
+    dic["my_events"]["hosted_events"] = []
     for i, row in enumerate(hosted_events_list):
-        dic["hosted_events"].append({})
+        dic["my_events"]["hosted_events"].append({})
         for key in Event.attrs():
-            dic["hosted_events"][i][key] = getattr(row, key)
+            dic["my_events"]["hosted_events"][i][key] = getattr(row, key)
 
-    dic["attending_events"] = []
+    dic["my_events"]["attending_events"] = []
     for i, row in enumerate(attending_events_list):
-        dic["attending_events"].append({})
+        dic["my_events"]["attending_events"].append({})
         for key in Event.attrs():
-            dic["attending_events"][i][key] = getattr(row, key)
+            dic["my_events"]["attending_events"][i][key] = getattr(row, key)
     
     return JSONResponse(jsonable_encoder(dic))
 

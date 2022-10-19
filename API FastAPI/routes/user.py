@@ -38,7 +38,8 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
-                        .join(Event, attending_event_rel.c.event_id == Event.id)
+                        .select_from(attending_event_rel)
+                        .join(attending_event_rel.c.user_id)
                         .filter(Event.event_host_id != id)
                         .filter(attending_event_rel.c.user_id != id)
                         .where(Event.status == True)).all()

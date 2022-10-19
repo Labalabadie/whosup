@@ -13,7 +13,7 @@ from models.channel import Channel
 from models.util import unpack, unpack_many
 from schemas.user import UserSchema, UserSchemaDetail
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from sqlalchemy import insert, select, update, delete, join, inspect
 import json
 
@@ -60,7 +60,7 @@ def get_feed(id: int):
         for key in Event.attrs():
             dic["my_events"]["attending_events"][i][key] = getattr(row, key)
     
-    return JSONResponse(jsonable_encoder(dic))
+    return JSONResponse(jsonable_encoder(dic)) or Response(HTTP_404_NOT_FOUND)
 
 
 # GET -----------------------
@@ -116,7 +116,7 @@ def get_user_info(id: int):
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
-    return conn.execute(select(User).where(User.id == id)).first()
+    return conn.execute(select(User).where(User.id == id)).first() or Response(HTTP_404_NOT_FOUND)
 
 
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])

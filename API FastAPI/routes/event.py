@@ -3,7 +3,7 @@ from config.db import conn
 from typing import List
 from models.event import Event
 from models.user import User, attending_event_rel
-from schemas.event import EventSchema, EventSchemaDetail
+from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from sqlalchemy import insert, select, update, delete
 

@@ -68,6 +68,9 @@ def get_feed(id: int):
 def get_user_info(id: int):
     """ Get detailed info of the user """
     public_data = conn.execute(select(User).where(User.id == id)).first()
+    if public_data is None:
+        return Response(status_code=HTTP_404_NOT_FOUND)
+
     hosted_events_list = conn.execute(hosted_events_qry).all()
     attending_events_list = conn.execute(attending_events_qry).all()
 

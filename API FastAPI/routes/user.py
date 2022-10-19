@@ -76,6 +76,7 @@ def get_user_info(id: int):
         return Response(status_code=HTTP_404_NOT_FOUND)
 
     hosted_events_list = conn.execute(hosted_events_qry).all()
+    print(hosted_events_list)
     attending_events_list = conn.execute(attending_events_qry).all()
 
     """contacts_list = conn.execute( # Many to many relationship join query

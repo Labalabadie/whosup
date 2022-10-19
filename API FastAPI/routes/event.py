@@ -38,7 +38,7 @@ def get_event(id: int):
     my_dic["participants"] = []
     for i, row in enumerate(participants_list):
         my_dic["participants"].append({})
-        for key in Event.attrs():
+        for key in User.attrs():
             my_dic["participants"][i][key] = getattr(row, key)
 
     return JSONResponse(jsonable_encoder(my_dic))

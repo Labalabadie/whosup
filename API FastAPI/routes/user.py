@@ -39,8 +39,10 @@ def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
                         .select_from(User)
-                        .join(User.attending_events)
-                        .filter(not_(or_(Event.event_host_id == id, User.id == id)))
+                        .join(User.attending_events)                    # Exclude from feed all events...
+                        .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
+                                         User.id == id,                  # attended by cur.user
+                                         )))
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query
@@ -55,7 +57,7 @@ def get_feed(id: int):
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
-    #dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
+    #dic["my_events"] = {}      # To be used in Topbar with my events, hosted and attending
 
     for i, row in enumerate(events_feed):
         dic["events_feed"].append({})

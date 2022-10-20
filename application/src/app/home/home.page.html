@@ -1,5 +1,6 @@
 <!-- TOP BAR -->
 <ion-header>
+	<script src="home.page.ts"></script>
 	<h1>Who’sUp</h1>
 	<div class="trailing-icons">
 		<ion-icon name="search-outline" class="icon-for-header"></ion-icon>
@@ -53,7 +54,7 @@
 			</div>
 			<div class="event-details">
 				<!-- EVENT DATE -->
-				<div class="cal">
+				<div class="cal"><span></span>
 				<div class="month">{{event.event_datetime.split('-')[1]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				  </div>
@@ -61,10 +62,10 @@
 				<div class="sub-detail">
 					<!-- LOCATION OR ONLINE -->
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
-					<div class="pin-icon">{{event.location}}</div>
+					<div class="pin-icon" slot="end"></div>
 					<!-- PARTICIPANT COUNT -->
 					<!-- script to count participant ids to show here -->
-					<div class="participant-count">6/{{event.max_people}}</div>
+					<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
 				</div>
 			</div>
 		</div>
@@ -106,4 +107,5 @@
 		<li><a class="map-icon" [routerLink]="['/map/']"></a></li>
 		<li><a class="person-icon" [routerLink]="['/user/']"></a></li>
 	</ul>
+
 </ion-footer>

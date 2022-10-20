@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from models.event import Event
 from models.user import User, attending_event_rel
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_405_METHOD_NOT_ALLOWED
 from sqlalchemy import insert, select, update, delete
 
 eventAPI = APIRouter()
@@ -33,8 +33,8 @@ def get_event(id: int):
 
     # This loop creates a dict from the query object's basic attributes (not relational)
     dic = {}
-    for key in User.attrs():
-            dic[key] = public_data.__getattribute__(key)
+    for key in Event.attrs():
+        dic[key] = public_data.__getattribute__(key)
 
     # This loops parses only needed attrs from the relational query response
     dic["participants"] = []
@@ -52,12 +52,13 @@ def get_all_events():
     public_data =  conn.execute(select(Event).where(Event.status == True)).fetchall()
 
     # This loop creates a dict from the query object's basic attributes (not relational)
-    dic = {}
-    for key in User.attrs():
-            dic[key] = public_data.__getattribute__(key)
+    list = []
+    for i, row in enumerate(public_data):
+        list.append({})
+        for key in Event.attrs():
+            list[i][key] = getattr(row, key)
 
-    return JSONResponse(jsonable_encoder(dic))
-
+    return JSONResponse(jsonable_encoder(list))
 
 
 @eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
@@ -119,6 +120,11 @@ def delete_event(id: int):
 @eventAPI.post('/event/{event_id}/join', tags=["Events"])
 def join_event(event_id: int, user_id: int):
     """ Join event by ID """
+    event = conn.execute(select(Event).where(Event.id == event_id)).first()
+
+    if event.event_host_id == user_id:
+        return Response(status_code=HTTP_405_METHOD_NOT_ALLOWED)
+
     conn.execute(insert(attending_event_rel)
                  .values(user_id=user_id, event_id=event_id)
                  .prefix_with("IGNORE", dialect="mysql"))

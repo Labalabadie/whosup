@@ -27,7 +27,7 @@
 				<div class="emoji"></div>
 			</div>
 			<div class="event-details">
-				<div class="calendar-icon"></div>
+				<div class="calendar-icon" ></div>
 				<div class="sub-detail">
 					<div class="pin-icon"></div>
 					<p class="participant-count">50/100</p>
@@ -48,14 +48,15 @@
 			</div>
 			<div class="event-title">
 				<!-- EVENT NAME -->
-				<h3>{{event.name}}</h3>
+			<h3>{{event.name}}</h3>
 				<!-- EVENT DESCRIPTION -->
 				<h5>{{event.description}}</h5>
 			</div>
 			<div class="event-details">
 				<!-- EVENT DATE -->
+				<!--CALENDAR ICON-->>
 				<div class="cal"><span></span>
-				<div class="month">{{event.event_datetime.split('-')[1]}}</div>
+				<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				  </div>
 				

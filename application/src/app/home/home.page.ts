@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
 
   events = [];
+  //Dynamic calendar icon
+  Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
 
   constructor(private eventcrudService: EventCrudService, private router: Router) {}
@@ -36,4 +38,7 @@ export class HomePage implements OnInit {
  //   this.router.navigate(['/eventdetail']);
  // }
 
+
 }
+
+

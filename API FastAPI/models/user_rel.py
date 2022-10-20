@@ -10,6 +10,13 @@ attending_event_rel = Table(
     Column("event_id", Integer, ForeignKey("event.id"), primary_key=True),
 )
 
+joined_groups_rel = Table(
+    "joined_groups_rel",
+    Base.metadata,
+    Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True),
+    Column("group_id", Integer, ForeignKey("group.id"), primary_key=True),
+)
+
 
 """contact_rel = Table(
     "contact_rel",

@@ -3,6 +3,8 @@ from config.db import conn
 from typing import List
 from models.group import Group
 from schemas.group import GroupSchema
+from models.event import Event
+from models.user import User, attending_event_rel
 from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
 
@@ -23,8 +25,15 @@ def get_inactive_groups():
 
 
 @groupAPI.get('/group/{id}', response_model=GroupSchema, tags=["Groups"])
-def get_group(id: str):
+def get_group(id: int):
     """ Get group by id """
+    public_data = conn.execute(select(Group).where(Group.id == id)).first()
+    if public_data is None:
+        return Response(status_code=HTTP_404_NOT_FOUND)
+
+    attending_events_list = conn.execute(select(attending_event_rel, Event) # Many to many relationship join query
+                    .join(Event, attending_event_rel.c.event_id == Event.id)
+                    .where(attending_event_rel.c.group_id == id)).all()
 
     return conn.execute(select(Group).where(Group.id == id)).first()
 

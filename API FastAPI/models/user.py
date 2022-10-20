@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, ForeignKey
-from models.user_rel import attending_event_rel#, contact_rel
+from models.user_rel import attending_event_rel, joined_groups_rel #, contact_rel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from models.base_model import BaseModel, Base
@@ -22,6 +22,7 @@ class User(BaseModel):
     #in_contacts_of = relationship("User", secondary=contact_rel, back_populates='contacts')
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
+    joined_groups = relationship('Group', back_populates='group_members', secondary=joined_groups_rel)
 
     @classmethod
     def attrs(cls, str=None):

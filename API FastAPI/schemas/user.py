@@ -3,7 +3,7 @@ from typing import Any, Union
 from datetime import datetime
 from pydantic import BaseModel as pyBaseModel
 
-class UserSchema(pyBaseModel):
+class UserSchemaCreation(pyBaseModel):
     id: int
     name: str = ""
     email: str = ""
@@ -12,6 +12,14 @@ class UserSchema(pyBaseModel):
     created_at: Any
     updated_at: Any
 
+class UserSchema(pyBaseModel):
+    id: int
+    name: str = ""
+    email: str = ""
+    password: str = ""
+    phone: str = ""
+    created_at: Any
+    updated_at: Any
 
 class UserSchemaDetail(pyBaseModel):
     id: int

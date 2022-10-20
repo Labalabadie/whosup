@@ -14,7 +14,7 @@ from models.util import unpack, unpack_many
 from schemas.user import UserSchema, UserSchemaDetail
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
-from sqlalchemy import insert, select, update, delete, join, inspect
+from sqlalchemy import insert, select, update, delete, join, inspect, and_, or_, not_
 import json
 
 key = Fernet.generate_key()
@@ -24,9 +24,6 @@ userAPI = APIRouter()
 
 
 # QUERIES -------------------
-events_feed_qry = (select(Event)
-                    .where(Event.status == True))
-
 hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query
                     .join(Event)
                     .where(User.id == id))
@@ -41,6 +38,11 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
+                        .select_from(User)
+                        .join(User.attending_events)                    # Exclude from feed all events...
+                        .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
+                                         User.id == id,                  # attended by cur.user
+                                         )))
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query

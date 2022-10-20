@@ -53,7 +53,11 @@
 			</div>
 			<div class="event-details">
 				<!-- EVENT DATE -->
-				<div class="calendar-icon"><span class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</span></div>
+				<div class="cal">
+				<div class="month">{{event.event_datetime.split('-')[1]}}</div>
+					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
+				  </div>
+				
 				<div class="sub-detail">
 					<!-- LOCATION OR ONLINE -->
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->

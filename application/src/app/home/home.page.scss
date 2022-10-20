@@ -109,3 +109,25 @@ a {
 	min-width: 40px;
 	min-height: 40px;
 }
+
+.cal {
+  display: inline-block;
+  border: .1px solid #CCCAC5;
+  background-color: #FFF;
+  width: 40px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+.cal .month {
+  height: 10px;
+  line-height: 12.5px;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  background-color: #E75951;
+  color: #FFF;
+}
+.cal .date {
+  font-size: 1.2rem;
+  color: #585858;
+  line-height: 30px;
+}

@@ -13,7 +13,7 @@ class EventSchema(pyBaseModel):
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str = "Location"
     description: str = "Description"
-    image_URL: str = "https://i.scdn.co/image/ab6761610000e5eba317336b899ab2f39c0ede62"
+    image_URL: str = "../src/assets/images/event-profile-icon.png"
     icon: str = ""
     max_people: int = 1
     people_count: int = 0 

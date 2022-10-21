@@ -12,11 +12,11 @@
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<div type="button" id="image_URL_trig" value="click" class="event-pic"></div>
-			<ion-popover class="popover" trigger="image_URL_trig" triggerAction="click">
+			<div type="button" id="event-image-button" value="click" class="event-pic"></div>
+			<ion-popover class="popover" trigger="event-image-button" triggerAction="click">
 				<ng-template>
 					<ion-content class="ion-padding">
-						
+						<ion-input formControlName="image_URL" type="url" placeholder="http://" class="field" (change)="refreshImg()"></ion-input>
 					</ion-content>
 				</ng-template>
 			</ion-popover>

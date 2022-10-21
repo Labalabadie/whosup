@@ -19,7 +19,7 @@ class Event(BaseModel):
     event_datetime = Column(DateTime)
     location = Column(String(255))
     description = Column(String(255))
-    imageURL = Column(String(511))
+    image_URL = Column(String(511))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
     people_count = Column(Integer, default=0)
@@ -43,6 +43,7 @@ class Event(BaseModel):
                 "location",
                 "description",
                 "icon",
+                "image_URL",
                 "max_people",
                 "people_count",
                 "group_id",

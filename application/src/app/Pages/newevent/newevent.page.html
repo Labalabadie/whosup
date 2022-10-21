@@ -12,7 +12,14 @@
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<div class="event-pic"></div>
+			<div type="button" id="image_URL_trig" value="click" class="event-pic"></div>
+			<ion-popover class="popover" trigger="image_URL_trig" triggerAction="click">
+				<ng-template>
+					<ion-content class="ion-padding">
+						
+					</ion-content>
+				</ng-template>
+			</ion-popover>
 			<div class="emoji"></div>
 		</div>
 		<!-- NAME FIELD -->

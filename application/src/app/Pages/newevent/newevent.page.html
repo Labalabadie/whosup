@@ -1,45 +1,114 @@
 <ion-header>
-	<ion-toolbar>
-	  <ion-title>Create Event</ion-title>
-	</ion-toolbar>
-  </ion-header>
+	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
+	<h1>New event</h1>
+	<div class="trailing-icons">
+		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
+	</div>
+</ion-header>
   
-  <ion-content>
-	<ion-list lines="full">
-	  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-		<ion-item>
-		  <ion-label position="floating">Event Name</ion-label>
-		  <ion-input formControlName="event_name" type="text" required></ion-input>
-		</ion-item>
-  
-		<ion-item>
-		  <ion-label position="floating">Event Datetime</ion-label>
-		  <ion-input formControlName="event_datetime" type="text" required>
-		  </ion-input>
-		</ion-item>
-  
-		<ion-item>
-		  <ion-label position="floating">Location</ion-label>
-		  <ion-input formControlName="location" type="text" required>
-		  </ion-input>
-		</ion-item>
+<ion-content>
+<main>
+	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
+	<!-- EVENT LOOKUP -->
+	<div class="event-profile-container">
+		<div class="event-photo">
+			<div class="event-pic"></div>
+			<div class="emoji"></div>
+		</div>
+		<!-- NAME FIELD -->
+		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required>
+		<div class="edit-icon"></div>
+	</div>
 
-		<ion-item>
-			<ion-label position="floating">Description</ion-label>
-			<ion-input formControlName="description" type="text" required>
-			</ion-input>
-		  </ion-item>
+	<!-- DATE FIELD -->
+	<section type="button" required>
+		<ion-modal [keepContentsMounted]="true">
+			<ion-datetime class="field" placeholder="Select a date" id="datetime" displayFormat="DD/MM/YYYY" min="2022-11-04" max="2023-12-04" value="2022-11-04T15:03:46.789"></ion-datetime>
+		</ion-modal>
+	</section>
+	<ion-input formControlName="event_datetime" type="text" placeholder="Datetime" class="field" required><ion-icon name="calendar-outline"></ion-icon><ion-icon name="time-outline"></ion-icon></ion-input>
 
-		  <ion-item>
-			<ion-label position="floating">Participants</ion-label>
-			<ion-input formControlName="participants" type="text" required>
-			</ion-input>
-		  </ion-item>
-		<ion-row>
-		  <ion-col>
-			<ion-button type="submit" color="danger" expand="block" style="text-transform: none;">Create</ion-button>
-		  </ion-col>
-		</ion-row>
-	  </form>
-	</ion-list>
-  </ion-content>
+
+<!-- PLACE BUTTON -->
+<div class="place-or-online">
+	<button type="button" class="unselected-button" value="click" (click)="togglebutton();showfield.place = true;showfield.online = false" [disabled]="btn1">
+		<div class="pin-outlined-icon"></div>
+		<div class="buttontext">Place</div>
+	</button>
+
+<!-- ONLINE BUTTON -->
+	<button type="button" class="unselected-button" value="click" (click)="togglebutton();showfield.online = true; showfield.place = false;event.config.online = true" [disabled]="btn2">
+		<div class="computer-icon-black"></div>
+		<div class="buttontext">Online</div>
+	</button>
+</div>
+
+	<!-- PLACE FIELD !! OCULTABLE -->
+	<div *ngIf="showfield.place" class="field">
+		<div class="pin-outlined-icon"></div>
+		<input formControlName="location" type="text" placeholder="Enter a place" class="text-input" required>
+	</div>
+	<!-- ONLINE FIELD !! OCULTABLE -->
+	<div *ngIf="showfield.online" class="field">
+		<div class="computer-icon-black"></div>
+		<input formControlName="location" type="text" placeholder="Enter a link" class="text-input" required>
+	</div>
+
+
+	<!-- MAX PEOPLE FIELD -->
+	<h4>Max people</h4>
+	<div class="field max-people">
+		<ion-icon name="person-outline"></ion-icon>
+		<input formControlName="max_people" type="number" placeholder="Max people" class="text-input" required>
+		<ion-icon name="information-circle-outline" class="info"></ion-icon>
+	</div>
+
+	<!-- SHOW EVENT TO -->
+	<h4>Show event to</h4>
+
+	<ion-radio-group class="options-container" value="all-contacts">
+		<!-- ALL CONTACTS -->
+		<div class="set-option">
+			<ion-radio value="all-contacts"></ion-radio>
+			<ion-label class="field all-contacts"><ion-icon name="people-circle-outline"></ion-icon>All contacts</ion-label>
+		</div>
+
+		<!-- SET GROUP -->
+		<div class="set-option">
+			<ion-radio value="group"></ion-radio>
+			<ion-item class="field">
+				<ion-icon name="people-outline"></ion-icon>
+				
+				<ion-select interface="popover" placeholder="Set group">
+					<!-- ngFor to group options -->
+					<ion-select-option value="apples">group1</ion-select-option>
+					<ion-select-option value="oranges">group2</ion-select-option>
+					<ion-select-option value="bananas">group3</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</div>
+
+		<!-- SET CHANNEL -->
+		<div class="set-option">
+			<ion-radio value="channel"></ion-radio>
+			<ion-item class="field">
+				<ion-icon name="megaphone-outline"></ion-icon>
+				
+				<ion-select interface="popover" placeholder="Set channel">
+					<!-- ngFor to group options -->
+					<ion-select-option value="apples">channel1</ion-select-option>
+					<ion-select-option value="oranges">channel2</ion-select-option>
+					<ion-select-option value="bananas">channel3</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</div>
+
+	</ion-radio-group>
+
+	<!-- DESCRIPTION FIELD -->
+	<h4>Description</h4>
+	<ion-input formControlName="description" type="text" placeholder="Description" class="textfield-description"></ion-input>
+
+</form>
+</main>
+</ion-content>

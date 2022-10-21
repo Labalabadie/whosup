@@ -6,11 +6,18 @@ import { catchError, tap } from 'rxjs/operators';
 
 export class Event {
   id: number;
-	event_name: string;
+	name: string;
+	event_host_id: number;
 	event_datetime: string;
 	location: string;
-	participants: string;
-  description: string;
+	description: string;
+	icon: string;
+	max_people: number;
+	participants: JSON;
+	group_id: number;
+	channel_id: number;
+	config: JSON;
+	status: boolean;
 }
 
 @Injectable({
@@ -19,7 +26,7 @@ export class Event {
 
 export class EventCrudService {
 
-  endpoint = 'http://localhost:8000/events';
+  endpoint = 'http://34.229.7.213:8000/event';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

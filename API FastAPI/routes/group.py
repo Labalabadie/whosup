@@ -9,7 +9,7 @@ from sqlalchemy import insert, select, update, delete
 groupAPI = APIRouter()
 
 
-
+# GET -----------------------
 @groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])
 def get_all_groups():
     """ All active groups """
@@ -29,6 +29,7 @@ def get_group(id: str):
     return conn.execute(select(Group).where(Group.id == id)).first()
 
 
+# CREATE, UPDATE, DELETE ----
 @groupAPI.post('/group', response_model=GroupSchema, tags=["Groups"])
 def create_group(this_group: GroupSchema):
     """ Create group """

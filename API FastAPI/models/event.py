@@ -1,10 +1,13 @@
 from email.policy import default
-from sqlalchemy import Table, Column, ForeignKey
+from operator import iconcat
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean, JSON
 from datetime import datetime
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from models.user import attending_event_rel
 from config.db import engine, meta
+
 
 class Event(BaseModel): 
     __tablename__ = "event" 
@@ -18,7 +21,8 @@ class Event(BaseModel):
     description = Column(String(255))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
-    participants = Column(JSON) ## related con user.id
+    people_count = Column(Integer, default=0)
+    participants = relationship("User", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)
@@ -26,3 +30,31 @@ class Event(BaseModel):
     config = Column(JSON)
     status = Column(Boolean, default=True)
 
+    @classmethod
+    def attrs(cls, str=None):
+        """ Returns a list of or attributes for the given class """
+        base_attrs = BaseModel.attrs()
+
+        public_attrs = [
+                "name",
+                "event_host_id",
+                "event_datetime",
+                "location",
+                "description",
+                "icon",
+                "max_people",
+                "people_count",
+                "group_id",
+                "channel_id",
+                "config",
+                "status"]
+
+        rel_attrs = [
+                "participants"]
+
+        if str == None:
+            return base_attrs + public_attrs
+        elif str == "all":
+            return base_attrs + public_attrs + rel_attrs
+        elif str == "rel":
+            return rel_attrs

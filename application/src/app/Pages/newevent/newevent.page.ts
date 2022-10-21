@@ -1,14 +1,14 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+import { EventCrudService } from '../../Data(services)/eventCrud.services';
 
 @Component({
   selector: 'app-create',
   templateUrl: './newevent.page.html',
   styleUrls: ['./newevent.page.scss'],
 })
+
 
 export class NeweventPage implements OnInit {
 
@@ -21,15 +21,21 @@ export class NeweventPage implements OnInit {
     private userCrudService: EventCrudService    
   ) {
     this.eventForm = this.formBuilder.group({
-      event_name: [''],
+			id: 0,
+      name: [''],
       event_datetime: [''],
       location: [''],
-      participants: [''],
-      description: ['']
+			max_people: [''],
+			participants: [],
+			event_host_id: 1,
+      description: [''],
+			group_id: [],
+			channel_id: [],
+			config: {}
     })
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onSubmit() {
     if (!this.eventForm.valid) {
@@ -45,4 +51,16 @@ export class NeweventPage implements OnInit {
     }
   }
 
+	btn1: boolean=true;
+	btn2: boolean=false;
+
+  togglebutton(){
+    this.btn1 = !this.btn1;
+		this.btn2 = !this.btn2;
+  }
+
+	showfield = {
+    place : true,
+    online : false
+  }
 }

@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { NeweventPageRoutingModule } from './newevent-routing.module';
-
 import { NeweventPage } from './newevent.page';
 
 @NgModule({
@@ -14,8 +11,8 @@ import { NeweventPage } from './newevent.page';
     FormsModule,
     IonicModule,
     NeweventPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  declarations: [NeweventPage]
+  declarations: [NeweventPage],
 })
 export class NeweventPageModule {}

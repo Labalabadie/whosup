@@ -82,6 +82,7 @@ def create_event(this_event: EventSchema):
                  "event_datetime": this_event.event_datetime,
                  "location": this_event.location, 
                  "description": this_event.description,
+                 "imageURL": this_event.imageURL,
                  "icon": this_event.icon,
                  "max_people": this_event.max_people, 
                  "config": this_event.config}
@@ -102,6 +103,7 @@ def update_event(id: int, this_event: EventSchema):
                  event_datetime=this_event.event_datetime,
                  location=this_event.location, 
                  description=this_event.description,
+                 imageURL=this_event.imageURL,
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
                  config=this_event.config,

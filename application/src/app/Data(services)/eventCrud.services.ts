@@ -29,7 +29,7 @@ export class Event {
 
 export class EventCrudService {
 
-  endpoint = 'http://54.221.93.106:8000/event';
+  endpoint = 'http://34.229.7.213:8000/event';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

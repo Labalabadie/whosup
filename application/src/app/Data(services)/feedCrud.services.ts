@@ -51,5 +51,5 @@ export class FeedCrudService {
       return of(result as T);
     };
   }  
-
+  
 }

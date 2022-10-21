@@ -11,8 +11,8 @@ import { NeweventPage } from './newevent.page';
     FormsModule,
     IonicModule,
     NeweventPageRoutingModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  declarations: [NeweventPage],
+  declarations: [NeweventPage]
 })
 export class NeweventPageModule {}

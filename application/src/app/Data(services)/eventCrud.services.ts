@@ -4,6 +4,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+
+
+
 export class Event {
   id: number;
 	name: string;
@@ -26,7 +29,7 @@ export class Event {
 
 export class EventCrudService {
 
-  endpoint = 'http://localhost:8000/event';
+  endpoint = 'http://34.229.7.213:8000/event';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

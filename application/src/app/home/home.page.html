@@ -1,5 +1,6 @@
 <!-- TOP BAR -->
 <ion-header>
+	<script src="home.page.ts"></script>
 	<h1>Who’sUp</h1>
 	<div class="trailing-icons">
 		<ion-icon name="search-outline" class="icon-for-header"></ion-icon>
@@ -19,12 +20,6 @@
 
 <!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
 	<div class="banner">
-		<ion-item *ngFor="let feed of events.attending_events">	
-			{{feed.name}}
-		</ion-item>
-		<ion-item *ngFor="let feed of events.hosted_events">	
-			{{feed.name}}
-		</ion-item>
 		<!-- LITTLE EVENT PREVIEW -->
 		<div class="little-user-event">
 			<div class="event-photo">
@@ -32,7 +27,7 @@
 				<div class="emoji"></div>
 			</div>
 			<div class="event-details">
-				<div class="calendar-icon"></div>
+				<div class="calendar-icon" ></div>
 				<div class="sub-detail">
 					<div class="pin-icon"></div>
 					<p class="participant-count">50/100</p>
@@ -45,7 +40,7 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<item *ngFor="let feed of events.events_feed">	
+	<item *ngFor="let event of events">	
 		<div class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic"></div>
@@ -53,31 +48,41 @@
 			</div>
 			<div class="event-title">
 				<!-- EVENT NAME -->
-				<h3>{{feed.name}}</h3>
+			<h3>{{event.name}}</h3>
 				<!-- EVENT DESCRIPTION -->
-				<h5>{{feed.description}}</h5>
+				<h5>{{event.description}}</h5>
 			</div>
 			<div class="event-details">
 				<!-- EVENT DATE -->
 				<!--CALENDAR ICON-->
 				<div class="cal"><span></span>
-					<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
+				<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
-				</div>
-
+				  </div>
+				
 				<div class="sub-detail">
 					<!-- LOCATION OR ONLINE -->
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
-					<div class="pin-icon"></div>
-					<!-- PARTICIPANT COUNT {{event.people_count}}-->
-					<div class="participant-count">{{event.people_count}}/{{feed.max_people}}</div>
+					<div class="pin-icon" slot="end"></div>
+					<!-- PARTICIPANT COUNT -->
+					<!-- script to count participant ids to show here -->
+					<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
 				</div>
 			</div>
 		</div>
 	</item>
 </ion-list>
 
-<!--
+<!--<ion-list>
+	<ion-item *ngFor="let event of events">
+		<ion-label>
+			<p>{{event.name}}</p>
+			<p>{{event.event_datetime}}
+			<p>{{event.location}}</p>
+			<p>{{event.max_people}}</p>
+			<p>{{event.description}}</p>
+		</ion-label>
+	
 	<div class="item-note" item-end>
 		<button ion-button clear (click)="removeEvent(event)">
 			<ion-icon name="trash" style="zoom:1.5"></ion-icon>
@@ -87,8 +92,9 @@
 		<button ion-button clear [routerLink]="['/update/', event.id]">
 			<ion-icon name="create" style="zoom:1.5"></ion-icon>
 		</button>
-	</div> 
--->
+	</div>
+</ion-item>
+</ion-list>-->
 
 </main>
 </ion-content>
@@ -102,4 +108,5 @@
 		<li><a class="map-icon" [routerLink]="['/map/']"></a></li>
 		<li><a class="person-icon" [routerLink]="['/user/']"></a></li>
 	</ul>
+
 </ion-footer>

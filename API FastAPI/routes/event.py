@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from config.db import conn
+from config.db import conn, Session
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse

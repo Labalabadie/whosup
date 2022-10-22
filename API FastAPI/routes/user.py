@@ -1,5 +1,5 @@
 from datetime import datetime
-from config.db import conn
+from config.db import conn, Session, sess
 from cryptography.fernet import Fernet
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
@@ -35,7 +35,8 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = conn.query(Event).join(User, Event.participants).filter(not_(or_(Event.event_host_id == id, User.id == id)))
+    events_query = sess.query(Event).join(User, Event.participants)
+    events_feed = events_query.filter(not_(or_(Event.event_host_id == id, User.id == id)))
 
     events_feed_list = conn.execute((Event, attending_event_rel)
                         .select_from(User)

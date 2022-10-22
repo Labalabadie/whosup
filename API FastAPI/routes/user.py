@@ -35,8 +35,9 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = sess.query(Event).join(User, Event.participants).filter(not_(or_(Event.event_host_id == id, User.id == id)))
-
+    query = sess.query(Event).join(User, Event.participants).filter(not_(or_(Event.event_host_id == id, User.id == id)))
+    events_feed = query.query.all()
+    
     print(events_feed)
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 

@@ -10,5 +10,5 @@ conn = engine.connect()
 
 Base = declarative_base(metadata=meta)
 
-Session = sessionmaker(bind=engine, autoflush=True, transactional=True)
+Session = sessionmaker(bind=engine, autoflush=True)
 sess = Session()

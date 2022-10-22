@@ -49,7 +49,8 @@ input[type="radio"] {
 	}
 
 form {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	width: 100%;
 	height: auto;
 	gap: 10px;
@@ -153,15 +154,14 @@ button:disabled {
 	width: 100%;
 	gap: 8px;
 }
-.options-container .field {
-	width: 500px;
+.set-option .field {
+	max-width: 500px;
 }
-.field.all-contacts {
-	max-width: 200px;
+label.field.all-contacts {
+	width: 200px;
 }
 ion-radio {
-	width: 20px;
-	height: 20px;
+	min-width: 20px;
 	--color: rgb(33, 33, 33, 1);
 	--color-checked: rgb(33, 33, 33, 1);
 }
@@ -180,10 +180,6 @@ ion-select {
 	width: 100%;
 	padding-left: 10px;
   font-size: 14px;
-}
-main ion-icon {
-	font-size: 20px;
-	width: 20px;
 }
 
 .pin-outlined-icon {

@@ -20,6 +20,9 @@ f = Fernet(key)
 
 userAPI = APIRouter()
 
+# proximamente ...
+#@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
+#def get_feed():
 
 # QUERIES -------------------
 hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query

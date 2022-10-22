@@ -3,6 +3,7 @@
 	<script src="home.page.ts"></script>
 	<h1>Who’sUp</h1>
 	<div class="trailing-icons">
+		<!-- <ion-searchbar animated="true" placeholder="Explore" style="text-align: left"></ion-searchbar> -->
 		<ion-icon name="search-outline" class="icon-for-header"></ion-icon>
 		<ion-icon name="notifications-outline" class="icon-for-header"></ion-icon>
 	</div>
@@ -10,7 +11,6 @@
 
 <!-- MAIN -->
 <ion-content>
-<!-- <ion-searchbar animated="true" placeholder="Explore" style="text-align: left"></ion-searchbar> -->
 <main>
 	<div class="my-events">
 		<h4>My events</h4>
@@ -68,7 +68,7 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<item *ngFor="let event of events.events_feed">	
+	<item *ngFor="let event of events.events_feed">
 		<!--FALTA QUE TOME LOS CORRECTOS, UNIR CON BACK-->
 		<div class="event-instance">
 			<div class="event-photo">
@@ -82,48 +82,23 @@
 			<h5>{{event.description}}</h5>
 			</div>
 			<div class="event-details">
-				<!-- EVENT DATE -->
+			<!-- EVENT DATE -->
 				<!--CALENDAR ICON-->
 				<div class="cal"><span></span>
-				<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
+					<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				</div>
-				
+
 				<div class="sub-detail">
-					<!-- LOCATION OR ONLINE -->
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
 					<div class="pin-icon" slot="end"></div>
 					<!-- PARTICIPANT COUNT -->
-					<!-- script to count participant ids to show here -->
 					<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
 				</div>
 			</div>
 		</div>
-	</item>
+	</a>
 </ion-list>
-
-<!--<ion-list>
-	<ion-item *ngFor="let event of events">
-		<ion-label>
-			<p>{{event.name}}</p>
-			<p>{{event.event_datetime}}
-			<p>{{event.location}}</p>
-			<p>{{event.max_people}}</p>
-			<p>{{event.description}}</p>
-		</ion-label>
-	
-	<div class="item-note" item-end>
-		<button ion-button clear (click)="removeEvent(event)">
-			<ion-icon name="trash" style="zoom:1.5"></ion-icon>
-		</button>
-	</div>
-	<div class="item-note" item-end>
-		<button ion-button clear [routerLink]="['/update/', event.id]">
-			<ion-icon name="create" style="zoom:1.5"></ion-icon>
-		</button>
-	</div>
-</ion-item>
-</ion-list>-->
 
 </main>
 </ion-content>
@@ -137,5 +112,4 @@
 		<li><a class="map-icon" [routerLink]="['/map/']"></a></li>
 		<li><a class="person-icon" [routerLink]="['/user/']"></a></li>
 	</ul>
-
 </ion-footer>

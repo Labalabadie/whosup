@@ -1,43 +1,82 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title style="color: #fff; font-family: Poppins !important; font-size: 40px">
-      Who's Up<ion-icon style="position: absolute; font-size: 25
-px; margin-top: 8px; color: red" name="pin-outline"></ion-icon>
-    </ion-title>
-    <ion-button shape="round" slot="end" style="--color: black;" fill="clear">
-      <ion-icon style="font-size: 40px" name="search-outline"></ion-icon>
-    </ion-button>
-    <ion-button style="--color: black;font-size: 28px" shape="round" slot="end" fill="clear">
-      <ion-icon name="notifications-outline"></ion-icon>
-    </ion-button>
-  </ion-toolbar>
+<!-- TOP BAR -->
+<ion-header>
+	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
+	<h1>Event name</h1>
+	<div class="trailing-icons">
+		<ion-icon name="ellipsis-vertical" class="icon-for-header"></ion-icon>
+		<!-- POPOVER OPTIONS -->
+		<!--
+	<div class="item-note" item-end>
+		<button ion-button clear (click)="removeEvent(event)">
+			<ion-icon name="trash" style="zoom:1.5"></ion-icon>
+		</button>
+	</div>
+	<div class="item-note" item-end>
+		<button ion-button clear [routerLink]="['/update/', event.id]">
+			<ion-icon name="create" style="zoom:1.5"></ion-icon>
+		</button>
+	</div>
+-->
+	</div>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-searchbar animated="true" placeholder="Explore" style="text-align: left"></ion-searchbar>
+<!-- MAIN -->
+<ion-content>
+<main>
+	<!-- LOOKUP -->
+	<div class="lookup">
+		<!-- EVENT DATE -->
+		<div class="cal"><span></span>
+			<div class="month">OCT</div> <!-- {{Months[event.event_datetime.split('-')[1]]}} -->
+			<div class="date">21</div> <!-- {{event.event_datetime.split('-')[2].split('T')[0]}} -->
+		</div>
+		<!-- EVENT IMAGE -->
+		<div class="event-photo">
+			<div class="event-pic"></div>
+			<div class="emoji"></div><!-- <ion-icon name="happy-outline"></ion-icon> -->
+		</div>
+		<!-- PARTICIPANT COUNT  {{event.people_count}}/{{event.max_people}} -->
+		<div class="participant-count">100/100</div>
+	</div>
 
+	<!-- DETAILS CONTAINER -->
+	<div class="join-container">
+		<div class="time-and-place">
+			<!-- TIME -->
+			<div class="detail-div"><ion-icon name="time-outline"></ion-icon>2:00 PM - 6:00 PM</div>
+			<!-- PLACE -->
+			<!-- if config.online = true, show computer icon, else show pin -->
+			<div class="detail-div"><div class="pin-icon"></div>Parquesito</div>
+		</div>
+		<!-- JOIN BUTTON -->
+		<button class="join-button">Join</button>
+	</div>
 
-  <div id="container">
-    <strong>Eventos</strong>
-  </div>
+	<!-- DESCRIPTION -->
+	<h4>Description</h4>
+	<p class="description-body">Comer papita</p>
 
-  <ion-list>
+	<!-- PARTICIPANTS -->
+	<h4>Participants</h4>
+	<item><!-- *ngFor="let participant of participants" -->
+		<div class="participant">
+			<div class="user-pic"></div>
+			<h3>Pepocho</h3>
+			<!-- if participant.id == event.host_id, show Creator -->
+			<p>Creator</p>
+		</div>
+	</item>
 
-		<ion-item *ngFor="let event of events">
-      <ion-label>
-				<p>{{event.event_name}}</p>
-				<p>{{event.event_datetime}}
-        <p>{{event.descritpion}}</p>
-        <p>{{event.location}}</p>
-        <p>{{event.participants}}</p>
-        <p>{{event.event_status}}</p>
-        <p>{{event.nonolist}}</p>
-      </ion-label>
-			
+</main>
+</ion-content>
 
-   
-    
-
-    
-  </ion-item>
-	</ion-list>
+<!-- BOTTOM BAR -->
+<ion-footer>
+	<ul class="menu">
+		<li><a class="home-icon" [routerLink]="['/home/']"></a></li>
+		<li><a [routerLink]="['/explore/']"><ion-icon name="search-outline" class="icon-for-header"></ion-icon></a></li>
+		<li><a class="new-event-icon" [routerLink]="['/newevent/']"></a></li>
+		<li><a class="map-icon" [routerLink]="['/map/']"></a></li>
+		<li><a class="person-icon" [routerLink]="['/user/']"></a></li>
+	</ul>
+</ion-footer>

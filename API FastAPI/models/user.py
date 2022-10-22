@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, ForeignKey
-from models.user_rel import attending_event_rel#, contact_rel
+from .user_rel import attending_event_rel#, contact_rel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from models.base_model import BaseModel, Base
@@ -8,7 +8,7 @@ class User(BaseModel):
     __tablename__ = "user_data"
     name = Column(String(255))
 
-    email = Column(String(255))
+    email = Column(String(255), unique=True)
     password = Column(String(255))
     phone = Column(String(255))
 

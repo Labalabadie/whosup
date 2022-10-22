@@ -1,7 +1,15 @@
 from socket import AI_NUMERICHOST
-from typing import Any, Union
+from typing import Any, Optional, Union, Optional
 from datetime import datetime
 from pydantic import BaseModel as pyBaseModel
+
+class Token(pyBaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(pyBaseModel):
+    email: Union[str, None] = None
 
 class UserSchema(pyBaseModel):
     id: int
@@ -11,6 +19,7 @@ class UserSchema(pyBaseModel):
     phone: str = ""
     created_at: Any
     updated_at: Any
+    status: Optional[bool] = None
 
 
 class UserSchemaDetail(pyBaseModel):
@@ -28,3 +37,9 @@ class UserSchemaDetail(pyBaseModel):
     in_contacts_of: Any
 
 
+class UserInDB(UserSchema):
+    hashed_password: str
+
+class UserSchemaAuth(pyBaseModel):
+    email: str
+    password: str

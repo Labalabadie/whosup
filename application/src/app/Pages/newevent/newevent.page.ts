@@ -60,8 +60,6 @@ export class NeweventPage implements OnInit {
   refreshImg(value) {
     let x = document.getElementById("event-image-button");
     x.style.backgroundImage = "url (" + this.eventForm.value.image_URL + ")"
-
-
-    console.log(this.eventForm.value.image_URL);
+    console.log("url (" + this.eventForm.value.image_URL + ")");
   }
 }

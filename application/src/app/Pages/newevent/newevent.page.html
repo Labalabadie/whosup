@@ -5,7 +5,7 @@
 		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
 	</div>
 </ion-header>
-
+  
 <ion-content>
 <main>
 	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
@@ -78,7 +78,7 @@
 			<ion-radio value="group"></ion-radio>
 			<item class="field">
 				<ion-icon name="people-outline"></ion-icon>
-
+				
 				<ion-select interface="popover" placeholder="Set group">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">group1</ion-select-option>
@@ -93,7 +93,7 @@
 			<ion-radio value="channel"></ion-radio>
 			<item class="field">
 				<ion-icon name="megaphone-outline"></ion-icon>
-
+				
 				<ion-select interface="popover" placeholder="Set channel">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">channel1</ion-select-option>

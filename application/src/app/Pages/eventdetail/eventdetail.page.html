@@ -3,20 +3,21 @@
 	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
 	<h1>Event name</h1>
 	<div class="trailing-icons">
-		<ion-icon name="ellipsis-vertical" class="icon-for-header"></ion-icon>
-		<!-- POPOVER OPTIONS -->
-		<!--
-	<div class="item-note" item-end>
-		<button ion-button clear (click)="removeEvent(event)">
-			<ion-icon name="trash" style="zoom:1.5"></ion-icon>
-		</button>
-	</div>
-	<div class="item-note" item-end>
-		<button ion-button clear [routerLink]="['/update/', event.id]">
-			<ion-icon name="create" style="zoom:1.5"></ion-icon>
-		</button>
-	</div>
--->
+		<button id="click-trigger"><ion-icon name="ellipsis-vertical" class="icon-for-header"></ion-icon></button>
+		<!-- POPOVER -->
+		<ion-popover trigger="click-trigger" side="left" alignment="start" triggerAction="click">
+			<ng-template>
+				<div class="popover">
+					<!-- POPOVER OPTIONS -->
+					<button [routerLink]="['/update/', event.id]">Edit<ion-icon name="pencil-sharp"></ion-icon></button>
+					<button>Share<ion-icon name="share-social-outline"></ion-icon></button>
+					<button>Add to calendar<ion-icon name="today-outline"></ion-icon></button>
+					<button>Mute<ion-icon name="notifications-off-outline"></ion-icon></button>
+					<button>Unjoin<ion-icon name="person-remove-outline"></ion-icon></button>
+					<button (click)="removeEvent(event)">Delete<ion-icon name="trash-outline"></ion-icon></button>
+				</div>
+			</ng-template>
+		</ion-popover>
 	</div>
 </ion-header>
 

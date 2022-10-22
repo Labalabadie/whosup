@@ -225,16 +225,37 @@ ion-select {
 	margin-bottom: auto;
 	margin-left: -15px;
 }
-@media (max-width: 640px) {
-	.emoji {
-		margin-bottom: auto;
-		margin-right: auto;
-		height: auto;
-		align-self: center;
-	}
-}
 .emoji {
 	cursor: pointer;
 	height: 26px;
 	width: 26px;
+}
+.event-photo .addimg {
+	font-size: 28px;
+	color: rgba(12, 179, 190, 1);
+	--ionicon-stroke-width: 40px;
+}
+.addimg {
+	display: flex;
+	position: relative;
+	min-width: 30px;
+	width: auto;
+	border: none;
+	margin-right: auto;
+	margin-top: auto;
+	margin-left: -28px;
+}
+.info {
+	color: darkgray;
+}
+.popover.info {
+	padding: 10px;
+	font-size: 12px;
+}
+ion-popover::part(content) {
+	width: 140px;
+	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+}
+ion-popover::part(backdrop) {
+	background-color: transparent;
 }

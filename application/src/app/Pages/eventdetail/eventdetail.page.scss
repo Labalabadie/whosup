@@ -6,16 +6,18 @@ h4 {
 }
 .lookup {
 	width: 100%;
-	padding-top: 15px;
-	padding-right: 20px;
-	padding-bottom: 15px;
-	padding-left: 20px;
+	padding: 15px 30px;
 	display: flex;
 	flex-direction: row;
 	height: auto;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	align-items: center;
 	flex-grow: 0;
+}
+.pin-icon {
+	background-size: 10px;
+	min-width: 20px;
+	height: 20px;
 }
 .join-container {
 	display: flex;
@@ -69,6 +71,7 @@ h4 {
 .participant-count {
 	margin-top: 0;
 	font-size: 24px;
+	margin-left: 0;
 }
 .event-photo {
 	margin-left: 15px;

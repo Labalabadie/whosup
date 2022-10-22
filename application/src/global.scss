@@ -171,6 +171,7 @@ ion-footer .icon-for-header {
 }
 button {
 	background-color: transparent;
+	border: none;
 }
 
 
@@ -362,6 +363,38 @@ item {
 	margin: 0;
 	margin-top: auto;
 	margin-left: auto;
+}
+
+
+/* POPOVER */
+.popover {
+	display: flex;
+	height: auto;
+	width: auto;
+	flex-direction: column;
+	align-items: flex-start;
+	background: #FFFFFF;
+	padding: 15px;
+	gap: 10px;
+	flex: none;
+}
+ion-popover::part(content) {
+	width: auto;
+	/*left: auto;
+  right: 15px;*/
+	border-radius: 10px;
+}
+.popover button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	font-size: 16px;
+	gap: 10px;
+}
+.popover ion-icon {
+	font-size: 18px;
+	--ionicon-stroke-width: 40px;
 }
 
 

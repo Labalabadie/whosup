@@ -35,14 +35,15 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = conn.execute(select(Event)
+    events_feed_list = conn.execute(select(Event)
                         .select_from(User)
                         .join(User.attending_events)                    # Exclude from feed all events...
                         .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
                                          User.id == id                  # attended by cur.user
                                          )))
                         .where(Event.status == True)).all()
-
+    print(events_feed_list)
+    
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 
                         .join(Event)
@@ -57,7 +58,7 @@ def get_feed(id: int):
     dic["events_feed"] = []     # Main events feed, List of events
     #dic["my_events"] = {}      # To be used in Topbar with my events, hosted and attending
 
-    for i, row in enumerate(events_feed):
+    for i, row in enumerate(events_feed_list):
         dic["events_feed"].append({})
         for key in Event.attrs():
             dic["events_feed"][i][key] = getattr(row, key)

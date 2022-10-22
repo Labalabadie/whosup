@@ -56,7 +56,7 @@ ion-content {
 	padding: 0;
 	height: 100%;
 }
-h1, h3, h4, h5 {
+h1, h2, h3, h4, h5 {
 	text-align: left;
 	align-self: center;
 	width: 100%;
@@ -94,27 +94,27 @@ h5 {
 
 /* CALENDAR ICON */
 .cal {
-  display: inline-block;
+  display: flex;
+	flex-direction: column;
   background-color: #FFF;
   width: 42px;
 	height: 42px;
-  font-family: Arial, sans-serif;
   text-align: center;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  box-shadow: 1px 1px 2px rgba($color: #000, $alpha: 0.3)
+  box-shadow: 0px 1px 4px rgb(0 0 0 / 20%);
 }
 .cal .month {
 	display: flex;
 	align-items: center;
 	justify-content: center;
   height: 28%;
-  font-size: 0.5rem;
-	font-weight: 600;
+  font-size: 0.6em;
+	font-weight: 700;
 	text-align: center;
-	letter-spacing: 0.10em;
+	letter-spacing: 0.20em;
   text-transform: uppercase;
   background-color: #DE8298;
   color: #FFF;
@@ -123,10 +123,12 @@ h5 {
 }
 .cal .date {
   font-size: 1.2rem;
-	font-weight: 500;
+	font-weight: 600;
   color: #585858;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 /* HEADER / TOP BAR */
@@ -162,6 +164,7 @@ ion-header {
 	display: flex;
 	align-items: center;
 	align-content: center;
+	cursor: pointer;
 }
 ion-footer .icon-for-header {
 	font-size: 36px;
@@ -185,12 +188,9 @@ main {
 	margin-bottom: auto;
 	flex-wrap: wrap;
 }
-@media (max-width: 640px) {
-	.main {
-		width: auto;
-		align-self: stretch;
-		flex-grow: 1;
-	}
+main ion-icon {
+	font-size: 20px;
+	width: 20px;
 }
 
 /* ICONS */
@@ -238,14 +238,15 @@ ion-header div .search-icon {
 
 /* EVENT INSTANCE BOX */
 
-.event-instance {
+item {
+	width: 100%;
+}
+.event-instance, .participant {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
-	width: auto;
-	align-self: stretch;
 	padding: 10px;
 	gap: 10px;
+	align-items: center;
 }
 @media (max-width: 640px) {
 	.event-instance {
@@ -270,15 +271,6 @@ ion-header div .search-icon {
 	margin-top: auto;
 	margin-bottom: auto;
 }
-@media (max-width: 640px) {
-	.event-title {
-		margin-top: auto;
-		margin-bottom: auto;
-		margin-left: -5px;
-		width: auto;
-		flex-grow: 1;
-	}
-}
 .event-photo {
 	display: flex;
 	flex-direction: row;
@@ -286,7 +278,7 @@ ion-header div .search-icon {
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.event-pic {
+.event-pic, .user-pic {
 	display: flex;
 	position: relative;
 	min-width: 60px;
@@ -317,6 +309,7 @@ ion-header div .search-icon {
 	justify-content: space-between;
 	align-items: center;
 	align-content: center;
+	gap: 5px;
 }
 @media (max-width: 640px) {
 	.event-details {
@@ -326,26 +319,12 @@ ion-header div .search-icon {
 		margin-right: auto;
 	}
 }
-.calendar-icon {
-	display: flex;
-	position: relative;
-	min-width: 40px;
-	min-height: 40px;
-	background-image: url("../src/assets/images/calendar-icon.png");
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: 100%;
-	max-width: 50px;
-	border: none;
-}
 .sub-detail {
 	display: flex;
 	flex-direction: row;
-	max-width: 100%;
-	justify-content: space-evenly;
+	width: 100%;
 	align-self: stretch;
-	width: auto;
-	align-items: flex-start;
+	align-items: flex-end;
 	align-content: center;
 	margin-top: auto;
 	gap: 4px;
@@ -353,7 +332,7 @@ ion-header div .search-icon {
 .pin-icon {
 	display: flex;
 	position: relative;
-	min-width: 8px;
+	min-width: 14px;
 	min-height: 14px;
 	background-image: url("../src/assets/images/pin-icon.png");
 	background-repeat: no-repeat;
@@ -379,9 +358,10 @@ ion-header div .search-icon {
 }
 .participant-count {
 	font-size: 11px;
-	line-height: 11px;
+	line-height: 100%;
 	margin: 0;
 	margin-top: auto;
+	margin-left: auto;
 }
 
 

@@ -34,10 +34,10 @@ export class HomePage implements OnInit {
     }
   }
 
- // eventDetail(events) {
- //     this.eventcrudService.getEvent(events.id)
- //   this.router.navigate(['/eventdetail']);
- // }
+  eventDetail(events) {
+      this.eventcrudService.getEvent(events.id)
+    this.router.navigate(['/eventdetail/events.id']);
+  }
 
 }
 

@@ -4,7 +4,6 @@ from cryptography.fernet import Fernet
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models.base_model import Base
 from models.user import User, attending_event_rel#, contact_rel
 from models.event import Event
 from models.group import Group
@@ -36,7 +35,7 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
-    events_feed = Base.Event.query.join(User, Event.participants).filter(not_(or_(Event.event_host_id == id, User.id == id)))
+    events_feed = conn.query(Event).join(User, Event.participants).filter(not_(or_(Event.event_host_id == id, User.id == id)))
 
     events_feed_list = conn.execute((Event, attending_event_rel)
                         .select_from(User)

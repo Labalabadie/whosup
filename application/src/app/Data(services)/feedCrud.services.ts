@@ -37,7 +37,7 @@ export class FeedCrudService {
   constructor(private httpClient: HttpClient) { }
 
   getFeedEvents(): Observable<Feed[]> {
-    return this.httpClient.get<Feed[]>(this.endpoint + '2' + '/feed')
+    return this.httpClient.get<Feed[]>(this.endpoint + '1' + '/feed')
       .pipe(
         tap(Events => console.log('Events retrieved!')),
         catchError(this.handleError<Feed[]>('Get Feed', []))

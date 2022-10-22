@@ -46,7 +46,7 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<a [routerLink]="['/eventdetail/{{event.id}}']" *ngFor="let event of events">	
+	<a [routerLink]="['/eventdetail/{{event.id}}']" *ngFor="let event of events">
 		<div class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic"></div>
@@ -65,7 +65,7 @@
 					<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				</div>
-				
+
 				<div class="sub-detail">
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
 					<div class="pin-icon" slot="end"></div>

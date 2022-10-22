@@ -18,7 +18,7 @@ export class NeweventPage implements OnInit {
     private router: Router,
     public formBuilder: FormBuilder,
     private zone: NgZone,
-    private userCrudService: EventCrudService    
+    private userCrudService: EventCrudService
   ) {
     this.eventForm = this.formBuilder.group({
 			id: 0,

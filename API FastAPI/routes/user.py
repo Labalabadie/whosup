@@ -39,8 +39,8 @@ def get_feed(id: int):
                         .select_from(User)
                         .join(User.attending_events)                    # Exclude from feed all events...
                         """.filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
-                                         User.id == id                  # attended by cur.user
-                                         )))"""
+                                         User.id == id))                   # attended by cur.user
+                                         )"""
                         .where(Event.status == True)).all()
     print(events_feed_list)
 

@@ -70,7 +70,7 @@ export class NeweventPage implements OnInit {
     place : true,
     online : false
   }
-
+}
 
   refreshImg(value) {
     let x = document.getElementById("event-image-button") as HTMLImageElement;

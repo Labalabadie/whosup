@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EventCrudService } from '../Data(services)/eventCrud.services';
-import { FeedCrudService } from '../Data(services)/feedCrud.services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,17 +14,16 @@ export class HomePage implements OnInit {
   Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
 
-  constructor(private feedcrudService: FeedCrudService, private router: Router) {}
+
+  constructor(private eventcrudService: EventCrudService, private router: Router) {}
 
   ngOnInit() {
-  	this.feedcrudService.getFeedEvents()
+  	this.eventcrudService.getEvents()
   		.subscribe(data => {
 	  		this.events = data;
   		})
-
 	}
 
-/*
   removeEvent(events,) {
     if (window.confirm('Are you sure')) {
       this.eventcrudService.deleteEvent(events.id)
@@ -35,12 +33,11 @@ export class HomePage implements OnInit {
       )
     }
   }
-*/
- // eventDetail(events) {
- //     this.eventcrudService.getEvent(events.id)
- //   this.router.navigate(['/eventdetail']);
- // }
 
+  eventDetail(events) {
+      this.eventcrudService.getEvent(events.id)
+    this.router.navigate(['/eventdetail/events.id']);
+  }
 
 }
 

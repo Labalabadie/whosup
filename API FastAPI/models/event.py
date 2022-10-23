@@ -23,7 +23,7 @@ class Event(BaseModel):
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
     people_count = Column(Integer, default=0)
-    participants = relationship("User", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
+    participants = relationship("User", primaryjoin="Event.id==attending_event_rel.c.event_id", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)

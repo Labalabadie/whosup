@@ -39,13 +39,14 @@ def get_feed(id: int):
     #events_feed = query.all()
 
 
-    events_feed = conn.execute(select(Event)
-                    .select_from(User)
-                    .outerjoin(Event, User.attending_events)                    # Exclude from feed all events...
+    old_events_feed = conn.execute(select(Event)
+                    .join(Event.participants)                    # Exclude from feed all events...
                     .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
                                         User.id == id                  # attended by cur.user
                                         )))
                     .where(Event.status == True)).all() 
+
+    events_feed = conn.execute(select(Event.participants)).all()
     print(len(events_feed))
 
     hosted_events_list = conn.execute( # One to many relationship join query

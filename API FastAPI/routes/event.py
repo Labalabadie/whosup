@@ -28,7 +28,7 @@ def get_event(id: int):
     """ Get event by id """
 
     public_data = conn.execute(select(Event, Event.participants).where(Event.id == id)).first()
-    print(public_data)
+    print(public_data.keys())
     if public_data is None:
         return Response(status_code=HTTP_404_NOT_FOUND)
 

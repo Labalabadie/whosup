@@ -23,13 +23,6 @@ userAPI = APIRouter()
 
 
 # QUERIES -------------------
-hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query
-                    .join(Event)
-                    .where(User.id == id))
-
-attending_events_qry = (select(attending_event_rel, Event) # Many to many relationship join query
-                    .join(Event, attending_event_rel.c.event_id == Event.id)
-                    .where(attending_event_rel.c.user_id == id))
 
 
 # FEED ----------------------

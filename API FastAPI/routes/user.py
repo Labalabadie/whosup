@@ -41,7 +41,7 @@ def get_feed(id: int):
 
     events_feed = conn.execute(select(Event)
                     .select_from(User)
-                    .outerjoin(User.attending_events)                    # Exclude from feed all events...
+                    .outerjoin(Event, User.attending_events)                    # Exclude from feed all events...
                     .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
                                         User.id == id                  # attended by cur.user
                                         )))

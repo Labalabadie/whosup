@@ -39,10 +39,10 @@ def get_feed(id: int):
     #query = sess.query(Event).join(User, Event.participants, isouter=True).filter(not_(or_(Event.event_host_id == id, User.id == id)))
     #events_feed = query.all()
 
-    events_feed = conn.execute(select(Event)                                # Exclude from feed all events...
-    .where(~Event.participants.any(attending_event_rel.c.user_id==id))      # attended by cur.user,
-    .filter(not_(Event.event_host_id == id))
-    .where(Event.status == True)).all()                         # hosted by cur.user
+    events_feed = conn.execute(select(Event)
+                                .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
+                                .filter(not_(Event.event_host_id == id))
+                                .where(Event.status == True)).all()                                     
 
     print(len(events_feed))
 
@@ -212,8 +212,17 @@ def add_contact(user_id: int, contact_id: int):
 
 @userAPI.get('/user/{user_id}/contacts', tags=["Users"])
 def get_user_contacts(user_id: int):
-    """ get list of all contacts for a user """
+    """ get list of all contacts_id for a user """
     resp = conn.execute(select(contact_rel.c.contact_id)
                         .where(contact_rel.c.user_id == user_id)).all()
 
     return [x.values()[0] for x in resp] or Response(status_code=HTTP_404_NOT_FOUND)
+
+@userAPI.get('/user/{user_id}/contacts/info', tags=["Users"])
+def get_user_contacts_info(user_id: int):
+    """ get list of all contacts with details for a user """
+    resp = conn.execute(select(User, contact_rel)
+                        .join(User, contact_rel.c.contact_id==User.id)
+                        .where(contact_rel.c.user_id == user_id)).all()
+
+    return resp or Response(status_code=HTTP_404_NOT_FOUND)

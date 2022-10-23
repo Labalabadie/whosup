@@ -21,7 +21,7 @@
 <!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
 	<div class="banner">
 		<!-- LITTLE EVENT PREVIEW -->
-			<div *ngFor="let s of events.hosted_events" class="little-user-event">
+			<div *ngFor="let event of events.hosted_events" class="little-user-event">
 				<div class="event-photo">
 					<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
 					<div class="emoji">{{event.icon}}</div>
@@ -37,25 +37,6 @@
 						<!-- if config.online = true show computer, else pin -->
 						<div class="pin-icon"></div>
 						<p class="participant-count">{{event.people_count}}/{{feed.max_people}}</p>
-					</div>
-				</div>
-			</div>
-			<div *ngFor="let event of events.attending_events" class="little-user-event">
-				<div class="event-photo">
-					<div class="event-pic"></div>
-					<div class="emoji"></div>
-				</div>
-				<div class="event-details">
-					<!--CALENDAR-->
-					<div class="cal">
-						<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
-						<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
-					</div>
-					<!--ICON BELOW CALENDAR-->
-					<div class="sub-detail">
-						<!-- if config.online = true show computer, else pin -->
-						<div class="pin-icon"></div>
-						<p class="participant-count">{{feed.people_count}}/{{feed.max_people}}</p>
 					</div>
 				</div>
 			</div>

@@ -17,7 +17,8 @@ class User(BaseModel):
 
     # Relationships --
     hosted_events = relationship('Event', back_populates='event_host')
-    attending_events = relationship("Event", secondary=attending_event_rel, back_populates='participants')
+    attending_events = relationship("Event", secondary=attending_event_rel, 
+                                            back_populates='participants')
     #contacts = relationship("User", secondary=contact_rel, primarjoin=User.id==contact_rel.c.user_id)
     #in_contacts_of = relationship("User", secondary=contact_rel, back_populates='contacts')
     admin_groups = relationship('Group', back_populates='group_admin')

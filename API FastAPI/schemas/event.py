@@ -13,6 +13,7 @@ class EventSchema(pyBaseModel):
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str = "Location"
     description: str = "Description"
+    image_URL: Optional[str] 
     icon: str = ""
     max_people: int = 1
     people_count: int = 0 

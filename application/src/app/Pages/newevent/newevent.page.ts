@@ -27,6 +27,7 @@ export class NeweventPage implements OnInit {
       location: [''],
 			max_people: [''],
 			participants: [],
+      image_URL: '',
 			event_host_id: 1,
       description: [''],
 			group_id: [],
@@ -35,7 +36,12 @@ export class NeweventPage implements OnInit {
     })
   }
 
-  ngOnInit() {}
+
+  
+  ngOnInit() {
+    let x = document.getElementById("event-image-button");
+    x.addEventListener("focusout", this.refreshImg);
+  }
 
   onSubmit() {
     if (!this.eventForm.valid) {
@@ -51,6 +57,7 @@ export class NeweventPage implements OnInit {
     }
   }
 
+
 	btn1: boolean=true;
 	btn2: boolean=false;
 
@@ -64,3 +71,11 @@ export class NeweventPage implements OnInit {
     online : false
   }
 }
+
+  refreshImg(value) {
+    let x = document.getElementById("event-image-button") as HTMLImageElement;
+    x.src = this.eventForm.value.image_URL;
+    console.log(x.src);
+  }
+}
+

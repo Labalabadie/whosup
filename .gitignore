@@ -1,6 +1,6 @@
 .DS_Store
 __pycache__/
 *.DS_Store
-fastapi-mysql
+*/fastapi-mysql
 **/__pycache__/
 nohup.out

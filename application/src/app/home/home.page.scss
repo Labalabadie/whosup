@@ -105,38 +105,12 @@ a {
 		margin-right: auto;
 	}
 }
-.banner .little-user-event .event-details .calendar-icon {
+.banner .little-user-event .event-details {
 	min-width: 40px;
 	min-height: 40px;
 }
 
-.cal {
-  display: inline-block;
-  background-color: #FFF;
-  width: 40px;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  box-shadow: 1px 1px 2px rgba($color: #000, $alpha: 0.3)
-}
-.cal .month {
-  height: 10px;
-  line-height: 12.5px;
-  font-size: 0.5rem;
-  text-transform: uppercase;
-  background-color: #DE8298;
-  color: #FFF;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-.cal .date {
-  font-size: 1.2rem;
-  color: #585858;
-  line-height: 30px;
-  
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+.banner .cal {
+	width: 40px;
+	height: 40px;
 }

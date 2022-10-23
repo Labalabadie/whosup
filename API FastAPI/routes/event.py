@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from config.db import conn
+from config.db import conn, Session
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -28,6 +28,7 @@ def get_event(id: int):
     """ Get event by id """
 
     public_data = conn.execute(select(Event).where(Event.id == id)).first()
+    print(public_data.keys())
     if public_data is None:
         return Response(status_code=HTTP_404_NOT_FOUND)
 
@@ -82,6 +83,7 @@ def create_event(this_event: EventSchema):
                  "event_datetime": this_event.event_datetime,
                  "location": this_event.location, 
                  "description": this_event.description,
+                 "image_URL": this_event.image_URL,
                  "icon": this_event.icon,
                  "max_people": this_event.max_people, 
                  "config": this_event.config}
@@ -97,11 +99,11 @@ def update_event(id: int, this_event: EventSchema):
     """ Update event """
     
     conn.execute(update(Event).values(
-                 name=this_event.name, 
-                 event_host_id=this_event.event_host_id,
+                 name=this_event.name,
                  event_datetime=this_event.event_datetime,
                  location=this_event.location, 
                  description=this_event.description,
+                 image_URL=this_event.image_URL,
                  icon=this_event.icon,
                  max_people=this_event.max_people, 
                  config=this_event.config,

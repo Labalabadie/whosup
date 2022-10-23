@@ -20,8 +20,30 @@
 
 <!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
 	<div class="banner">
-		<!-- LITTLE EVENT PREVIEW -->
-			<div *ngFor="let feed of events" class="little-user-event">
+		<!-- HOSTED EVENTS -->
+		<item *ngFor="let feed of events.hosted_events">
+		<div class="little-user-event">
+			<div class="event-photo">
+				<div class="event-pic"></div>
+				<div class="emoji"></div>
+			</div>
+			<div class="event-details">
+				<!--CALENDAR-->
+				<div class="cal">
+					<div class="month">{{Months[feed.event_datetime.split('-')[1]]}}</div>
+					<div class="date">{{feed.event_datetime.split('-')[2].split('T')[0]}}</div>
+				</div>
+				<!--ICON BELOW CALENDAR-->
+				<div class="sub-detail">
+					<div class="pin-icon"></div>
+					<p class="participant-count">{{feed.people_count}}/{{feed.max_people}}</p>
+				</div>
+			</div>
+		</div>
+		</item>
+		<!--ATTENDING EVENTS-->
+		<item *ngFor="let feed of events.attending_events">
+			<div class="little-user-event">
 				<div class="event-photo">
 					<div class="event-pic"></div>
 					<div class="emoji"></div>
@@ -34,19 +56,20 @@
 					</div>
 					<!--ICON BELOW CALENDAR-->
 					<div class="sub-detail">
-						<!-- if config.online = true show computer, else pin -->
 						<div class="pin-icon"></div>
 						<p class="participant-count">{{feed.people_count}}/{{feed.max_people}}</p>
 					</div>
 				</div>
 			</div>
+		</item>
 		<!-- FIN BANNER -->
 	</div>
 
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<a [routerLink]="['/eventdetail/{{event.id}}']" *ngFor="let event of events">	
+	<item *ngFor="let event of events.events_feed">
+		<!--FALTA QUE TOME LOS CORRECTOS, UNIR CON BACK-->
 		<div class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
@@ -56,7 +79,7 @@
 				<!-- EVENT NAME -->
 			<h3>{{event.name}}</h3>
 				<!-- EVENT DESCRIPTION -->
-				<h5>{{event.description}}</h5>
+			<h5>{{event.description}}</h5>
 			</div>
 			<div class="event-details">
 			<!-- EVENT DATE -->
@@ -65,7 +88,7 @@
 					<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				</div>
-				
+
 				<div class="sub-detail">
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
 					<div class="pin-icon" slot="end"></div>

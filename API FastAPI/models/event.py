@@ -19,13 +19,10 @@ class Event(BaseModel):
     event_datetime = Column(DateTime)
     location = Column(String(255))
     description = Column(String(255))
-    image_URL = Column(String(511), default="event-profile-icon.png")
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
     people_count = Column(Integer, default=0)
-    participants = relationship("User", primaryjoin="Event.id==attending_event_rel.c.event_id", 
-                                        secondary=attending_event_rel, 
-                                        back_populates='attending_events') ## related con user.id
+    participants = relationship("User", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)
     channel_id = Column(Integer, ForeignKey('channel.id'), default=None)
@@ -45,7 +42,6 @@ class Event(BaseModel):
                 "location",
                 "description",
                 "icon",
-                "image_URL",
                 "max_people",
                 "people_count",
                 "group_id",

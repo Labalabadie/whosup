@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, ForeignKey
-from models.user_rel import attending_event_rel, contact_rel
+from models.user_rel import attending_event_rel#, contact_rel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from models.base_model import BaseModel, Base
@@ -17,18 +17,9 @@ class User(BaseModel):
 
     # Relationships --
     hosted_events = relationship('Event', back_populates='event_host')
-    attending_events = relationship("Event", secondary=attending_event_rel, 
-                                            back_populates='participants')
-
-    contacts = relationship("User", secondary=contact_rel, 
-                                    primaryjoin="User.id==contact_rel.c.user_id",
-                                    secondaryjoin="User.id==contact_rel.c.contact_id",
-                                    back_populates='in_contacts_of')
-    in_contacts_of = relationship("User", secondary=contact_rel,
-                                        primaryjoin="User.id==contact_rel.c.contact_id",
-                                        secondaryjoin="User.id==contact_rel.c.user_id",
-                                        back_populates='contacts')
-
+    attending_events = relationship("Event", secondary=attending_event_rel, back_populates='participants')
+    #contacts = relationship("User", secondary=contact_rel, primarjoin=User.id==contact_rel.c.user_id)
+    #in_contacts_of = relationship("User", secondary=contact_rel, back_populates='contacts')
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
 

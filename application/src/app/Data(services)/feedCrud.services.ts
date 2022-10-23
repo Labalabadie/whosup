@@ -28,7 +28,7 @@ export class Feed {
 
 export class FeedCrudService {
 
-  endpoint = 'http://34.229.7.213:8000/user/';
+  endpoint = 'http://3.84.155.186:8000/user/';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

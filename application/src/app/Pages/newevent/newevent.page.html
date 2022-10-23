@@ -5,15 +5,22 @@
 		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
 	</div>
 </ion-header>
-  
+
 <ion-content>
 <main>
 	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<div class="event-pic"></div>
+			<img type="button" id="event-image-button" value="click" class="event-pic" src="../assets/images/event-profile-icon.png">
 			<div class="emoji"></div>
+			<ion-popover side="bottom" alignment="center" trigger="event-image-button" triggerAction="click">
+				<ng-template>
+					<ion-content class="ion-padding, popover-info">
+						<ion-input formControlName="image_URL" type="url" placeholder="http://" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
+					</ion-content>
+				</ng-template>
+			</ion-popover>
 			<ion-icon class="addimg" name="add-circle-outline"></ion-icon>
 		</div>
 		<!-- NAME FIELD -->

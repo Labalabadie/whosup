@@ -46,7 +46,7 @@ def get_feed(id: int):
                                         )))
                     .where(Event.status == True)).all() 
 
-    events_feed = conn.execute(select(Event).where(Event.participants == 1)).all()
+    events_feed = conn.execute(select(Event).where(Event.participants.contains(1))).all()
     print(len(events_feed))
 
     hosted_events_list = conn.execute( # One to many relationship join query

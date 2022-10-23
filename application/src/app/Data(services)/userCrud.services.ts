@@ -21,7 +21,7 @@ export class User {
 
 export class UserCrudService {
 
-  endpoint = 'http://54.221.93.106:8000/user';
+  endpoint = 'http://34.229.7.213:8000/user';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

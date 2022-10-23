@@ -1,5 +1,4 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { EventCrudService } from '../../Data(services)/eventCrud.services';
@@ -32,7 +31,8 @@ export class NeweventPage implements OnInit {
 			event_host_id: 1,
       description: [''],
 			group_id: [],
-			channel_id: []
+			channel_id: [],
+			config: {}
     })
   }
 
@@ -57,9 +57,25 @@ export class NeweventPage implements OnInit {
     }
   }
 
+
+	btn1: boolean=true;
+	btn2: boolean=false;
+
+  togglebutton(){
+    this.btn1 = !this.btn1;
+		this.btn2 = !this.btn2;
+  }
+
+	showfield = {
+    place : true,
+    online : false
+  }
+}
+
   refreshImg(value) {
     let x = document.getElementById("event-image-button") as HTMLImageElement;
     x.src = this.eventForm.value.image_URL;
     console.log(x.src);
   }
 }
+

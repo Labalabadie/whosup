@@ -14,6 +14,7 @@ export class HomePage implements OnInit {
   Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
 
+
   constructor(private eventcrudService: EventCrudService, private router: Router) {}
 
   ngOnInit() {
@@ -33,11 +34,10 @@ export class HomePage implements OnInit {
     }
   }
 
- // eventDetail(events) {
- //     this.eventcrudService.getEvent(events.id)
- //   this.router.navigate(['/eventdetail']);
- // }
-
+  eventDetail(events) {
+      this.eventcrudService.getEvent(events.id)
+    this.router.navigate(['/eventdetail/events.id']);
+  }
 
 }
 

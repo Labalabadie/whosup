@@ -38,14 +38,6 @@ def get_feed(id: int):
     #query = sess.query(Event).join(User, Event.participants, isouter=True).filter(not_(or_(Event.event_host_id == id, User.id == id)))
     #events_feed = query.all()
 
-
-    old_events_feed = conn.execute(select(Event)
-                    .join(Event.participants)                    
-                    .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
-                                        User.id == id                  # attended by cur.user
-                                        )))
-                    .where(Event.status == True)).all() 
-
     events_feed = conn.execute(select(Event)                                # Exclude from feed all events...
     .where(~Event.participants.any(attending_event_rel.c.user_id==id))      # attended by cur.user,
     .filter(not_(Event.event_host_id == id))

@@ -40,15 +40,16 @@ def get_feed(id: int):
 
 
     old_events_feed = conn.execute(select(Event)
-                    .join(Event.participants)                    # Exclude from feed all events...
+                    .join(Event.participants)                    
                     .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
                                         User.id == id                  # attended by cur.user
                                         )))
                     .where(Event.status == True)).all() 
 
-    events_feed = conn.execute(select(Event)
-    .where(~Event.participants.any(attending_event_rel.c.user_id==id))
-    .filter(not_(Event.event_host_id == id))).all()
+    events_feed = conn.execute(select(Event)                                # Exclude from feed all events...
+    .where(~Event.participants.any(attending_event_rel.c.user_id==id))      # attended by cur.user,
+    .filter(not_(Event.event_host_id == id))
+    .where(Event.status == True)).all()                         # hosted by cur.user
 
     print(len(events_feed))
 

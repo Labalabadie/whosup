@@ -15,7 +15,7 @@ h4 {
 	flex-grow: 0;
 }
 .pin-icon {
-	background-size: 10px;
+	background-size: 18px;
 	min-width: 20px;
 	height: 20px;
 }
@@ -56,9 +56,7 @@ h4 {
 .detail-div {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
 	width: 100%;
-	align-items: center;
 	gap: 10px;
 }
 .description-body {

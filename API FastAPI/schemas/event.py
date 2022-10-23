@@ -1,6 +1,6 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
-from typing import Optional, Dict, List, Union
+from typing import Optional, List, Union, Any
 from pydantic import BaseModel as pyBaseModel
 
 class EventSchema(pyBaseModel):
@@ -13,9 +13,11 @@ class EventSchema(pyBaseModel):
     event_datetime: datetime = (datetime.now() + timedelta(hours=1))
     location: str = "Location"
     description: str = "Description"
+    image_URL: Optional[str] 
     icon: str = ""
     max_people: int = 1
-    participants: List[int] = []
+    people_count: int = 0 
+    participants: Any = []
     group_id: Optional[int] = None 
     channel_id: Optional[int] = None
     

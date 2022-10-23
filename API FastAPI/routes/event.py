@@ -128,6 +128,8 @@ def delete_event(id: int):
 def join_event(event_id: int, user_id: int):
     """ Join event by ID """
     event = conn.execute(select(Event).where(Event.id == event_id)).first()
+    if event is None:
+        return Response(status_code=HTTP_404_NOT_FOUND)
 
     if event.event_host_id == user_id:
         return Response(status_code=HTTP_405_METHOD_NOT_ALLOWED)

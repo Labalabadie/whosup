@@ -11,7 +11,6 @@ export class Event {
 	event_datetime: string;
 	location: string;
 	description: string;
-  image_URL: string;
 	icon: string;
 	max_people: number;
 	participants: JSON;

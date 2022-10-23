@@ -26,7 +26,6 @@ export class NeweventPage implements OnInit {
       event_datetime: [''],
       location: [''],
 			max_people: [''],
-      image_URL: "",
 			participants: [],
 			event_host_id: 1,
       description: [''],
@@ -63,12 +62,5 @@ export class NeweventPage implements OnInit {
 	showfield = {
     place : true,
     online : false
-  }
-
-
-  refreshImg(value) {
-    let x = document.getElementById("event-image-button") as HTMLImageElement;
-    x.src = this.eventForm.value.image_URL;
-    console.log(x.src);
   }
 }

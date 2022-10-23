@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EventCrudService } from '../Data(services)/eventCrud.services';
-import { FeedCrudService } from '../Data(services)/feedCrud.services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,10 +15,10 @@ export class HomePage implements OnInit {
 
 
 
-  constructor(private eventcrudService: EventCrudService, private feedcrudService: FeedCrudService, private router: Router) {}
+  constructor(private eventcrudService: EventCrudService, private router: Router) {}
 
   ngOnInit() {
-  	this.feedcrudService.getFeedEvents()
+  	this.eventcrudService.getEvents()
   		.subscribe(data => {
 	  		this.events = data;
   		})

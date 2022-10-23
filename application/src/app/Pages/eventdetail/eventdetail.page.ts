@@ -8,19 +8,15 @@ import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
 })
 export class EventdetailPage implements OnInit {
 
- 
+  //Dynamic calendar icon
+	Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
   events = [];
 
   constructor(private eventcrudService: EventCrudService) { }
 
   ngOnInit() {
-   
-      this.eventcrudService.getEvent
-    
-    
-
-
+	
+  this.eventcrudService.getEvent
 }
-
 }

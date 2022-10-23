@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/floapp
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 export class Event {
+<<<<<<< HEAD
     id: number;
+=======
+  id: number;
+>>>>>>> origin/floapp
 	name: string;
 	event_host_id: number;
 	event_datetime: string;
@@ -29,7 +36,11 @@ export class Feed {
 
 export class FeedCrudService {
 
+<<<<<<< HEAD
   endpoint = 'http://localhost:8000/user/';
+=======
+  endpoint = 'http://34.229.7.213:8000/user/';
+>>>>>>> origin/floapp
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

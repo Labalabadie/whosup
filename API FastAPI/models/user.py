@@ -50,4 +50,8 @@ class User(BaseModel):
         elif str == "all":
             return base_attrs + public_attrs + priv_attrs
         elif str == "rel":
+<<<<<<< HEAD
             return priv_attrs
+=======
+            return priv_attrs
+>>>>>>> origin/floapp

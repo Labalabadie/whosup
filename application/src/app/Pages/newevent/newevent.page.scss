@@ -1,7 +1,11 @@
 main {
 	padding: 10px 20px;
 }
-.textfield {
+h4 {
+	text-shadow: 0px 1px 1px rgb(0 0 0 / 10%);
+	padding-left: 0;
+}
+.textfield, .textfield-description {
 	width: auto;
 	border-style: hidden;
 	background-color: transparent;
@@ -9,30 +13,78 @@ main {
 	margin: 0 auto;
 	padding: 5px;
 	font-size: 18px;
+	border-bottom-style: solid;
+	border-color: rgb(170, 170, 170);
+	border-width: 1px;
 }
+.textfield-description {
+	width: 100%;
+	text-align: left;
+}
+input {
+	border-style: hidden;
+	border: none;
+	width: 100%;
+}
+
+input[type="radio"] {
+	outline: 2px;
+	background-color: rgb(33, 33, 33, 1);
+	border-radius: 10px;
+	cursor: pointer;
+	display: inline-block;
+	height: 10px;
+	width: 10px;
+}
+.all-contacts {
+	display: flex;
+	flex-direction: row;
+	max-width: 205px;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	align-self: center;
+	margin-right: auto;
+	gap: 15px;
+	}
+
 form {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	width: 100%;
 	height: auto;
 	gap: 10px;
 	align-content: center;
+	padding-bottom: 20px;
 }
 .field {
 	align-self: stretch;
 	width: 100%;
 	border-radius: 10px;
 	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
-	padding-top: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-	padding-left: 10px;
+	padding: 10px;
 	background-color: rgba(255, 255, 255, 1);
 	display: flex;
 	height: 42px;
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
-	gap: 5px;
+	border-style: hidden;
+	gap: 10px;
+}
+.field.max-people {
+	width: 200px;
+}
+.text-input {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	border: none;
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 1);
+	height: 42px;
+	width: 100%;
 }
 .place-or-online {
 	display: flex;
@@ -72,6 +124,11 @@ form {
 	cursor: pointer;
 	gap: 5px;
 }
+button:disabled {
+	background-color: #7EC6CB;
+	border: 1px solid #79747E;
+	box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.25);
+}
 .buttontext {
 	margin-left: 5px;
 	font-size: 14px;
@@ -80,6 +137,51 @@ form {
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.set-option {
+	align-self: stretch;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	margin-right: auto;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 15px;
+	flex-grow: 0;
+}
+.options-container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 8px;
+}
+.set-option .field {
+	max-width: 500px;
+}
+label.field.all-contacts {
+	width: 200px;
+}
+ion-radio {
+	min-width: 20px;
+	--color: rgb(33, 33, 33, 1);
+	--color-checked: rgb(33, 33, 33, 1);
+}
+ion-radio::part(container), ion-radio.radio-checked::part(container), ion-radio::part(mark), ion-radio.radio-checked::part(mark) {
+	display: flex;
+	box-sizing: content-box !important;
+	flex-grow: 0;
+}
+ion-item {
+	--padding-end: 0;
+	--padding-start: 0;
+	--inner-padding-end: 0;
+}
+ion-select {
+	margin-left: auto;
+	width: 100%;
+	padding-left: 10px;
+  font-size: 14px;
+}
+
 .pin-outlined-icon {
 	display: flex;
 	position: relative;
@@ -123,16 +225,37 @@ form {
 	margin-bottom: auto;
 	margin-left: -15px;
 }
-@media (max-width: 640px) {
-	.emoji {
-		margin-bottom: auto;
-		margin-right: auto;
-		height: auto;
-		align-self: center;
-	}
-}
 .emoji {
 	cursor: pointer;
 	height: 26px;
 	width: 26px;
+}
+.event-photo .addimg {
+	font-size: 28px;
+	color: rgba(12, 179, 190, 1);
+	--ionicon-stroke-width: 40px;
+}
+.addimg {
+	display: flex;
+	position: relative;
+	min-width: 30px;
+	width: auto;
+	border: none;
+	margin-right: auto;
+	margin-top: auto;
+	margin-left: -28px;
+}
+.info {
+	color: darkgray;
+}
+.popover.info {
+	padding: 10px;
+	font-size: 12px;
+}
+ion-popover::part(content) {
+	width: 140px;
+	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+}
+ion-popover::part(backdrop) {
+	background-color: transparent;
 }

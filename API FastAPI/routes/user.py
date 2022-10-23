@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 from datetime import datetime, timedelta
 from webbrowser import Grail
+=======
+from datetime import datetime
+>>>>>>> origin/floapp
 from config.db import conn
 from cryptography.fernet import Fernet
-from typing import List
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -13,6 +16,7 @@ from models.event import Event
 from models.group import Group
 from models.channel import Channel
 from models.util import unpack, unpack_many
+<<<<<<< HEAD
 from schemas.user import UserSchema, UserSchemaAuth, UserSchemaDetail
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
@@ -23,12 +27,20 @@ from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from typing import Union
+=======
+from schemas.user import UserSchema, UserSchemaDetail, UserSchemaCreation
+from schemas.event import EventSchema
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from sqlalchemy import insert, select, update, delete, join, inspect, and_, or_, not_
+from typing import List
+>>>>>>> origin/floapp
 
 key = Fernet.generate_key()
 f = Fernet(key)
 
 userAPI = APIRouter()
 
+<<<<<<< HEAD
 # TOKEN ---------------------
 
 
@@ -39,11 +51,13 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+=======
+# proximamente ...
+#@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
+#def get_feed():
+>>>>>>> origin/floapp
 
 # QUERIES -------------------
-events_feed_qry = (select(Event)
-                    .where(Event.status == True))
-
 hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query
                     .join(Event)
                     .where(User.id == id))
@@ -58,6 +72,11 @@ attending_events_qry = (select(attending_event_rel, Event) # Many to many relati
 def get_feed(id: int):
     """ get feed of specified user """
     events_feed = conn.execute(select(Event)
+                        .select_from(User)
+                        .join(User.attending_events)                    # Exclude from feed all events...
+                        .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
+                                         User.id == id                  # attended by cur.user
+                                         )))
                         .where(Event.status == True)).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query
@@ -72,7 +91,11 @@ def get_feed(id: int):
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
+<<<<<<< HEAD
     #dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
+=======
+    #dic["my_events"] = {}      # To be used in Topbar with my events, hosted and attending
+>>>>>>> origin/floapp
 
     for i, row in enumerate(events_feed):
         dic["events_feed"].append({})
@@ -171,9 +194,13 @@ def get_inactive_users():
 
 
 # CREATE, UPDATE, DELETE ----
+<<<<<<< HEAD
 
 
 @userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)    
+=======
+@userAPI.post('/user', response_model=UserSchemaCreation, tags=["Users"], response_model_exclude_defaults=True)
+>>>>>>> origin/floapp
 def create_user(this_user: UserSchema):
     """ Create user """
     new_user = {"name": this_user.name, 

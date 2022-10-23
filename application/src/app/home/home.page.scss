@@ -43,6 +43,11 @@ a {
 		align-self: stretch;
 	}
 }
+.date {
+	text-align:center;
+	font-size: 19px;
+	font-weight: bold;
+}
 .link {
 	display: flex;
 	flex-direction: row;
@@ -100,7 +105,12 @@ a {
 		margin-right: auto;
 	}
 }
-.banner .little-user-event .event-details .calendar-icon {
+.banner .little-user-event .event-details {
 	min-width: 40px;
 	min-height: 40px;
+}
+
+.banner .cal {
+	width: 40px;
+	height: 40px;
 }

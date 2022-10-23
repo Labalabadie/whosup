@@ -4,14 +4,15 @@ from cryptography.fernet import Fernet
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models.user import User, attending_event_rel#, contact_rel
+from models.user import User
+from models.user_rel import attending_event_rel, contact_rel
 from models.event import Event
 from models.group import Group
 from models.channel import Channel
 from models.util import unpack, unpack_many
 from schemas.user import UserSchema, UserSchemaDetail, UserSchemaCreation
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 from sqlalchemy import insert, select, update, delete, join, inspect, and_, or_, not_
 from typing import List
 
@@ -192,3 +193,27 @@ def delete_user(id: int):
         status=False,
         updated_at=datetime.now()).where(User.id == id))   # check THIS
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
+
+
+# CONTACTS ------------------
+@userAPI.post('/user/{user_id}/contacts/add', tags=["Users"])
+def add_contact(user_id: int, contact_id: int):
+    """ add contact """
+
+    resp = conn.execute(select(contact_rel) # Check for preexisting rel
+                        .where(and_(contact_rel.c.user_id == user_id,
+                                    contact_rel.c.contact_id == contact_id))).first()
+    if resp is not None:
+        return Response(status_code=HTTP_409_CONFLICT)
+    
+    conn.execute(insert(contact_rel).values(user_id=user_id,
+                                            contact_id=contact_id))
+
+
+@userAPI.get('/user/{user_id}/contacts', tags=["Users"])
+def get_user_contacts(user_id: int):
+    """ get list of all contacts for a user """
+    resp = conn.execute(select(contact_rel.c.contact_id)
+                        .where(contact_rel.c.user_id == user_id)).all()
+
+    return [x.values()[0] for x in resp] or Response(status_code=HTTP_404_NOT_FOUND)

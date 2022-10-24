@@ -271,6 +271,7 @@ item {
 .event-pic, .user-pic {
 	display: flex;
 	position: relative;
+	border-radius: 50%;
 	min-width: 60px;
 	min-height: 60px;
 	background-repeat: no-repeat;

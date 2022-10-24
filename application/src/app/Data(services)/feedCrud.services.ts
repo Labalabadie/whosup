@@ -19,9 +19,9 @@ export class Event {
 	status: boolean;
 }
 export class Feed {
-	events_feed: [];
-	attending_events: [];
-	hosted_events: [];
+    events_feed: [];
+    attending_events: [];
+    hosted_events: [];
 }
 @Injectable({
   providedIn: 'root'
@@ -52,5 +52,4 @@ export class FeedCrudService {
       return of(result as T);
     };
   } 
-
 }

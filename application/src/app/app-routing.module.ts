@@ -28,12 +28,12 @@ const routes: Routes = [
     loadChildren: () => import('./Pages/newevent/newevent.module').then( m => m.NeweventPageModule)
   },
   {
-    path: 'eventdetail/:id',
+    path: 'event/detail/:id',
     loadChildren: () => import('./Pages/eventdetail/eventdetail.module').then( m => m.EventdetailPageModule)
   },
   {
-    path: 'update/:id',
-    loadChildren: () => import('./Pages/update/update.module').then( m => m.UpdatePageModule)
+    path: 'event/update/:id',
+    loadChildren: () => import('./Pages/eventupdate/eventupdate.module').then( m => m.EventUpdatePageModule)
   },
 ];
 

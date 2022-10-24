@@ -67,7 +67,7 @@
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
 	<div *ngFor="let event of feed">	
-		<a routerLink="/eventdetail/{{event.id}}" class="event-instance">
+		<a routerLink="/event/detail/{{event.id}}" class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
 				<div class="emoji">{{event.icon}}</div>

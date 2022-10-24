@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
 import { Router, ActivatedRoute } from "@angular/router";
+import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
+import { FormGroup, FormBuilder } from "@angular/forms";
 
 @Component({
   selector: 'app-eventdetail',
@@ -9,8 +10,14 @@ import { Router, ActivatedRoute } from "@angular/router";
 })
 export class EventdetailPage implements OnInit {
 
+  
   //Dynamic calendar icon
 	Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
+  id: number;
+  event: any = null;
+  contentReady: Promise<boolean>; // I promise the data will arrive...
+  date: string = "";
+  time: string = "";
 
   id: number;
   event: any = null;

@@ -7,6 +7,7 @@ h4 {
 }
 .textfield, .textfield-description {
 	width: auto;
+	max-width: 100%;
 	border-style: hidden;
 	background-color: transparent;
 	text-align: center;
@@ -185,7 +186,7 @@ ion-select {
 .pin-outlined-icon {
 	display: flex;
 	position: relative;
-	min-width: 8px;
+	min-width: 14px;
 	min-height: 14px;
 	background-image: url("../../../assets/images/pin-outlined.png");
 	background-repeat: no-repeat;
@@ -253,9 +254,14 @@ ion-select {
 	font-size: 12px;
 }
 ion-popover::part(content) {
-	width: 140px;
+	background-color: #f5f5f5;
 	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
 }
 ion-popover::part(backdrop) {
 	background-color: transparent;
+}
+
+ion-datetime {
+  --ion-color-base: rgb(12, 179, 190) !important;
+	--ion-color-step-150: #de8298;
 }

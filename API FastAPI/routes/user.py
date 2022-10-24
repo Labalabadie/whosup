@@ -38,7 +38,7 @@ def get_feed(id: int):
     events_feed = conn.execute(select(Event)
                                 .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
                                 .filter(not_(Event.event_host_id == id))
-                                .where(and_(Event.status == True, Event.event_datetime != None))
+                                .where(and_(Event.status == True, Event.event_datetime == None))
                                 .order_by(Event.event_datetime.asc())).all()                                     
 
     print(len(events_feed))

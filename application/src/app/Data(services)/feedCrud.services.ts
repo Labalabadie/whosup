@@ -51,6 +51,5 @@ export class FeedCrudService {
       console.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
-  }  
-  
+  } 
 }

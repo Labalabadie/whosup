@@ -158,6 +158,7 @@ def create_user(this_user: UserSchema):
     """ Create user """
     new_user = {"name": this_user.name, 
                 "email": this_user.email,
+                "image_URL": this_user.image_URL,
                 "phone": this_user.phone}
 
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
@@ -175,6 +176,7 @@ def update_user(id: int, this_user: UserSchema):
                  name=this_user.name,
                  email=this_user.email,
                  phone=this_user.phone,
+                 image_URL=this_user.image_URL,
                  password=f.encrypt(this_user.password.encode("utf-8")),
                  updated_at=datetime.now()).where(User.id == id))
     return conn.execute(select(User).where(User.id == id)).first()

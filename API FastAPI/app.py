@@ -4,6 +4,7 @@ from routes.event import eventAPI
 from routes.group import groupAPI
 from routes.channel import channelAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware import Middleware
 from config.db import meta, engine
 
 app = FastAPI()
@@ -14,12 +15,15 @@ origins = [
 ]
 
 app.add_middleware(
-    CORSMiddleware,
+    Middleware(
+    CORSMiddleware, 
     allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
+    )
 )
+
 
 app.include_router(userAPI)
 app.include_router(eventAPI)

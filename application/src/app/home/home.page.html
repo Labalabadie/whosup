@@ -11,7 +11,7 @@
 
 <!-- MAIN -->
 <ion-content>
-<main>
+<main *ngIf="contentReady | async">
 	<div class="my-events">
 		<h4>My events</h4>
 		<!-- link to user events -->
@@ -65,8 +65,8 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-	<a [routerLink]="['/eventdetail/{{event.id}}']" *ngFor="let event of feed">	
-		<div class="event-instance">
+	<div *ngFor="let event of feed">	
+		<a routerLink="/eventdetail/{{event.id}}" class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
 				<div class="emoji">{{event.icon}}</div>
@@ -92,8 +92,8 @@
 					<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
 				</div>
 			</div>
-		</div>
-	</a>
+		</a>
+	</div>
 </ion-list>
 
 </main>

@@ -60,9 +60,9 @@
 	<!-- PARTICIPANTS -->
 	<h4>Participants</h4>
 	<item>
-		<div class="participant" *ngFor="let participant of participants">
-			<div class="user-pic"></div>
-			<h3>Pepocho</h3>
+		<div class="participant" *ngFor="let participant of event.participants">
+			<div class="user-pic" style="background-image: url({{participant.image_URL}});"></div>
+			<h3>{{participant.name}}</h3>
 			<!-- if participant.id == event.host_id, show Creator -->
 			<p>Creator</p>
 		</div>

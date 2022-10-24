@@ -15,7 +15,7 @@ export class EventdetailPage implements OnInit {
 	Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
   id: number;
   event: any = null;
-  contentReady: Promise<boolean>;
+  contentReady: Promise<boolean>; // I promise the data will arrive...
   date: string = "";
   time: string = "";
 
@@ -30,10 +30,10 @@ export class EventdetailPage implements OnInit {
 	console.log(this.id)
   this.eventcrudService.getEvent(this.id)
     .subscribe(data => {
-      this.event = data;
+      this.event = data; // Here comes the data 
       this.date = data.event_datetime.split('T')[0]
       this.time = data.event_datetime.split('T')[1].split(":").slice(0, 2).join(":")
-      this.contentReady = Promise.resolve(true);
+      this.contentReady = Promise.resolve(true); // Now you can load the page :)
     })
 }
 }

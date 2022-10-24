@@ -8,6 +8,7 @@ export class User {
 	name: string;
 	email: string;
 	phone: number;
+  image_URL: string;
 	password: string;
 	checkpassword: string;
 	created_at: string;

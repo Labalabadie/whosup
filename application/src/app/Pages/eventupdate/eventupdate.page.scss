@@ -259,3 +259,12 @@ ion-popover::part(content) {
 ion-popover::part(backdrop) {
 	background-color: transparent;
 }
+
+ion-popover ion-content::part(scroll){
+	padding: 0;
+}
+
+ion-datetime {
+  --ion-color-base: rgb(12, 179, 190) !important;
+	--ion-color-step-150: #de8298;
+}

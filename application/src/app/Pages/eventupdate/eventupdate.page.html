@@ -29,13 +29,29 @@
 	</div>
 
 	<!-- DATE FIELD -->
-	<section type="button" required>
-		<ion-modal [keepContentsMounted]="true">
-			<ion-datetime class="field" placeholder="Select a date" id="datetime" displayFormat="DD/MM/YYYY" min="2022-11-04" max="2023-12-04" value="2022-11-04T15:03:46.789"></ion-datetime>
-		</ion-modal>
-	</section>
-	<ion-input formControlName="event_datetime" type="text" placeholder="Datetime" class="field" required><ion-icon name="calendar-outline"></ion-icon><ion-icon name="time-outline"></ion-icon></ion-input>
+	<div id="date" class="field">
+		<ion-icon name="calendar-outline"></ion-icon>
+		{{date}}
+	</div>
 
+	<!-- TIME FIELD -->
+	<div id="time" class="field">
+		<ion-icon name="time-outline"></ion-icon>
+		{{time}}
+	</div>
+
+	<!-- DATE ANIMATION -->
+	<ion-popover trigger="date" side="bottom" alignment="start" mode="md">
+		<ng-template>
+			<ion-datetime #datetime (ionChange)="dateChanged(datetime.value)" presentation="date" format="YYYY-MM-DD" [preferWheel]="true" [showDefaultButtons]="true" [showClearButton]="true"></ion-datetime>
+		</ng-template>
+	</ion-popover>
+	<!-- TIME ANIMATION -->
+	<ion-popover trigger="time" side="bottom" alignment="start" mode="md">
+		<ng-template>
+			<ion-datetime #datetime (ionChange)="timeChanged(datetime.value)" presentation="time" format="HH:mm" [showDefaultButtons]="true" [showClearButton]="true"></ion-datetime>
+		</ng-template>
+	</ion-popover>
 
 <!-- PLACE BUTTON -->
 <div class="place-or-online">

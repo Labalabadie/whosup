@@ -18,6 +18,7 @@ export class EventUpdatePage implements OnInit {
   contentReady: Promise<boolean>;
   imgChanged: boolean = false;
   event: Event;
+  
 
   constructor(
     private userCrudService: UserCrudService,
@@ -99,6 +100,18 @@ export class EventUpdatePage implements OnInit {
     online : false
   }
 
+	date = 'Select a date';
+	time = 'Select time';
+
+	dateChanged(value){
+		this.date = value.split("T", 1)[0];
+		console.log(this.date);
+	}
+	timeChanged(value){
+		const pattern = new RegExp('[+-]');
+		this.time = value.split("T", 2)[1].split(pattern, 2)[0];
+		console.log(this.time);
+	}
 
   refreshImg() {
     this.imgChanged = true;

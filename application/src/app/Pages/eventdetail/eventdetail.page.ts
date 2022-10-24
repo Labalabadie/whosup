@@ -15,12 +15,6 @@ export class EventdetailPage implements OnInit {
 	Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
   id: number;
   event: any = null;
-  contentReady: Promise<boolean>; // I promise the data will arrive...
-  date: string = "";
-  time: string = "";
-
-  id: number;
-  event: any = null;
   contentReady: Promise<boolean>;
   date: string = "";
   time: string = "";

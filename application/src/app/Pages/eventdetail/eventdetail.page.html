@@ -5,11 +5,11 @@
 	<div class="trailing-icons">
 		<button id="click-trigger"><ion-icon name="ellipsis-vertical" class="icon-for-header"></ion-icon></button>
 		<!-- POPOVER -->
-		<ion-popover trigger="click-trigger" side="left" alignment="start" triggerAction="click">
+		<ion-popover trigger="click-trigger" side="left" alignment="start" [dismissOnSelect]="true" triggerAction="click">
 			<ng-template>
 				<div class="popover">
 					<!-- POPOVER OPTIONS -->
-					<button [routerLink]="['/update/', event.id]">Edit<ion-icon name="pencil-sharp"></ion-icon></button>
+					<button routerLink="/event/update/{{event.id}}">Edit<ion-icon name="pencil-sharp"></ion-icon></button>
 					<button>Share<ion-icon name="share-social-outline"></ion-icon></button>
 					<button>Add to calendar<ion-icon name="today-outline"></ion-icon></button>
 					<button>Mute<ion-icon name="notifications-off-outline"></ion-icon></button>

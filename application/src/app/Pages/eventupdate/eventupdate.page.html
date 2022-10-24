@@ -1,6 +1,6 @@
 <ion-header>
 	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
-	<h1>New event</h1>
+	<h1>Edit Event</h1>
 	<div class="trailing-icons">
 		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
 	</div>
@@ -8,16 +8,16 @@
 
 <ion-content>
 <main *ngIf="contentReady | async">
-	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
+	<form [formGroup]="updateEventForm" (ngSubmit)="onSubmit()" id="ngform">
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<img  type="button" id="event-image-button" value="click" class="event-pic" src="{{currentUser.image_URL}}">
+			<img  type="button" id="event-image-button" value="click" class="event-pic" src="{{updateEventForm.value.image_URL}}">
 			<div class="emoji"></div>
 			<ion-popover side="bottom" alignment="center" trigger="event-image-button" triggerAction="click">
 				<ng-template>
 					<ion-content class="ion-padding, popover-info">
-						<ion-input formControlName="image_URL" type="url" placeholder="http://" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
+						<ion-input formControlName="image_URL" type="url" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
 					</ion-content>
 				</ng-template>
 			</ion-popover>
@@ -91,7 +91,7 @@
 		<!-- SET GROUP -->
 		<div class="set-option">
 			<ion-radio value="group"></ion-radio>
-			<item class="field">
+			<div class="field">
 				<ion-icon name="people-outline"></ion-icon>
 				
 				<ion-select interface="popover" placeholder="Set group">
@@ -100,7 +100,7 @@
 					<ion-select-option value="oranges">group2</ion-select-option>
 					<ion-select-option value="bananas">group3</ion-select-option>
 				</ion-select>
-			</item>
+			</div>
 			<ion-icon id="info2" name="information-circle-outline" class="info"></ion-icon>
 			<ion-popover trigger="info2" side="right" alignment="end" triggerAction="hover">
 				<ng-template>
@@ -114,7 +114,7 @@
 		<!-- SET CHANNEL -->
 		<div class="set-option">
 			<ion-radio value="channel"></ion-radio>
-			<item class="field">
+			<div class="field">
 				<ion-icon name="megaphone-outline"></ion-icon>
 				
 				<ion-select interface="popover" placeholder="Set channel">
@@ -123,7 +123,7 @@
 					<ion-select-option value="oranges">channel2</ion-select-option>
 					<ion-select-option value="bananas">channel3</ion-select-option>
 				</ion-select>
-			</item>
+			</div>
 			<ion-icon id="info3" name="information-circle-outline" class="info"></ion-icon>
 			<ion-popover trigger="info3" side="right" alignment="end" triggerAction="hover">
 				<ng-template>

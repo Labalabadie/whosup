@@ -1,5 +1,8 @@
-main {
-	padding: 10px 20px;
+ion-content {
+	--padding-top: 10px;
+	--padding-bottom: 10px;
+	--padding-start: 20px;
+	--padding-end: 20px;
 }
 h4 {
 	text-shadow: 0px 1px 1px rgb(0 0 0 / 10%);
@@ -245,6 +248,7 @@ ion-select {
 	margin-right: auto;
 	margin-top: auto;
 	margin-left: -28px;
+	cursor: pointer;
 }
 .info {
 	color: darkgray;
@@ -259,6 +263,9 @@ ion-popover::part(content) {
 }
 ion-popover::part(backdrop) {
 	background-color: transparent;
+}
+ion-popover ion-content::part(scroll){
+	padding: 0;
 }
 
 ion-datetime {

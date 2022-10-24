@@ -6,15 +6,22 @@
 	</div>
 </ion-header>
   
-<ion-content>
-<main>
+<ion-content [fullscreen]="true">
 	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<div class="event-pic"></div>
+			<img *ngIf="contentReady | async" class="event-pic" src="{{currentUser.image_URL}}">
 			<div class="emoji"></div>
-			<ion-icon class="addimg" name="add-circle-outline"></ion-icon>
+			<ion-icon type="button" id="event-image-button" value="click" class="addimg" name="add-circle-outline"></ion-icon>
+			<!-- URL POPOVER -->
+			<ion-popover side="left" alignment="start" trigger="event-image-button" triggerAction="click">
+				<ng-template>
+					<ion-content class="ion-padding, popover-info">
+						<ion-input formControlName="image_URL" type="url" placeholder="http://" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
+					</ion-content>
+				</ng-template>
+			</ion-popover>
 		</div>
 		<!-- NAME FIELD -->
 		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required onkeypress="this.style.width = Math.max(this.value.length, 20) + 'ch';">
@@ -150,5 +157,4 @@
 	<textarea formControlName="description" type="text" placeholder="Description" class="textfield-description"></textarea>
 
 </form>
-</main>
 </ion-content>

@@ -23,8 +23,8 @@ export class NeweventPage implements OnInit {
     public formBuilder: FormBuilder,
     private zone: NgZone,
     private eventCrudService: EventCrudService,  
-    private userCrudService: UserCrudService
-
+    private userCrudService: UserCrudService,  
+     
   ) {
     this.eventForm = this.formBuilder.group({
 			id: 0,
@@ -32,7 +32,7 @@ export class NeweventPage implements OnInit {
       event_datetime: [''],
       location: [''],
 			max_people: [''],
-      image_URL: "",
+			image_URL: "",
 			participants: [],
 			event_host_id: 1, // HARDCODEADO <--
       description: [''],
@@ -46,6 +46,7 @@ export class NeweventPage implements OnInit {
     this.userCrudService.getUser(2) // HARDCODEADO <-
       .subscribe(data => {
         this.currentUser = data;
+        this.eventForm.value.image_URL = data.image_URL;
         this.contentReady = Promise.resolve(true);
       })
   }
@@ -58,6 +59,7 @@ export class NeweventPage implements OnInit {
     if (!this.eventForm.valid) {
       return false;
     } else {
+			this.eventForm.value.event_datetime = this.date + 'T' + this.time;
       this.eventCrudService.createEvent(this.eventForm.value)
         .subscribe((response) => {
           this.zone.run(() => {
@@ -81,6 +83,18 @@ export class NeweventPage implements OnInit {
     online : false
   }
 
+	date = 'Select a date';
+	time = 'Select time';
+
+	dateChanged(value){
+		this.date = value.split("T", 1)[0];
+		console.log(this.date);
+	}
+	timeChanged(value){
+		const pattern = new RegExp('[+-]');
+		this.time = value.split("T", 2)[1].split(pattern, 2)[0];
+		console.log(this.time);
+	}
 
   refreshImg() {
     this.imgChanged = true;

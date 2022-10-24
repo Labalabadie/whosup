@@ -22,21 +22,20 @@
 </ion-header>
 
 <!-- MAIN -->
-<ion-content> <!--  *ngIf="contentReady | async" -->
-<main *ngIf="contentReady | async">
+<ion-content *ngIf="contentReady | async" [fullscreen]="true">
 	<!-- LOOKUP -->
 	<div class="lookup" >
 		<!-- EVENT DATE -->
 		<div class="cal"><span></span>
-			<div class="month">{{Months[date.split('-')[1]]}}</div> <!-- {{Months[event.event_datetime.split('-')[1]]}} -->
-			<div class="date">{{date.split('-')[2]}}</div> <!-- {{event.event_datetime.split('-')[2].split('T')[0]}} -->
+			<div class="month">{{Months[date.split('-')[1]]}}</div>
+			<div class="date">{{date.split('-')[2]}}</div>
 		</div>
 		<!-- EVENT IMAGE -->
 		<div class="event-photo">
 			<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
 			<div class="emoji">{{event.icon}}</div>
 		</div>
-		<!-- PARTICIPANT COUNT  {{event.people_count}}/{{event.max_people}} -->
+		<!-- PARTICIPANT COUNT -->
 		<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
 	</div>
 
@@ -59,16 +58,15 @@
 
 	<!-- PARTICIPANTS -->
 	<h4>Participants</h4>
-	<item>
+	<div>
 		<div class="participant" *ngFor="let participant of event.participants">
 			<div class="user-pic" style="background-image: url({{participant.image_URL}});"></div>
 			<h3>{{participant.name}}</h3>
 			<!-- if participant.id == event.host_id, show Creator -->
-			<p>Creator</p>
+			<p *ngIf="participant.id == event.host_id">Creator</p>
 		</div>
-	</item>
+	</div>
 
-</main>
 </ion-content>
 
 <!-- BOTTOM BAR -->

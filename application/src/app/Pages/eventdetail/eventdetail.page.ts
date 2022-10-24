@@ -19,21 +19,27 @@ export class EventdetailPage implements OnInit {
   date: string = "";
   time: string = "";
 
+  id: number;
+  event: any = null;
+  contentReady: Promise<boolean>;
+  date: string = "";
+  time: string = "";
+
   constructor(private eventcrudService: EventCrudService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router
-  ) {
-    this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-  }
+		private activatedRoute: ActivatedRoute,
+		private router: Router
+) {
+	this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+}
 
   ngOnInit() {
-	console.log(this.id)
-  this.eventcrudService.getEvent(this.id)
-    .subscribe(data => {
-      this.event = data; // Here comes the data 
-      this.date = data.event_datetime.split('T')[0]
-      this.time = data.event_datetime.split('T')[1].split(":").slice(0, 2).join(":")
-      this.contentReady = Promise.resolve(true); // Now you can load the page :)
-    })
-}
+		console.log(this.id)
+		this.eventcrudService.getEvent(this.id)
+			.subscribe(data => {
+				this.event = data; // Here comes the data 
+				this.date = data.event_datetime.split('T')[0];
+				this.time = data.event_datetime.split('T')[1].split(":").slice(0, 2).join(":");
+				this.contentReady = Promise.resolve(true); // Now you can load the page :)
+			})
+	}
 }

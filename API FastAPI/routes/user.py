@@ -39,7 +39,7 @@ def get_feed(id: int):
                                 .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
                                 .filter(not_(Event.event_host_id == id))
                                 .where(and_(Event.status == True))
-                                .order_by(Event.updated_at.asc())).all()                                     
+                                .order_by(Event.updated_at.desc())).all()                                     
 
     print(len(events_feed))
 

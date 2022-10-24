@@ -35,7 +35,6 @@ export class HomePage implements OnInit {
         this.feed = data.events_feed;
         this.hosted_events = data.hosted_events;
         this.attending_events = data.attending_events;
-
       })
     this.contentReady = Promise.resolve(true);
 	}

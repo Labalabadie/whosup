@@ -12,7 +12,7 @@
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<img type="button" id="event-image-button" value="click" class="event-pic" src="../assets/images/event-profile-icon.png">
+			<img *ngIf="contentReady | async" type="button" id="event-image-button" value="click" class="event-pic" src="{{currentUser.image_URL}}">
 			<div class="emoji"></div>
 			<ion-popover side="bottom" alignment="center" trigger="event-image-button" triggerAction="click">
 				<ng-template>

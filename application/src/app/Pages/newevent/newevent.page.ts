@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { EventCrudService } from '../../Data(services)/eventCrud.services';
+import { User, UserCrudService } from 'src/app/Data(services)/userCrud.services';
 
 @Component({
   selector: 'app-create',
@@ -13,12 +14,16 @@ import { EventCrudService } from '../../Data(services)/eventCrud.services';
 export class NeweventPage implements OnInit {
 
   eventForm: FormGroup;
+  currentUser: User;
+  contentReady: Promise<boolean>;
 
   constructor(
     private router: Router,
     public formBuilder: FormBuilder,
     private zone: NgZone,
-    private userCrudService: EventCrudService    
+    private eventCrudService: EventCrudService,  
+    private userCrudService: UserCrudService
+
   ) {
     this.eventForm = this.formBuilder.group({
 			id: 0,
@@ -36,13 +41,20 @@ export class NeweventPage implements OnInit {
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userCrudService.getUser(2) // HARDCODEADO <-
+      .subscribe(data => {
+        this.currentUser = data;
+        this.eventForm.value.image_URL = data.image_URL;
+        this.contentReady = Promise.resolve(true);
+      })
+  }
 
   onSubmit() {
     if (!this.eventForm.valid) {
       return false;
     } else {
-      this.userCrudService.createEvent(this.eventForm.value)
+      this.eventCrudService.createEvent(this.eventForm.value)
         .subscribe((response) => {
           this.zone.run(() => {
             this.eventForm.reset();
@@ -66,9 +78,8 @@ export class NeweventPage implements OnInit {
   }
 
 
-  refreshImg(value) {
+  refreshImg() {
     let x = document.getElementById("event-image-button") as HTMLImageElement;
     x.src = this.eventForm.value.image_URL;
-    console.log(x.src);
   }
 }

@@ -15,15 +15,12 @@ origins = [
 ]
 
 app.add_middleware(
-    Middleware(
-    CORSMiddleware, 
-    allow_origins=['*'],
+    CORSMiddleware,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
-    )
+    allow_headers=["*"],
 )
-
 
 app.include_router(userAPI)
 app.include_router(eventAPI)

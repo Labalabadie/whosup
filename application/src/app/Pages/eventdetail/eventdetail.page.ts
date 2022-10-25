@@ -19,8 +19,6 @@ export class EventdetailPage implements OnInit {
 	contentReady: Promise<boolean>;
 	date: string = "";
 	time: string = "";
-	currentUserId = 2;
-	eventJoined: boolean = false;
 
 	constructor(private eventcrudService: EventCrudService,
 		private activatedRoute: ActivatedRoute,
@@ -37,16 +35,7 @@ export class EventdetailPage implements OnInit {
 				this.date = data.event_datetime.split('T')[0];
 				this.time = data.event_datetime.split('T')[1].split(":").slice(0, 2).join(":");
 				this.contentReady = Promise.resolve(true); // Now you can load the page :)
-				this.eventJoined = this.event.value.participants.find(element => {
-					if (element.id == this.currentUserId) {return true}
-					return false;
-				});
 			})
-
-		var button = document.getElementById("joinbtn");
-		if (this.eventJoined == true) {
-			button.className = "unjoin-button";
-		} else { button.className = "join-button"}
 	}
 
 	joinChange(){

@@ -46,12 +46,14 @@ def get_feed(id: int):
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 
                         .join(Event)
-                        .where(User.id == id)).all()
+                        .where(and_(User.id == id,
+                        Event.status == True)).all()
 
     attending_events_list = conn.execute( # Many to many relationship join query
                         select(attending_event_rel, Event)
                         .join(Event, attending_event_rel.c.event_id == Event.id)
-                        .where(attending_event_rel.c.user_id == id)).all()
+                        .where(and_(attending_event_rel.c.user_id == id,
+                        Event.status == True)).all()
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events

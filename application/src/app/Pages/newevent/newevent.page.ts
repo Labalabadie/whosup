@@ -31,6 +31,7 @@ export class NeweventPage implements OnInit {
       location: [''],
 			max_people: [''],
 			image_URL: "",
+			icon: "",
 			participants: [],
 			event_host_id: 1,
       description: [''],
@@ -71,11 +72,18 @@ export class NeweventPage implements OnInit {
     this.btn1 = !this.btn1;
 		this.btn2 = !this.btn2;
   }
-
 	showfield = {
     place : true,
     online : false
   }
+
+	show_emoji() {
+		let icon = document.getElementById("emojitrigger");
+		icon.style.display = "none";
+		document.getElementById("true_emoji").innerHTML = this.eventForm.value.icon;
+		let span = document.getElementById("true_emoji");
+  	span.style.display = "block";
+	}
 
 	date = 'Select a date';
 	time = 'Select time';

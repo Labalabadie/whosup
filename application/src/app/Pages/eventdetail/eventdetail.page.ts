@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
 import { Router, ActivatedRoute } from "@angular/router";
+import { EventCrudService } from 'src/app/Data(services)/eventCrud.services';
+import { FormGroup, FormBuilder } from "@angular/forms";
 
 @Component({
   selector: 'app-eventdetail',
@@ -9,9 +10,9 @@ import { Router, ActivatedRoute } from "@angular/router";
 })
 export class EventdetailPage implements OnInit {
 
+  
   //Dynamic calendar icon
 	Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
-
   id: number;
   event: any = null;
   contentReady: Promise<boolean>;
@@ -48,4 +49,17 @@ export class EventdetailPage implements OnInit {
     }
 }  
 
+	removeEvent(id = this.event.id) {
+		if (window.confirm('Are you sure')) {
+		  	this.eventcrudService.deleteEvent(id)
+		  	.subscribe(() => {
+			  	console.log('Event deleted!');
+				this.router.navigateByUrl('/home')  
+				.then(() => {
+					window.location.reload();
+				  });
+				}
+		  	)
+		}
+	}
 }

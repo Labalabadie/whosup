@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { EventCrudService } from '../../Data(services)/eventCrud.services';
 import { User, UserCrudService } from 'src/app/Data(services)/userCrud.services';
 
@@ -14,8 +14,9 @@ import { User, UserCrudService } from 'src/app/Data(services)/userCrud.services'
 export class NeweventPage implements OnInit {
 
   eventForm: FormGroup;
-	currentUser: User;
+  currentUser: User;
   contentReady: Promise<boolean>;
+  imgChanged: boolean = false;
 
   constructor(
     private router: Router,
@@ -23,6 +24,7 @@ export class NeweventPage implements OnInit {
     private zone: NgZone,
     private eventCrudService: EventCrudService,  
     private userCrudService: UserCrudService,  
+     
   ) {
     this.eventForm = this.formBuilder.group({
 			id: 0,
@@ -33,7 +35,7 @@ export class NeweventPage implements OnInit {
 			image_URL: "",
 			icon: "",
 			participants: [],
-			event_host_id: 1,
+			event_host_id: 1, // HARDCODEADO <--
       description: [''],
 			group_id: [],
 			channel_id: [],
@@ -51,6 +53,10 @@ export class NeweventPage implements OnInit {
   }
 
   onSubmit() {
+    if (this.imgChanged == false) {
+      this.eventForm.value.image_URL = this.currentUser.image_URL;
+    }
+    console.log(this.eventForm.value.image_URL);
     if (!this.eventForm.valid) {
       return false;
     } else {
@@ -98,8 +104,9 @@ export class NeweventPage implements OnInit {
 		console.log(this.time);
 	}
 
-	refreshImg() {
+  refreshImg() {
+    this.imgChanged = true;
     let x = document.getElementById("event-image-button") as HTMLImageElement;
     x.src = this.eventForm.value.image_URL;
-	}
+  }
 }

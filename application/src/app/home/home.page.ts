@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EventCrudService } from '../Data(services)/eventCrud.services';
 import { FeedCrudService } from '../Data(services)/feedCrud.services';
-import { promise } from 'protractor';
 import { Router } from '@angular/router';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-home',
@@ -22,19 +22,20 @@ export class HomePage implements OnInit {
 
   constructor(private feedcrudService: FeedCrudService, private eventcrudService: EventCrudService, private router: Router) {}
 
+
    ngOnInit() {
   	//this.feedcrudService.getFeedEvents()
     this.eventcrudService.getEvents()
   		.subscribe(data => {
 	  		this.events = data;
   		})
-			this.feedcrudService.getFeedEvents()
+    this.feedcrudService.getFeedEvents()
       .subscribe(data => {
         this.feed = data.events_feed;
         this.hosted_events = data.hosted_events;
         this.attending_events = data.attending_events;
       })
-		this.contentReady = Promise.resolve(true);
+    this.contentReady = Promise.resolve(true);
 	}
 
   removeEvent(events,) {

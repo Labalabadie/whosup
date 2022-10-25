@@ -12,19 +12,34 @@
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-
-			<img *ngIf="contentReady | async" class="event-pic" src="{{currentUser.image_URL}}">
-			<div class="emoji"></div>
-			<ion-icon type="button" id="event-image-button" value="click" class="addimg" name="add-circle-outline"></ion-icon>
-			<!-- URL POPOVER -->
-			<ion-popover side="left" alignment="start" trigger="event-image-button" triggerAction="click">
-				<ng-template>
-					<ion-content class="ion-padding, popover-info">
-						<ion-input formControlName="image_URL" type="url" placeholder="http://" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
-					</ion-content>
-				</ng-template>
+			<!-- IMAGE -->
+			<img *ngIf="contentReady | async" id="event-image-button" class="event-pic" src="{{currentUser.image_URL}}">
+			<!-- EMOJI -->
+			<ion-icon class="emoji" type="button" value="click" id="emojitrigger" name="happy-outline"></ion-icon>
+			<!-- TRUE EMOJI -->
+			<span class="emoji" style="display: none;" id="true_emoji"></span>
+			<!-- ADD IMG ICON -->
+			<ion-icon class="addimg" type="button" value="click" id="addtrigger" name="add-circle-outline"></ion-icon>
+			<!-- IMG POPOVER -->
+			<ion-popover side="bottom" alignment="start" trigger="addtrigger" triggerAction="click" arrow="false">
+				<ng-template><ion-content class="ion-padding, popover-info">
+					<input formControlName="image_URL" type="url" placeholder="http://..." class="field" (focus)="$event.target.select()" (change)="refreshImg()">
+				</ion-content></ng-template>
+			</ion-popover>
+			<!-- EMOJI POPOVER -->
+			<ion-popover side="right" alignment="start" trigger="emojitrigger" triggerAction="click" arrow="false">
+				<ng-template><ion-content class="ion-padding, popover-info" style="width: 130px;">
+					<input formControlName="icon" type="text" placeholder="Paste an emoji" class="field" maxlength="2" (focus)="$event.target.select()" (change)="show_emoji()">
+				</ion-content></ng-template>
+			</ion-popover>
+			<!-- SPAN POPOVER FOR WHEN EMOJI DEFAULT ICON DISSAPEARS -->
+			<ion-popover side="right" alignment="start" trigger="true_emoji" triggerAction="click" arrow="false">
+				<ng-template><ion-content class="ion-padding, popover-info" style="width: 42px;">
+					<input formControlName="icon" type="text" (placeholder)="event.icon" id="trueicon" class="field" maxlength="2" (focus)="$event.target.select()" (change)="show_emoji()">
+				</ion-content></ng-template>
 			</ion-popover>
 		</div>
+
 		<!-- NAME FIELD -->
 		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required onkeypress="this.style.width = Math.max(this.value.length, 20) + 'ch';">
 		<div class="edit-icon"></div>
@@ -112,7 +127,7 @@
 			<div class="field">
 				<ion-icon name="people-outline"></ion-icon>
 				
-				<ion-select interface="popover" placeholder="Set group">
+				<ion-select interface="popover" placeholder="Set group" mode="md">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">group1</ion-select-option>
 					<ion-select-option value="oranges">group2</ion-select-option>
@@ -135,7 +150,7 @@
 			<div class="field">
 				<ion-icon name="megaphone-outline"></ion-icon>
 				
-				<ion-select interface="popover" placeholder="Set channel">
+				<ion-select interface="popover" placeholder="Set channel" mode="md">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">channel1</ion-select-option>
 					<ion-select-option value="oranges">channel2</ion-select-option>

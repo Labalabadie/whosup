@@ -199,27 +199,16 @@ ion-header div .search-icon {
 .emoji {
 	display: flex;
 	position: relative;
-	min-width: 10px;
-	min-height: 10px;
-	background-image: url("../src/assets/images/emoji.png");
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: cover;
-	max-width: 20px;
+	min-width: 20px;
+	min-height: 20px;
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-left: -15px;
 }
-@media (max-width: 640px) {
-	.emoji {
-		margin-bottom: auto;
-		margin-right: auto;
-		height: auto;
-		align-self: center;
-	}
+#true_emoji {
+	font-size: 24px;
 }
 
 /* EVENT INSTANCE BOX */
@@ -363,12 +352,17 @@ item {
 	flex-direction: column;
 	align-items: flex-start;
 	background: #FFFFFF;
+	background-color: #FFFFFF;
 	padding: 15px;
-	gap: 10px;
+	gap: 20px;
 	flex: none;
+}
+ion-popover ion-content {
+  --background: #ffffff;
 }
 ion-popover::part(content) {
 	width: auto;
+	background-color: #FFFFFF;
 	/*left: auto;
   right: 15px;*/
 	border-radius: 10px;
@@ -379,6 +373,7 @@ ion-popover::part(content) {
 	align-items: center;
 	width: 100%;
 	font-size: 16px;
+	text-align: start;
 	gap: 10px;
 }
 .popover ion-icon {

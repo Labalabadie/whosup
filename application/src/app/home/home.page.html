@@ -21,44 +21,52 @@
 	<div class="banner">
 		<!-- LITTLE EVENT PREVIEW -->
 			<!-- HOSTED EVENTS -->
-			<div *ngFor="let event of hosted_events" class="little-user-event">
-				<div class="event-photo">
-					<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
-					<div class="emoji">{{event.icon}}</div>
-				</div>
-				<div class="event-details">
-					<!--CALENDAR-->
-					<div class="cal">
-						<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
-						<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
+			<div *ngFor="let event of hosted_events" >
+				<a routerLink="/event/detail/{{event.id}}">
+					<div class="little-user-event">
+						<div class="event-photo">
+							<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
+							<div class="emoji">{{event.icon}}</div>
+						</div>
+						<div class="event-details">
+							<!--CALENDAR-->
+							<div class="cal">
+								<div class="month" style="background-color: #76C6CB" >{{Months[event.event_datetime.split('-')[1]]}}</div>
+								<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
+							</div>
+							<!--ICON BELOW CALENDAR-->
+							<div class="sub-detail">
+								<!-- if config.online = true show computer, else pin -->
+								<div class="pin-icon"></div>
+								<p class="participant-count">{{event.people_count}}/{{event.max_people}}</p>
+							</div>
+						</div>
 					</div>
-					<!--ICON BELOW CALENDAR-->
-					<div class="sub-detail">
-						<!-- if config.online = true show computer, else pin -->
-						<div class="pin-icon"></div>
-						<p class="participant-count">{{event.people_count}}/{{event.max_people}}</p>
-					</div>
-				</div>
+				</a>
 			</div>
 			<!-- ATTENDING EVENTS -->
-			<div *ngFor="let event of attending_events" class="little-user-event">
-				<div class="event-photo">
-					<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
-					<div class="emoji">{{event.icon}}</div>
-				</div>
-				<div class="event-details">
-					<!--CALENDAR-->
-					<div class="cal">
-						<div class="month">{{Months[event.event_datetime.split('-')[1]]}}</div>
-						<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
+			<div *ngFor="let event of attending_events">
+				<a routerLink="/event/detail/{{event.id}}">
+					<div class="little-user-event">
+						<div class="event-photo">
+							<div class="event-pic" style="background-image: url({{event.image_URL}});"></div>
+							<div class="emoji">{{event.icon}}</div>
+						</div>
+						<div class="event-details">
+							<!--CALENDAR-->
+							<div class="cal">
+								<div class="month" style="background-color: #626e9c;">{{Months[event.event_datetime.split('-')[1]]}}</div>
+								<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
+							</div>
+							<!--ICON BELOW CALENDAR-->
+							<div class="sub-detail">
+								<!-- if config.online = true show computer, else pin -->
+								<div class="pin-icon"></div>
+								<p class="participant-count">{{event.people_count}}/{{event.max_people}}</p>
+							</div>
+						</div>
 					</div>
-					<!--ICON BELOW CALENDAR-->
-					<div class="sub-detail">
-						<!-- if config.online = true show computer, else pin -->
-						<div class="pin-icon"></div>
-						<p class="participant-count">{{event.people_count}}/{{event.max_people}}</p>
-					</div>
-				</div>
+				</a>
 			</div>
 		<!-- FIN BANNER -->
 	</div>

@@ -8,7 +8,7 @@ import { max } from 'rxjs/operators';
 @Component({
   selector: 'app-update',
   templateUrl: './eventupdate.page.html',
-  styleUrls: ['./eventupdate.page.scss'],
+  styleUrls: ['../newevent/newevent.page.scss'],
 })
 
 export class EventUpdatePage implements OnInit {
@@ -56,6 +56,8 @@ export class EventUpdatePage implements OnInit {
         description: data['description'],
       });
       this.event = data;
+      this.date = this.updateEventForm.value.event_datetime.split("T", 1)[0];
+      this.time = this.updateEventForm.value.event_datetime.split("T", 2)[1].split('[+-]', 2)[0];
     });
     this.contentReady = Promise.resolve(true);
     console.log(this.event)
@@ -79,6 +81,7 @@ export class EventUpdatePage implements OnInit {
     if (!this.updateEventForm.valid) {
       return false;
     } else {
+			this.updateEventForm.value.event_datetime = this.date + 'T' + this.time;
       this.eventCrudService.updateEvent(this.id, this.updateEventForm.value)
         .subscribe(() => {
           this.updateEventForm.reset();

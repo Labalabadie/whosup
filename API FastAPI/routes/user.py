@@ -53,7 +53,7 @@ def get_feed(id: int):
                         select(attending_event_rel, Event)
                         .join(Event, attending_event_rel.c.event_id == Event.id)
                         .where(and_(attending_event_rel.c.user_id == id,
-                        Event.status == True)).all()
+                        Event.status == True))).all()
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events

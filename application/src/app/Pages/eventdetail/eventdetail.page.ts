@@ -36,4 +36,18 @@ export class EventdetailPage implements OnInit {
 				this.contentReady = Promise.resolve(true); // Now you can load the page :)
 			})
 	}
+
+	removeEvent(id = this.event.id) {
+		if (window.confirm('Are you sure')) {
+		  	this.eventcrudService.deleteEvent(id)
+		  	.subscribe(() => {
+			  	console.log('Event deleted!');
+				this.router.navigateByUrl('/home')  
+				.then(() => {
+					window.location.reload();
+				  });
+				}
+		  	)
+		}
+	}
 }

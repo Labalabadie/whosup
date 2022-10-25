@@ -1,5 +1,5 @@
 <ion-header>
-	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
+	<a *ngIf="contentReady | async" routerLink="/event/detail/{{updateEventForm.value.id}}"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
 	<h1>Edit Event</h1>
 	<div class="trailing-icons">
 		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>

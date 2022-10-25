@@ -20,8 +20,8 @@
 <!-- BANNER. Si el user no tiene eventos, debería estar oculto -->
 	<div class="banner">
 		<!-- LITTLE EVENT PREVIEW -->
-			<!-- HOSTED EVENTS -->
-			<div *ngFor="let event of hosted_events" >
+			<!-- ATTENDING EVENTS -->
+			<div *ngFor="let event of attending_events">
 				<a routerLink="/event/detail/{{event.id}}">
 					<div class="little-user-event">
 						<div class="event-photo">
@@ -31,7 +31,7 @@
 						<div class="event-details">
 							<!--CALENDAR-->
 							<div class="cal">
-								<div class="month" style="background-color: #76C6CB" >{{Months[event.event_datetime.split('-')[1]]}}</div>
+								<div class="month" style="background-color:#76C6CB;">{{Months[event.event_datetime.split('-')[1]]}}</div>
 								<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 							</div>
 							<!--ICON BELOW CALENDAR-->
@@ -44,8 +44,8 @@
 					</div>
 				</a>
 			</div>
-			<!-- ATTENDING EVENTS -->
-			<div *ngFor="let event of attending_events">
+			<!-- HOSTED EVENTS -->
+			<div *ngFor="let event of hosted_events" >
 				<a routerLink="/event/detail/{{event.id}}">
 					<div class="little-user-event">
 						<div class="event-photo">
@@ -55,7 +55,7 @@
 						<div class="event-details">
 							<!--CALENDAR-->
 							<div class="cal">
-								<div class="month" style="background-color: #626e9c;">{{Months[event.event_datetime.split('-')[1]]}}</div>
+								<div class="month" style="background-color:#ffd08a" >{{Months[event.event_datetime.split('-')[1]]}}</div>
 								<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 							</div>
 							<!--ICON BELOW CALENDAR-->

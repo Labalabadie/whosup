@@ -351,12 +351,17 @@ item {
 	flex-direction: column;
 	align-items: flex-start;
 	background: #FFFFFF;
+	background-color: #FFFFFF;
 	padding: 15px;
 	gap: 20px;
 	flex: none;
 }
+ion-popover ion-content {
+  --background: #ffffff;
+}
 ion-popover::part(content) {
 	width: auto;
+	background-color: #FFFFFF;
 	/*left: auto;
   right: 15px;*/
 	border-radius: 10px;

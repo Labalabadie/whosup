@@ -35,4 +35,17 @@ export class EventdetailPage implements OnInit {
 				this.contentReady = Promise.resolve(true); // Now you can load the page :)
 			})
 	}
+
+	joinChange(){
+    var button = document.getElementById("joinbtn");
+    var currentClass = button.className;
+    if (currentClass == "join-button") { // Check the current class name
+        button.className = "unjoin-button";   // Set other class name
+				document.getElementById("joinbtn").innerHTML = "+1";
+    } else {
+        button.className = "join-button";  // Otherwise, continue using the default class
+				document.getElementById("joinbtn").innerHTML = "Join";
+    }
+}  
+
 }

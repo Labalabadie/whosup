@@ -47,7 +47,7 @@ def get_feed(id: int):
                         select(User.hosted_events, Event) 
                         .join(Event)
                         .where(and_(User.id == id,
-                        Event.status == True)).all()
+                        Event.status == True))).all()
 
     attending_events_list = conn.execute( # Many to many relationship join query
                         select(attending_event_rel, Event)

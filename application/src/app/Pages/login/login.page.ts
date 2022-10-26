@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
     this.authService.login(this.loginForm.value)
       .subscribe(() => {
         this.isLoadingResults = false;
-        this.router.navigate(['/secure']).then(_ => console.log('You are secure now!'));
+        this.router.navigate(['/home']).then(_ => console.log('You are secure now!'));
       }, (err: any) => {
         console.log(err);
         this.isLoadingResults = false;

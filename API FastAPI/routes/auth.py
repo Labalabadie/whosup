@@ -49,6 +49,9 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 @authAPI.get('/user/auth', tags=["Authorization"], response_model_exclude_defaults=True)
+#def authenticate_user(this_user: UserSchemaAuth):
+ #   this_user = {"email": this_user.email,
+  #              "password": this_user.password}
 def authenticate_user(email: str, password: str):
     user = get_user_email(email)
     if not user:
@@ -67,4 +70,6 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+    
+    
 

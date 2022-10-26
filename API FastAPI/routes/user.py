@@ -178,9 +178,7 @@ def get_inactive_users():
 
 
 # CREATE, UPDATE, DELETE ----
-
-
-@userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)    
+  
 @userAPI.post('/user', response_model=UserSchemaCreation, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):
     """ Create user """

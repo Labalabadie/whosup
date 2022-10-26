@@ -45,6 +45,14 @@ export class UserCrudService {
       );
   }
 
+  getUserInfo(id): Observable<User> {
+    return this.httpClient.get<User>(this.endpoint + '/' + id + '/info')
+      .pipe(
+        tap(_ => console.log(`User fetched: ${id}`)),
+        catchError(this.handleError<User>(`Get User id=${id}`))
+      );
+  }
+
   getUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.endpoint)
       .pipe(

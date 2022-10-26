@@ -3,6 +3,7 @@ import { EventCrudService } from '../Data(services)/eventCrud.services';
 import { FeedCrudService } from '../Data(services)/feedCrud.services';
 import { Router } from '@angular/router';
 import { AuthService } from '../Data(services)/auth.services';
+import { TokenService } from '../Data(services)/token.services';
 
 @Component({
   selector: 'app-home',
@@ -23,16 +24,13 @@ export class HomePage implements OnInit {
   //Dynamic calendar icon
   Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
-  constructor(private feedcrudService: FeedCrudService, private eventcrudService: EventCrudService, private router: Router, private authService: AuthService) {}
+  constructor(private feedcrudService: FeedCrudService, private eventcrudService: EventCrudService, private router: Router, private authService: AuthService, private tokenService: TokenService) {}
 
 
    ngOnInit() {
   	//this.feedcrudService.getFeedEvents()
-    this.eventcrudService.getEvents()
+    console.log(this.tokenService.getToken())
 
-  		.subscribe(data => {
-	  		this.events = data;
-  		})
     this.feedcrudService.getFeedEvents()
       .subscribe(data => {
         this.feed = data.events_feed;
@@ -56,6 +54,8 @@ export class HomePage implements OnInit {
       this.eventcrudService.getEvent(events.id)
     this.router.navigate(['/eventdetail/events.id']);
   }
+
+
 
   logout(): void {
     this.authService.logout();

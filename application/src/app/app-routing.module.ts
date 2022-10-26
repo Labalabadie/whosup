@@ -31,10 +31,6 @@ const routes: Routes = [
     component: NotFoundPage
   },
   {
-    path: '**',
-    redirectTo: '404'
-  },
-  {
     path: 'start',
     loadChildren: () => import('./Pages/start/start.module').then( m => m.StartPageModule)
   },

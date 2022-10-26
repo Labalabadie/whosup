@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post<any>(API_URL + 'signup', data)
+    return this.http.post<any>(API_URL + 'oauth/signup', data)
       .pipe(
         tap(_ => AuthService.log('register')),
         catchError(AuthService.handleError)
@@ -88,7 +88,7 @@ export class AuthService {
   }
 
   secured(): Observable<any> {
-    return this.http.get<any>(API_URL + 'event')
+    return this.http.get<any>(API_URL + 'secret')
       .pipe(catchError(AuthService.handleError));
   }
 }

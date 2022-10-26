@@ -6,7 +6,7 @@ import {TokenService} from './token.services';
 
 const OAUTH_CLIENT = 'express-client';
 const OAUTH_SECRET = 'express-secret';
-const API_URL = 'http://localhost:3000/';
+const API_URL = 'http://localhost:8000/';
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded',

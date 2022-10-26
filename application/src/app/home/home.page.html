@@ -55,11 +55,8 @@
 	<h4>Open events</h4>
 <!--    !!!!!    FEED FEED FEED FEED    !!!!!    HERE GOES NEW EVENTS      !!!!!     -->
 <ion-list>
-<<<<<<< HEAD
 	<ion-item *ngFor="let feed of events.events_feed">	
-=======
 	<a [routerLink]="['/eventdetail/{{event.id}}']" *ngFor="let event of events">	
->>>>>>> origin/floapp
 		<div class="event-instance">
 			<div class="event-photo">
 				<div class="event-pic"></div>
@@ -67,19 +64,14 @@
 			</div>
 			<div class="event-title">
 				<!-- EVENT NAME -->
-<<<<<<< HEAD
 				<h3>{{feed.name}}</h3>
-=======
 			<h3>{{event.name}}</h3>
->>>>>>> origin/floapp
 				<!-- EVENT DESCRIPTION -->
 				<h5>{{feed.description}}</h5>
 			</div>
 			<div class="event-details">
-<<<<<<< HEAD
 				<!-- EVENT DATE -->
 				<div class="calendar-icon">{{feed.event_datetime}}</div>
-=======
 			<!-- EVENT DATE -->
 				<!--CALENDAR ICON-->
 				<div class="cal"><span></span>
@@ -87,10 +79,8 @@
 					<div class="date">{{event.event_datetime.split('-')[2].split('T')[0]}}</div>
 				</div>
 				
->>>>>>> origin/floapp
 				<div class="sub-detail">
 					<!-- if config.online = true, show computer-icon, else, show pin-icon -->
-<<<<<<< HEAD
 					<div class="pin-icon">{{feed.location}}</div>
 					<!-- PARTICIPANT COUNT -->
 					<!-- script to count participant ids to show here -->
@@ -99,7 +89,6 @@
 			</div>
 		</div>
 	</ion-item>
-=======
 					<div class="pin-icon" slot="end"></div>
 					<!-- PARTICIPANT COUNT -->
 					<div class="participant-count">{{event.people_count}}/{{event.max_people}}</div>
@@ -107,7 +96,6 @@
 			</div>
 		</div>
 	</a>
->>>>>>> origin/floapp
 </ion-list>
 
 </main>

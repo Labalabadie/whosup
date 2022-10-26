@@ -14,7 +14,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['../app.page.scss']
+  styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
 

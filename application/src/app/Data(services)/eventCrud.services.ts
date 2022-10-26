@@ -26,7 +26,7 @@ export class Event {
 
 export class EventCrudService {
 
-  endpoint = 'http://localhost/event';
+  endpoint = 'http://localhost:8000/event';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

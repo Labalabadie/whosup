@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -29,7 +30,8 @@ export class Feed {
 
 export class FeedCrudService {
 
-  endpoint = 'http://34.229.7.213:8000/user/';
+  endpoint = 'http://localhost:8000/user/';
+
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

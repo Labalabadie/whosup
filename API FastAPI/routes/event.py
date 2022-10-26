@@ -26,6 +26,7 @@ def get_event(id: int):
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
 def get_event(id: int):
     """ Get event by id """
+    public_data = conn.execute(select(User).where(User.id == id)).first()
 
     public_data = conn.execute(select(Event).where(Event.id == id)).first()
     print(public_data.keys())

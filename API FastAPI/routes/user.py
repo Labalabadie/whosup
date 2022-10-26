@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+from webbrowser import Grail
 from datetime import datetime
 from config.db import conn, Session, sess
 from cryptography.fernet import Fernet
@@ -6,10 +8,21 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from models.user import User
 from models.user_rel import attending_event_rel, contact_rel
+from routes.auth import get_password_hash
 from models.event import Event
 from models.group import Group
 from models.channel import Channel
 from models.util import unpack, unpack_many
+from schemas.user import UserSchema, UserSchemaAuth, UserSchemaDetail
+from schemas.event import EventSchema
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from sqlalchemy import insert, select, update, delete, join, inspect
+import json
+#Token
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.context import CryptContext
+from typing import Union
 from schemas.user import UserSchema, UserSchemaDetail, UserSchemaCreation
 from schemas.event import EventSchema
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
@@ -20,6 +33,16 @@ key = Fernet.generate_key()
 f = Fernet(key)
 
 userAPI = APIRouter()
+
+# TOKEN ---------------------
+
+
+SECRET_KEY = "c6b0b513b0a069ff5362938dddd4b7bdceeba6144e64b26c6769514ea880a7c9"
+ALGORITHM = "HS256"
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # proximamente ...
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
@@ -55,6 +78,7 @@ def get_feed(id: int):
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
+    #dic["my_events"] = {}       # To be used in Topbar with my events, hosted and attending
     #dic["my_events"] = {}      # To be used in Topbar with my events, hosted and attending
 
     for i, row in enumerate(events_feed):
@@ -135,7 +159,7 @@ def get_user_info(id: int):
 
     return JSONResponse(jsonable_encoder(dic))
 
-@userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
+@userAPI.get('/user/id/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):
     """ Get user by id """
     return conn.execute(select(User).where(User.id == id)).first() or Response(status_code=HTTP_404_NOT_FOUND)
@@ -154,6 +178,9 @@ def get_inactive_users():
 
 
 # CREATE, UPDATE, DELETE ----
+
+
+@userAPI.post('/user', response_model=UserSchema, tags=["Users"], response_model_exclude_defaults=True)    
 @userAPI.post('/user', response_model=UserSchemaCreation, tags=["Users"], response_model_exclude_defaults=True)
 def create_user(this_user: UserSchema):
     """ Create user """
@@ -162,7 +189,8 @@ def create_user(this_user: UserSchema):
                 "image_URL": this_user.image_URL,
                 "phone": this_user.phone}
 
-    new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
+    new_user = {"email":this_user.email, "password": get_password_hash(this_user.password), "name": this_user.name, "phone": this_user.phone}
+    #new_user["hashed_password"] = f.encrypt(this_user.password.encode("utf-8"))
     result = conn.execute(insert(User).values(new_user)) # Realiza la conexion con la base de datos para insertar el nuevo usuario
     print("NEW USER . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo usuario creado y lo retorna para confirmar que se creó

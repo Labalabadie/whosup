@@ -48,7 +48,7 @@ export class AuthService {
       .set('password', loginData.password)
       .set('grant_type', 'password');
 
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+    return this.http.post<any>(API_URL + 'token', body, HTTP_OPTIONS)
       .pipe(
         tap(res => {
           this.tokenService.saveToken(res.access_token);
@@ -64,7 +64,7 @@ export class AuthService {
     const body = new HttpParams()
       .set('refresh_token', refreshData.refresh_token)
       .set('grant_type', 'refresh_token');
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+    return this.http.post<any>(API_URL + 'token', body, HTTP_OPTIONS)
       .pipe(
         tap(res => {
           this.tokenService.saveToken(res.access_token);
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post<any>(API_URL + 'oauth/signup', data)
+    return this.http.post<any>(API_URL + 'signup', data)
       .pipe(
         tap(_ => AuthService.log('register')),
         catchError(AuthService.handleError)
@@ -88,7 +88,7 @@ export class AuthService {
   }
 
   secured(): Observable<any> {
-    return this.http.get<any>(API_URL + 'secret')
+    return this.http.get<any>(API_URL + 'event')
       .pipe(catchError(AuthService.handleError));
   }
 }

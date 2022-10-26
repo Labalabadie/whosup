@@ -15,10 +15,7 @@ class EventSchema(pyBaseModel):
     description: str = "Description"
     icon: str = ""
     max_people: int = 1
-<<<<<<< HEAD
-=======
     people_count: int = 0 
->>>>>>> origin/floapp
     participants: Any = []
     group_id: Optional[int] = None 
     channel_id: Optional[int] = None

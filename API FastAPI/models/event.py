@@ -21,10 +21,7 @@ class Event(BaseModel):
     description = Column(String(255))
     icon = Column(String(2))
     max_people = Column(Integer, default=1)
-<<<<<<< HEAD
-=======
     people_count = Column(Integer, default=0)
->>>>>>> origin/floapp
     participants = relationship("User", secondary=attending_event_rel, back_populates='attending_events') ## related con user.id
 
     group_id = Column(Integer, ForeignKey('group.id'), default=None)

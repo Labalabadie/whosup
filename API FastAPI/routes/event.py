@@ -26,12 +26,9 @@ def get_event(id: int):
 @eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])
 def get_event(id: int):
     """ Get event by id """
-<<<<<<< HEAD
     public_data = conn.execute(select(User).where(User.id == id)).first()
-=======
 
     public_data = conn.execute(select(Event).where(Event.id == id)).first()
->>>>>>> origin/floapp
     if public_data is None:
         return Response(status_code=HTTP_404_NOT_FOUND)
 
@@ -170,8 +167,4 @@ def unjoin_event(event_id: int, user_id: int):
         return Response(status_code=HTTP_204_NO_CONTENT) # Successfully deleted
 
     else:
-<<<<<<< HEAD
         return Response(status_code=HTTP_404_NOT_FOUND)
-=======
-        return Response(status_code=HTTP_404_NOT_FOUND)
->>>>>>> origin/floapp

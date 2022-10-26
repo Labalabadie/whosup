@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guard/auth.guard';
+import { HomePage } from './home/home.page';
+import { NotFoundPage } from './Pages/not-found/not-found.page';
+import { SignupPage } from './Pages/signup/signup.page';
 
 const routes: Routes = [
   {
@@ -9,11 +13,9 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    canActivate: [AuthGuard],
+    component: HomePage,
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
-    path: 'start',
-    loadChildren: () => import('./Pages/start/start.module').then( m => m.StartPageModule)
   },
   {
     path: 'login',
@@ -21,7 +23,20 @@ const routes: Routes = [
   },
   {
     path: 'signup',
+    component: SignupPage,
     loadChildren: () => import('./Pages/signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: '404',
+    component: NotFoundPage
+  },
+  {
+    path: '**',
+    redirectTo: '404'
+  },
+  {
+    path: 'start',
+    loadChildren: () => import('./Pages/start/start.module').then( m => m.StartPageModule)
   },
   {
     path: 'newevent',

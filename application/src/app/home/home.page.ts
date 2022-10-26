@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventCrudService } from '../Data(services)/eventCrud.services';
+import { FeedCrudService } from '../Data(services)/feedCrud.services';
 import { Router } from '@angular/router';
 import { AuthService } from '../Data(services)/auth.services';
 
@@ -14,26 +15,31 @@ export class HomePage implements OnInit {
   isLoadingResults = false;
 
   events = [];
+  feed = [];
+  hosted_events = [];
+  attending_events = [];
+  contentReady: Promise<boolean>;
+
   //Dynamic calendar icon
   Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
+  constructor(private feedcrudService: FeedCrudService, private eventcrudService: EventCrudService, private router: Router, private authService: AuthService) {}
 
 
-  constructor(private eventcrudService: EventCrudService, private router: Router, private authService: AuthService) {}
+   ngOnInit() {
+  	//this.feedcrudService.getFeedEvents()
+    this.eventcrudService.getEvents()
 
-  ngOnInit(): void {
-    this.isLoadingResults = true;
-    this.authService.secured()
-      .subscribe((data: any) => {
-        this.message = data;
-        console.log(data);
-        this.isLoadingResults = false;
-      });
-
-  	this.eventcrudService.getEvents()
   		.subscribe(data => {
 	  		this.events = data;
   		})
+    this.feedcrudService.getFeedEvents()
+      .subscribe(data => {
+        this.feed = data.events_feed;
+        this.hosted_events = data.hosted_events;
+        this.attending_events = data.attending_events;
+      })
+    this.contentReady = Promise.resolve(true);
 	}
 
   removeEvent(events,) {

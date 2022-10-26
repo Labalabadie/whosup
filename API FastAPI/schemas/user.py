@@ -28,6 +28,7 @@ class UserSchema(pyBaseModel):
     name: str = ""
     email: str = ""
     password: str = ""
+    image_URL: str = ""
     phone: str = ""
     created_at: Any
     updated_at: Any

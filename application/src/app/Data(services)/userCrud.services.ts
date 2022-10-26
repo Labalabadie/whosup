@@ -8,6 +8,7 @@ export class User {
 	name: string;
 	email: string;
 	phone: number;
+  image_URL: string;
 	password: string;
 	checkpassword: string;
 	created_at: string;
@@ -36,11 +37,11 @@ export class UserCrudService {
       );
   }
 
-  getUser(id): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.endpoint + '/' + id)
+  getUser(id): Observable<User> {
+    return this.httpClient.get<User>(this.endpoint + '/' + id)
       .pipe(
         tap(_ => console.log(`User fetched: ${id}`)),
-        catchError(this.handleError<User[]>(`Get User id=${id}`))
+        catchError(this.handleError<User>(`Get User id=${id}`))
       );
   }
 

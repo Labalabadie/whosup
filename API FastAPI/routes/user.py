@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
 from webbrowser import Grail
 from datetime import datetime
-from config.db import conn
+from config.db import conn, Session, sess
 from cryptography.fernet import Fernet
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from models.user import User#, contact_rel
-from models.user_rel import attending_event_rel#, contact_rel
+from models.user import User
+from models.user_rel import attending_event_rel, contact_rel
 from routes.auth import get_password_hash
 from models.event import Event
 from models.group import Group
@@ -25,7 +25,7 @@ from passlib.context import CryptContext
 from typing import Union
 from schemas.user import UserSchema, UserSchemaDetail, UserSchemaCreation
 from schemas.event import EventSchema
-from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 from sqlalchemy import insert, select, update, delete, join, inspect, and_, or_, not_
 from typing import List
 
@@ -49,26 +49,22 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 #def get_feed():
 
 # QUERIES -------------------
-hosted_events_qry = (select(User.hosted_events, Event) # One to many relationship join query
-                    .join(Event)
-                    .where(User.id == id))
-
-attending_events_qry = (select(attending_event_rel, Event) # Many to many relationship join query
-                    .join(Event, attending_event_rel.c.event_id == Event.id)
-                    .where(attending_event_rel.c.user_id == id))
 
 
 # FEED ----------------------
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 def get_feed(id: int):
     """ get feed of specified user """
+    #query = sess.query(Event).join(User, Event.participants, isouter=True).filter(not_(or_(Event.event_host_id == id, User.id == id)))
+    #events_feed = query.all()
+
     events_feed = conn.execute(select(Event)
-                        .select_from(User)
-                        .join(User.attending_events)                    # Exclude from feed all events...
-                        .filter(not_(or_(Event.event_host_id == id,     # hosted by cur.user,
-                                         User.id == id                  # attended by cur.user
-                                         )))
-                        .where(Event.status == True)).all()
+                                .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
+                                .filter(not_(Event.event_host_id == id))
+                                .where(and_(Event.status == True))
+                                .order_by(Event.updated_at.desc())).all()                                     
+
+    print(len(events_feed))
 
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 
@@ -190,6 +186,7 @@ def create_user(this_user: UserSchema):
     """ Create user """
     new_user = {"name": this_user.name, 
                 "email": this_user.email,
+                "image_URL": this_user.image_URL,
                 "phone": this_user.phone}
 
     new_user = {"email":this_user.email, "password": get_password_hash(this_user.password), "name": this_user.name, "phone": this_user.phone}
@@ -208,6 +205,7 @@ def update_user(id: int, this_user: UserSchema):
                  name=this_user.name,
                  email=this_user.email,
                  phone=this_user.phone,
+                 image_URL=this_user.image_URL,
                  password=f.encrypt(this_user.password.encode("utf-8")),
                  updated_at=datetime.now()).where(User.id == id))
     return conn.execute(select(User).where(User.id == id)).first()
@@ -222,3 +220,36 @@ def delete_user(id: int):
         status=False,
         updated_at=datetime.now()).where(User.id == id))   # check THIS
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
+
+
+# CONTACTS ------------------
+@userAPI.post('/user/{user_id}/contacts/add', tags=["Users"])
+def add_contact(user_id: int, contact_id: int):
+    """ add contact """
+
+    resp = conn.execute(select(contact_rel) # Check for preexisting rel
+                        .where(and_(contact_rel.c.user_id == user_id,
+                                    contact_rel.c.contact_id == contact_id))).first()
+    if resp is not None:
+        return Response(status_code=HTTP_409_CONFLICT)
+    
+    conn.execute(insert(contact_rel).values(user_id=user_id,
+                                            contact_id=contact_id))
+
+
+@userAPI.get('/user/{user_id}/contacts', tags=["Users"])
+def get_user_contacts(user_id: int):
+    """ get list of all contacts_id for a user """
+    resp = conn.execute(select(contact_rel.c.contact_id)
+                        .where(contact_rel.c.user_id == user_id)).all()
+
+    return [x.values()[0] for x in resp] or Response(status_code=HTTP_404_NOT_FOUND)
+
+@userAPI.get('/user/{user_id}/contacts/info', tags=["Users"])
+def get_user_contacts_info(user_id: int):
+    """ get list of all contacts with details for a user """
+    resp = conn.execute(select(User, contact_rel)
+                        .join(User, contact_rel.c.contact_id==User.id)
+                        .where(contact_rel.c.user_id == user_id)).all()
+
+    return resp or Response(status_code=HTTP_404_NOT_FOUND)

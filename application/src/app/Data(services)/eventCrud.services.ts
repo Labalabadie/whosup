@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -41,11 +40,11 @@ export class EventCrudService {
       );
   }
 
-  getEvent(id): Observable<Event[]> {
-    return this.httpClient.get<Event[]>(this.endpoint + '/' + id)
+  getEvent(id): Observable<Event> {
+    return this.httpClient.get<Event>(this.endpoint + '/' + id)
       .pipe(
         tap(_ => console.log(`Event fetched: ${id}`)),
-        catchError(this.handleError<Event[]>(`Get Event id=${id}`))
+        catchError(this.handleError<Event>(`Get Event id=${id}`))
       );
   }
 
@@ -65,11 +64,11 @@ export class EventCrudService {
       );
   }
 
-  deleteEvent(id): Observable<Event[]> {
-    return this.httpClient.delete<Event[]>(this.endpoint + '/' + id, this.httpOptions)
+  deleteEvent(id): Observable<Event> {
+    return this.httpClient.delete<Event>(this.endpoint + '/' + id, this.httpOptions)
       .pipe(
         tap(_ => console.log(`Event deleted: ${id}`)),
-        catchError(this.handleError<Event[]>('Delete Event'))
+        catchError(this.handleError<Event>('Delete Event'))
       );
   }
 

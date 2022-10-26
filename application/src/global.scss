@@ -49,13 +49,6 @@ html {
 	margin: 0;
 	padding: 0;
 }
-ion-content {
-	font-size: 14px;
-	--color: rgb(33, 33, 33, 1);
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
 h1, h2, h3, h4, h5 {
 	text-align: left;
 	align-self: center;
@@ -174,22 +167,14 @@ button {
 	border: none;
 }
 
-
-main {
-	display: flex;
-	position: relative;
-	flex-direction: column;
-	justify-content: flex-start;
-	background-color: rgba(245, 245, 245, 1);
-	align-items: flex-start;
-	width: 100%;
-	min-height: 100%;
-	align-self: stretch;
-	flex-grow: 0;
-	margin-bottom: auto;
-	flex-wrap: wrap;
+ion-content {
+	font-size: 14px;
+	--background: rgba(245, 245, 245, 1);
+	--color: rgb(33, 33, 33, 1);
+	--padding-bottom: 20px;
+	margin: 0;
 }
-main ion-icon {
+ion-content ion-icon {
 	font-size: 20px;
 	width: 20px;
 }
@@ -214,27 +199,16 @@ ion-header div .search-icon {
 .emoji {
 	display: flex;
 	position: relative;
-	min-width: 10px;
-	min-height: 10px;
-	background-image: url("../src/assets/images/emoji.png");
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: cover;
-	max-width: 20px;
+	min-width: 20px;
+	min-height: 20px;
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-left: -15px;
 }
-@media (max-width: 640px) {
-	.emoji {
-		margin-bottom: auto;
-		margin-right: auto;
-		height: auto;
-		align-self: center;
-	}
+#true_emoji {
+	font-size: 24px;
 }
 
 /* EVENT INSTANCE BOX */
@@ -286,15 +260,15 @@ item {
 .event-pic, .user-pic {
 	display: flex;
 	position: relative;
+	border-radius: 50%;
 	min-width: 60px;
 	min-height: 60px;
-	background-image: url("../src/assets/images/event-profile-icon.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: cover;
 	max-width: 80px;
 	border: none;
-	cursor: pointer;
+	border-radius: 50%;
 	margin-right: auto;
 	margin-top: auto;
 	margin-bottom: auto;
@@ -378,12 +352,17 @@ item {
 	flex-direction: column;
 	align-items: flex-start;
 	background: #FFFFFF;
+	background-color: #FFFFFF;
 	padding: 15px;
-	gap: 10px;
+	gap: 20px;
 	flex: none;
+}
+ion-popover ion-content {
+  --background: #ffffff;
 }
 ion-popover::part(content) {
 	width: auto;
+	background-color: #FFFFFF;
 	/*left: auto;
   right: 15px;*/
 	border-radius: 10px;
@@ -394,6 +373,7 @@ ion-popover::part(content) {
 	align-items: center;
 	width: 100%;
 	font-size: 16px;
+	text-align: start;
 	gap: 10px;
 }
 .popover ion-icon {

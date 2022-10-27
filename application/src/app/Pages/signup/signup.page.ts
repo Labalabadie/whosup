@@ -1,52 +1,58 @@
-import { Component, OnInit , NgZone} from '@angular/core';
-import { UserCrudService } from '../../Data(services)/userCrud.services';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {AuthService} from '../../Data(services)/auth.services';
+import {Router} from '@angular/router';
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-register',
   templateUrl: './signup.page.html',
-  styleUrls: ['./signup.page.scss'],
+  styleUrls: ['./signup.page.scss']
 })
 export class SignupPage implements OnInit {
 
-  userForm: FormGroup;
+  registerForm: FormGroup;
+  name = '';
+  email = '';
+  phone = '';
+  password = '';
+  checkpassword = '';
+  isLoadingResults = false;
+  matcher = new MyErrorStateMatcher();
 
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
-    constructor(
-      private router: Router,
-      public formBuilder: FormBuilder,
-      private zone: NgZone,
-      private userCrudService: UserCrudService    
-    ) {
-      this.userForm = this.formBuilder.group({
-        id: 0,
-        name: [''],
-        phone: [],
-        email: [''],
-        password: [''],
-        checkpassword: [''],
-				created_at: [''],
-				updated_at: ['']
-      })
-    }
-
-
-  ngOnInit() {
+  ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      username : [null, Validators.required],
+      email : [null, Validators.required],
+      phone : [null, Validators.required],
+      password : [null, Validators.required],
+      checkpassword : [null, Validators.required]
+      
+    });
   }
-  onSubmit() {
-    if (!this.userForm.valid) {
-      return false;
-    } else {
-      this.userCrudService.createUser(this.userForm.value)
-        .subscribe((response) => {
-          this.zone.run(() => {
-            this.userForm.reset();
-            this.router.navigate(['/home']);
-          })
-        });
-    }
+
+  onFormSubmit(): void {
+    this.isLoadingResults = true;
+    this.authService.register(this.registerForm.value)
+      .subscribe((res: any) => {
+        this.isLoadingResults = false;
+        this.router.navigate(['/login']).then(_ => console.log('You are registered now!'));
+      }, (err: any) => {
+        console.log(err);
+        this.isLoadingResults = false;
+      });
   }
+
+}
 
  /* async Name(){
 	  if(this.signupUser.name == null){
@@ -135,4 +141,3 @@ export class SignupPage implements OnInit {
       }
 
      */ 
-    }

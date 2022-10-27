@@ -1,68 +1,46 @@
-<ion-content>
-	<div class="example-container mat-elevation-z8">
-		<div class="example-loading-shade"
-			 *ngIf="isLoadingResults">
-		  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-		</div>
-		<mat-card class="example-card">
-		  <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
-			<h2>Register</h2>
-			<mat-form-field class="example-full-width">
-			  <label>
-				<input matInput placeholder="Name" formControlName="name"
-					   [errorStateMatcher]="matcher">
-			  </label>
-			  <mat-error>
-				<span *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">Please enter Name</span>
-			  </mat-error>
-			</mat-form-field>
-			<mat-form-field class="example-full-width">
-				<label>
-				  <input matInput placeholder="Email" formControlName="email"
-						 [errorStateMatcher]="matcher">
-				</label>
-				<mat-error>
-				  <span *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">Please enter Email</span>
-				</mat-error>
-			  </mat-form-field>
-			  <mat-form-field class="example-full-width">
-				<label>
-				  <input type="phone" matInput placeholder="Phone" formControlName="phone"
-						 [errorStateMatcher]="matcher">
-				</label>
-				<mat-error>
-				  <span *ngIf="!registerForm.get('phone').valid && registerForm.get('phone').touched">Please enter Phone</span>
-				</mat-error>
-			  </mat-form-field>
-			<mat-form-field class="example-full-width">
-			  <label>
-				<input type="password" matInput placeholder="Password" formControlName="password"
-					   [errorStateMatcher]="matcher">
-			  </label>
-			  <mat-error>
-				<span *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched">Please enter Password</span>
-			  </mat-error>
-			</mat-form-field>
-			<mat-form-field class="example-full-width">
-			  <label>
-				<input matInput placeholder="Check Password" formControlName="checkpassword"
-					   [errorStateMatcher]="matcher">
-			  </label>
-			  <mat-error>
-				<span *ngIf="!registerForm.get('checkpassword').valid && registerForm.get('checkpassword').touched">Please insert equal passwords</span>
-			  </mat-error>
-			</mat-form-field>
-			<div class="button-row">
-			  <button type="submit" [disabled]="!registerForm.valid" mat-flat-button color="primary"><mat-icon>how_to_reg</mat-icon>Register</button>
-			</div>
-			<div class="button-row">
-			  <h4>Already registered?</h4>
-			</div>
-			<div class="button-row">
-			  <a mat-flat-button color="primary" [routerLink]="['/login']"><mat-icon>login</mat-icon>Login</a>
-			</div>
-		  </form>
-		</mat-card>
-	  </div>
-	  
-	</ion-content>
+<ion-header>
+	<ion-toolbar>
+	  <ion-title>Signup</ion-title>
+	</ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+	  <ion-list lines="full">
+		<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+		  <ion-item>
+			<ion-label position="floating">Name</ion-label>
+			<ion-input formControlName="name" type="text" required></ion-input>
+		  </ion-item>
+	
+		  <ion-item>
+			<ion-label position="floating">Mail</ion-label>
+			<ion-input formControlName="email" type="text" required>
+			</ion-input>
+		  </ion-item>
+	
+		  <ion-item>
+			<ion-label position="floating">Phone</ion-label>
+			<ion-input formControlName="phone" type="text" required>
+			</ion-input>
+		  </ion-item>
+  
+		  <ion-item>
+			  <ion-label position="floating">password</ion-label>
+			  <ion-input formControlName="password" type="text" required>
+			  </ion-input>
+			</ion-item>
+  
+			<ion-item>
+			  <ion-label position="floating">password</ion-label>
+			  <ion-input formControlName="checkpassword" type="text" required>
+			  </ion-input>
+			</ion-item>
+  
+		  <ion-row>
+			<ion-col>
+			  <ion-button type="submit" color="danger" expand="block" style="text-transform: none;">Sign Up</ion-button>
+			</ion-col>
+		  </ion-row>
+		</form>
+	  </ion-list>
+  </ion-content>

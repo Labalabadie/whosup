@@ -81,7 +81,7 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post<any>(API_URL + 'signup', data)
+    return this.http.post<any>(API_URL + 'user', data)
       .pipe(
         tap(_ => AuthService.log('register')),
         catchError(AuthService.handleError)

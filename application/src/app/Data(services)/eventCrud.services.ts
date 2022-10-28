@@ -12,7 +12,7 @@ export class Event {
 	description: string;
 	icon: string;
 	max_people: number;
-	participants: JSON;
+	participants: any;
 	group_id: number;
 	channel_id: number;
 	config: JSON;

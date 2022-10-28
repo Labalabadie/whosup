@@ -12,11 +12,16 @@ export class Event {
 	description: string;
 	icon: string;
 	max_people: number;
-	participants: JSON;
+	participants: any;
 	group_id: number;
 	channel_id: number;
 	config: JSON;
 	status: boolean;
+}
+
+export class EventJoin {
+  event_id: '';
+  user_id: '';
 }
 
 @Injectable({
@@ -72,6 +77,21 @@ export class EventCrudService {
       );
   }
 
+  joinEvent(event_id, user_id): Observable<any> {
+    console.log('TEST')
+    return this.httpClient.post<EventJoin>(this.endpoint + '/' + event_id + '/join' + '?user_id=' + user_id, this.httpOptions)
+    .pipe(
+      catchError(this.handleError<Event>('Error occured'))
+    );
+  }
+
+  unjoinEvent(event_id, user_id): Observable<any> {
+    console.log('UNTEST')
+    return this.httpClient.delete<EventJoin>(this.endpoint + '/' + event_id + '/join' + '?user_id=' + user_id, this.httpOptions)
+    .pipe(
+      catchError(this.handleError<Event>('Error occured'))
+    );
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

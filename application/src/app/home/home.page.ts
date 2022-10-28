@@ -20,15 +20,17 @@ export class HomePage implements OnInit {
   //Dynamic calendar icon
   Months = ['U curious?','JAN','FEB','MAR','APR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DEC'];
 
-  constructor(private feedcrudService: FeedCrudService, private eventcrudService: EventCrudService, private router: Router) {}
+  constructor(private feedcrudService: FeedCrudService, 
+              private eventcrudService: EventCrudService, 
+              private router: Router) {}
 
 
    ngOnInit() {
   	//this.feedcrudService.getFeedEvents()
-    this.eventcrudService.getEvents()
+    /*this.eventcrudService.getEvents()
   		.subscribe(data => {
 	  		this.events = data;
-  		})
+  		})*/
     this.feedcrudService.getFeedEvents()
       .subscribe(data => {
         this.feed = data.events_feed;

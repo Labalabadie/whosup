@@ -282,6 +282,9 @@ item {
 		align-self: center;
 	}
 }
+.event-pic {
+	object-fit: cover;
+}
 .event-details {
 	display: flex;
 	flex-direction: column;

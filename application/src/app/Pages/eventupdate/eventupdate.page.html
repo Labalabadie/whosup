@@ -1,47 +1,30 @@
 <ion-header>
-	<a [routerLink]="['/home/']"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
-	<h1>New event</h1>
+	<a *ngIf="contentReady | async" routerLink="/event/detail/{{updateEventForm.value.id}}"><ion-icon name="arrow-back" class="icon-for-header"></ion-icon></a>
+	<h1>Edit Event</h1>
 	<div class="trailing-icons">
 		<button form="ngform" type="submit"><ion-icon name="checkmark" class="icon-for-header" style="font-size: 40px;"></ion-icon></button>
 	</div>
 </ion-header>
 
-  
-<ion-content *ngIf="contentReady | async" [fullscreen]="true">
-	<form [formGroup]="eventForm" (ngSubmit)="onSubmit()" id="ngform">
+<ion-content>
+<main *ngIf="contentReady | async">
+	<form [formGroup]="updateEventForm" (ngSubmit)="onSubmit()" id="ngform">
 	<!-- EVENT LOOKUP -->
 	<div class="event-profile-container">
 		<div class="event-photo">
-			<!-- IMAGE -->
-			<img *ngIf="contentReady | async" id="event-image-button" class="event-pic" src="{{currentUser.image_URL}}">
-			<!-- EMOJI -->
-			<ion-icon class="emoji" type="button" value="click" id="emojitrigger" name="happy-outline"></ion-icon>
-			<!-- TRUE EMOJI -->
-			<span class="emoji" style="display: none;" id="true_emoji"></span>
-			<!-- ADD IMG ICON -->
-			<ion-icon class="addimg" type="button" value="click" id="addtrigger" name="add-circle-outline"></ion-icon>
-			<!-- IMG POPOVER -->
-			<ion-popover side="bottom" alignment="start" trigger="addtrigger" triggerAction="click" arrow="false">
-				<ng-template><ion-content class="ion-padding, popover-info">
-					<input formControlName="image_URL" type="url" placeholder="http://..." class="field" (focus)="$event.target.select()" (change)="refreshImg()">
-				</ion-content></ng-template>
+			<img  type="button" id="event-image-button" value="click" class="event-pic" src="{{updateEventForm.value.image_URL}}">
+			<div class="emoji"></div>
+			<ion-popover side="bottom" alignment="center" trigger="event-image-button" triggerAction="click">
+				<ng-template>
+					<ion-content class="ion-padding, popover-info">
+						<ion-input formControlName="image_URL" type="url" class="field" (focus)="$event.target.select()" (change)="refreshImg()"></ion-input>
+					</ion-content>
+				</ng-template>
 			</ion-popover>
-			<!-- EMOJI POPOVER -->
-			<ion-popover side="right" alignment="start" trigger="emojitrigger" triggerAction="click" arrow="false">
-				<ng-template><ion-content class="ion-padding, popover-info" style="width: 130px;">
-					<input formControlName="icon" type="text" placeholder="Paste an emoji" class="field" maxlength="2" (focus)="$event.target.select()" (change)="show_emoji()">
-				</ion-content></ng-template>
-			</ion-popover>
-			<!-- SPAN POPOVER FOR WHEN EMOJI DEFAULT ICON DISSAPEARS -->
-			<ion-popover side="right" alignment="start" trigger="true_emoji" triggerAction="click" arrow="false">
-				<ng-template><ion-content class="ion-padding, popover-info" style="width: 42px;">
-					<input formControlName="icon" type="text" (placeholder)="event.icon" id="trueicon" class="field" maxlength="2" (focus)="$event.target.select()" (change)="show_emoji()">
-				</ion-content></ng-template>
-			</ion-popover>
+			<ion-icon class="addimg" name="add-circle-outline"></ion-icon>
 		</div>
-
 		<!-- NAME FIELD -->
-		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required onkeypress="this.style.width = Math.max(this.value.length, 20) + 'ch';">
+		<input formControlName="name" type="text" placeholder="Event name" class="textfield" required>
 		<div class="edit-icon"></div>
 	</div>
 
@@ -85,10 +68,10 @@
 </div>
 
 	<!-- PLACE FIELD !! OCULTABLE -->
-		<div *ngIf="showfield.place" class="field">
-			<div class="pin-outlined-icon"></div>
-			<input formControlName="location" type="text" placeholder="Enter a place" class="text-input" required>
-		</div>
+	<div *ngIf="showfield.place" class="field">
+		<div class="pin-outlined-icon"></div>
+		<input formControlName="location" type="text" placeholder="Enter a place" class="text-input" required>
+	</div>
 	<!-- ONLINE FIELD !! OCULTABLE -->
 	<div *ngIf="showfield.online" class="field">
 		<div class="computer-icon-black"></div>
@@ -102,7 +85,7 @@
 		<ion-icon name="person-outline"></ion-icon>
 		<input formControlName="max_people" type="number" placeholder="Max people" class="text-input" required>
 		<ion-icon id="info1" name="information-circle-outline" class="info"></ion-icon>
-		<ion-popover trigger="info1" side="right" alignment="end" triggerAction="hover" [showBackdrop]="false">
+		<ion-popover trigger="info1" side="right" alignment="end" triggerAction="hover">
 			<ng-template>
 				<div class="popover info">
 					Set the event limit people with a number under 1000
@@ -127,7 +110,7 @@
 			<div class="field">
 				<ion-icon name="people-outline"></ion-icon>
 				
-				<ion-select interface="popover" placeholder="Set group" mode="md">
+				<ion-select interface="popover" placeholder="Set group">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">group1</ion-select-option>
 					<ion-select-option value="oranges">group2</ion-select-option>
@@ -135,7 +118,7 @@
 				</ion-select>
 			</div>
 			<ion-icon id="info2" name="information-circle-outline" class="info"></ion-icon>
-			<ion-popover trigger="info2" side="right" alignment="end" triggerAction="hover" [showBackdrop]="false">
+			<ion-popover trigger="info2" side="right" alignment="end" triggerAction="hover">
 				<ng-template>
 					<div class="popover info">
 						Select to show the event only to people of this group
@@ -150,7 +133,7 @@
 			<div class="field">
 				<ion-icon name="megaphone-outline"></ion-icon>
 				
-				<ion-select interface="popover" placeholder="Set channel" mode="md">
+				<ion-select interface="popover" placeholder="Set channel">
 					<!-- ngFor to group options -->
 					<ion-select-option value="apples">channel1</ion-select-option>
 					<ion-select-option value="oranges">channel2</ion-select-option>
@@ -158,7 +141,7 @@
 				</ion-select>
 			</div>
 			<ion-icon id="info3" name="information-circle-outline" class="info"></ion-icon>
-			<ion-popover trigger="info3" side="right" alignment="end" triggerAction="hover" [showBackdrop]="false">
+			<ion-popover trigger="info3" side="right" alignment="end" triggerAction="hover">
 				<ng-template>
 					<div class="popover info">
 						Select to show the event only to people of this channel
@@ -171,7 +154,8 @@
 
 	<!-- DESCRIPTION FIELD -->
 	<h4>Description</h4>
-	<textarea formControlName="description" type="text" placeholder="Description" class="textfield-description"></textarea>
+	<ion-input formControlName="description" type="text" placeholder="Description" class="textfield-description"></ion-input>
 
 </form>
+</main>
 </ion-content>

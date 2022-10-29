@@ -38,19 +38,24 @@ def get_feed(id: int):
     events_feed = conn.execute(select(Event)
                                 .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
                                 .filter(not_(Event.event_host_id == id))
-                                .where(Event.status == True)).all()                                     
+                                .where(and_(Event.status == True))
+                                .order_by(Event.event_datetime.asc())).all()                                     
 
     print(len(events_feed))
 
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 
                         .join(Event)
-                        .where(User.id == id)).all()
+                        .where(and_(User.id == id,
+                        Event.status == True))
+                        .order_by(Event.event_datetime.asc())).all()
 
     attending_events_list = conn.execute( # Many to many relationship join query
                         select(attending_event_rel, Event)
                         .join(Event, attending_event_rel.c.event_id == Event.id)
-                        .where(attending_event_rel.c.user_id == id)).all()
+                        .where(and_(attending_event_rel.c.user_id == id,
+                        Event.status == True))
+                        .order_by(Event.event_datetime.asc())).all()
 
     dic = {}                    # Response dictionary
     dic["events_feed"] = []     # Main events feed, List of events
@@ -158,6 +163,7 @@ def create_user(this_user: UserSchema):
     """ Create user """
     new_user = {"name": this_user.name, 
                 "email": this_user.email,
+                "image_URL": this_user.image_URL,
                 "phone": this_user.phone}
 
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
@@ -175,6 +181,7 @@ def update_user(id: int, this_user: UserSchema):
                  name=this_user.name,
                  email=this_user.email,
                  phone=this_user.phone,
+                 image_URL=this_user.image_URL,
                  password=f.encrypt(this_user.password.encode("utf-8")),
                  updated_at=datetime.now()).where(User.id == id))
     return conn.execute(select(User).where(User.id == id)).first()

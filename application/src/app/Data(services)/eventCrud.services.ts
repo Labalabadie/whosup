@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,14 +10,18 @@ export class Event {
 	event_datetime: string;
 	location: string;
 	description: string;
-  image_URL: string;
 	icon: string;
 	max_people: number;
-	participants: JSON;
+	participants: any;
 	group_id: number;
 	channel_id: number;
 	config: JSON;
 	status: boolean;
+}
+
+export class EventJoin {
+  event_id: '';
+  user_id: '';
 }
 
 @Injectable({
@@ -27,7 +30,7 @@ export class Event {
 
 export class EventCrudService {
 
-  endpoint = 'http://3.84.155.186:8000/event';
+  endpoint = 'http://34.229.7.213:8000/event';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -42,11 +45,11 @@ export class EventCrudService {
       );
   }
 
-  getEvent(id): Observable<Event[]> {
-    return this.httpClient.get<Event[]>(this.endpoint + '/' + id)
+  getEvent(id): Observable<Event> {
+    return this.httpClient.get<Event>(this.endpoint + '/' + id)
       .pipe(
         tap(_ => console.log(`Event fetched: ${id}`)),
-        catchError(this.handleError<Event[]>(`Get Event id=${id}`))
+        catchError(this.handleError<Event>(`Get Event id=${id}`))
       );
   }
 
@@ -66,14 +69,29 @@ export class EventCrudService {
       );
   }
 
-  deleteEvent(id): Observable<Event[]> {
-    return this.httpClient.delete<Event[]>(this.endpoint + '/' + id, this.httpOptions)
+  deleteEvent(id): Observable<Event> {
+    return this.httpClient.delete<Event>(this.endpoint + '/' + id, this.httpOptions)
       .pipe(
         tap(_ => console.log(`Event deleted: ${id}`)),
-        catchError(this.handleError<Event[]>('Delete Event'))
+        catchError(this.handleError<Event>('Delete Event'))
       );
   }
 
+  joinEvent(event_id, user_id): Observable<any> {
+    console.log('TEST')
+    return this.httpClient.post<EventJoin>(this.endpoint + '/' + event_id + '/join' + '?user_id=' + user_id, this.httpOptions)
+    .pipe(
+      catchError(this.handleError<Event>('Error occured'))
+    );
+  }
+
+  unjoinEvent(event_id, user_id): Observable<any> {
+    console.log('UNTEST')
+    return this.httpClient.delete<EventJoin>(this.endpoint + '/' + event_id + '/join' + '?user_id=' + user_id, this.httpOptions)
+    .pipe(
+      catchError(this.handleError<Event>('Error occured'))
+    );
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

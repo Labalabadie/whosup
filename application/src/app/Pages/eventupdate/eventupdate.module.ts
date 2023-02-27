@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
-import { UpdatePageRoutingModule } from './update-routing.module';
-
-import { UpdatePage } from './update.page';
+import { EventUpdatePageRoutingModule } from './eventupdate-routing.module';
+import { EventUpdatePage } from './eventupdate.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UpdatePageRoutingModule,
+    EventUpdatePageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [UpdatePage]
+  declarations: [EventUpdatePage]
 })
-export class UpdatePageModule {}
+export class EventUpdatePageModule {}

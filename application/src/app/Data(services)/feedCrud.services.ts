@@ -19,8 +19,9 @@ export class Event {
 	status: boolean;
 }
 export class Feed {
-
-    my_events: {"attending_events": JSON, "hosted_events": JSON};
+    events_feed: [];
+    attending_events: [];
+    hosted_events: [];
 }
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class Feed {
 
 export class FeedCrudService {
 
-  endpoint = 'http://3.84.155.186:8000/user/';
+  endpoint = 'http://34.229.7.213:8000/user/';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,11 +37,11 @@ export class FeedCrudService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getFeedEvents(): Observable<Feed[]> {
-    return this.httpClient.get<Feed[]>(this.endpoint + '2' + '/feed')
+  getFeedEvents(): Observable<Feed> {
+    return this.httpClient.get<Feed>(this.endpoint + '2' + '/feed')
       .pipe(
         tap(Events => console.log('Events retrieved!')),
-        catchError(this.handleError<Feed[]>('Get Feed', []))
+        catchError(this.handleError<Feed>('Get Feed', null))
       );
   }
 
@@ -50,6 +51,5 @@ export class FeedCrudService {
       console.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
-  }  
-  
+  } 
 }

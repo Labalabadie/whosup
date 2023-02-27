@@ -8,6 +8,7 @@ export class User {
 	name: string;
 	email: string;
 	phone: number;
+  image_URL: string;
 	password: string;
 	checkpassword: string;
 	created_at: string;
@@ -21,7 +22,7 @@ export class User {
 
 export class UserCrudService {
 
-  endpoint = 'http://3.84.155.186:8000/user';
+  endpoint = 'http://34.229.7.213:8000/user';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,11 +37,11 @@ export class UserCrudService {
       );
   }
 
-  getUser(id): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.endpoint + '/' + id)
+  getUser(id): Observable<User> {
+    return this.httpClient.get<User>(this.endpoint + '/' + id)
       .pipe(
         tap(_ => console.log(`User fetched: ${id}`)),
-        catchError(this.handleError<User[]>(`Get User id=${id}`))
+        catchError(this.handleError<User>(`Get User id=${id}`))
       );
   }
 

@@ -11,7 +11,7 @@ class User(BaseModel):
     email = Column(String(255))
     password = Column(String(255))
     phone = Column(String(255))
-
+    image_URL = Column(String(511), default="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png")
     #Column("login_token", String(255)),
     status = Column(Boolean, default=True)
 
@@ -41,6 +41,7 @@ class User(BaseModel):
                 "name",
                 "email",
                 "phone",
+                "image_URL",
                 "status"]
 
         priv_attrs = [

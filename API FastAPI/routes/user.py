@@ -144,17 +144,16 @@ def get_user(id: int):
     """ Get user by id """
     return conn.execute(select(User).where(User.id == id)).first() or Response(status_code=HTTP_404_NOT_FOUND)
 
-
 @userAPI.get('/user', response_model=List[UserSchema], tags=["Users"])
 def get_all_users():
-    """ Get all active elements """
+    """ Get all active users """
     return conn.execute(select(User).where(User.status == True)).fetchall()  # Todos los elementos activos
 
 
 @userAPI.get('/user/inactive', response_model=List[UserSchema], tags=["Users"])
 def get_inactive_users():
     """ All inactive """
-    return conn.execute(select(User).where(User.status == False)).fetchall()
+    return conn.execute(select(User).where(User.status != True)).fetchall()
 
 
 # CREATE, UPDATE, DELETE ----
@@ -164,7 +163,7 @@ def create_user(this_user: UserSchema):
     new_user = {"name": this_user.name, 
                 "email": this_user.email,
                 "image_URL": this_user.image_URL,
-                "phone": this_user.phone}
+                "phone": this_user.phone,}
 
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
     result = conn.execute(insert(User).values(new_user)) # Realiza la conexion con la base de datos para insertar el nuevo usuario

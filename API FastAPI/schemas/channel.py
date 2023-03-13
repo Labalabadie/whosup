@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from schemas.base_model import BaseModel
 
 class ChannelSchema(BaseModel):
     name: str = ""

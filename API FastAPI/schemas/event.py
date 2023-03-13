@@ -1,9 +1,9 @@
 from contextlib import nullcontext
 from datetime import datetime, timedelta
 from typing import Optional, List, Union, Any
-from pydantic import BaseModel as pyBaseModel
+from schemas.base_model import BaseModel
 
-class EventSchema(pyBaseModel):
+class EventSchema(BaseModel):
     
     id: int 
     # created_at: datetime // inherited from BaseModel

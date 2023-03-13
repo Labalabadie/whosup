@@ -1,9 +1,9 @@
 from socket import AI_NUMERICHOST
 from typing import Any, Union
 from datetime import datetime
-from pydantic import BaseModel as pyBaseModel
+from schemas.base_model import BaseModel
 
-class UserSchemaCreation(pyBaseModel):
+class UserSchemaCreation(BaseModel):
     id: int
     name: str = ""
     email: str = ""
@@ -12,7 +12,7 @@ class UserSchemaCreation(pyBaseModel):
     created_at: Any
     updated_at: Any
 
-class UserSchema(pyBaseModel):
+class UserSchema(BaseModel):
     id: int
     name: str = ""
     email: str = ""
@@ -22,7 +22,7 @@ class UserSchema(pyBaseModel):
     created_at: Any
     updated_at: Any
 
-class UserSchemaDetail(pyBaseModel):
+class UserSchemaDetail(BaseModel):
     id: int
     name: str = ""
     email: str = ""

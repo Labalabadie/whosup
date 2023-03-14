@@ -167,6 +167,7 @@ def create_user(this_user: UserSchema):
 
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
     result = conn.execute(insert(User).values(new_user)) # Realiza la conexion con la base de datos para insertar el nuevo usuario
+    conn.commit()
     print("NEW USER . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo usuario creado y lo retorna para confirmar que se creó
     return conn.execute(select(User).where(User.id == result.lastrowid)).first()
@@ -183,6 +184,7 @@ def update_user(id: int, this_user: UserSchema):
                  image_URL=this_user.image_URL,
                  password=f.encrypt(this_user.password.encode("utf-8")),
                  updated_at=datetime.now()).where(User.id == id))
+    conn.commit()
     return conn.execute(select(User).where(User.id == id)).first()
 
 
@@ -194,6 +196,7 @@ def delete_user(id: int):
     conn.execute(update(User).values(
         status=False,
         updated_at=datetime.now()).where(User.id == id))   # check THIS
+    conn.commit()
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
@@ -205,11 +208,14 @@ def add_contact(user_id: int, contact_id: int):
     resp = conn.execute(select(contact_rel) # Check for preexisting rel
                         .where(and_(contact_rel.c.user_id == user_id,
                                     contact_rel.c.contact_id == contact_id))).first()
+                               
     if resp is not None:
         return Response(status_code=HTTP_409_CONFLICT)
     
     conn.execute(insert(contact_rel).values(user_id=user_id,
                                             contact_id=contact_id))
+    conn.commit()
+    # Return < - TODO
 
 
 @userAPI.get('/user/{user_id}/contacts', tags=["Users"])

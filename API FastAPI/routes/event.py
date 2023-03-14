@@ -89,6 +89,7 @@ def create_event(this_event: EventSchema):
                  "config": this_event.config}
     # Realiza la conexion con la base de datos para insertar el nuevo usuario
     result = conn.execute(insert(Event).values(new_event))
+    conn.commit()
     print("NEW EVENT . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
     return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
@@ -108,7 +109,7 @@ def update_event(id: int, this_event: EventSchema):
                  max_people=this_event.max_people, 
                  config=this_event.config,
                  updated_at=datetime.now()).where(Event.id == id))
-
+    conn.commit()
     return conn.execute(select(Event).where(Event.id == id)).first()
 
 
@@ -119,7 +120,7 @@ def delete_event(id: int):
     conn.execute(update(Event).values(
         status=False,
         updated_at=datetime.now()).where(Event.id == id))
-
+    conn.commit()
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed
 
 
@@ -134,7 +135,7 @@ def join_event(event_id: int, user_id: int):
     if event.event_host_id == user_id:
         return Response(status_code=HTTP_405_METHOD_NOT_ALLOWED)
 
-    if event.people_count < event.max_people:
+    if event.people_count < event.max_people: 
         conn.execute(insert(attending_event_rel)
                     .values(user_id=user_id, event_id=event_id)
                     .prefix_with("IGNORE", dialect="mysql"))
@@ -142,8 +143,9 @@ def join_event(event_id: int, user_id: int):
         conn.execute(update(Event)      # Increment people count 
                         .values(people_count=Event.people_count + 1)
                         .where(Event.id == event_id))
+        conn.commit()
 
-        new = conn.execute(select(attending_event_rel)
+        new = conn.execute(select(attending_event_rel)  # Select attended event
                             .where(attending_event_rel.c.user_id == user_id)
                             .where(attending_event_rel.c.event_id == event_id)).first()
         return new or Response(status_code=HTTP_404_NOT_FOUND)
@@ -166,7 +168,7 @@ def unjoin_event(event_id: int, user_id: int):
         conn.execute(update(Event)      # Decrement people count 
                     .values(people_count=Event.people_count - 1)
                     .where(Event.id == event_id))
-
+        conn.commit()
         return Response(status_code=HTTP_204_NO_CONTENT) # Successfully deleted
 
     else:

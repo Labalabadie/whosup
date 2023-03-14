@@ -35,6 +35,7 @@ def create_channel(this_channel: ChannelSchema):
                 "channel_admin_id": this_channel.channel_admin_id}
 
     result = conn.execute(insert(Channel).values(new_channel)) # Realiza la conexion con la base de datos para insertar el nuevo canal
+    conn.commit()
     print("NEW CHANNEL . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo grupo canal y lo retorna para confirmar que se creó
     return conn.execute(select(Channel).where(Channel.id == result.lastrowid)).first()
@@ -50,6 +51,7 @@ def update_channel(id: str, this_channel: ChannelSchema):
                  channel_admin_id=this_channel.channel_admin_id,
                  updated_at=datetime.now()
                  ).where(Channel.id == id))
+    conn.commit()
 
     return conn.execute(select(Channel).where(Channel.id == id)).first()
 
@@ -61,5 +63,6 @@ def delete_channel(id: str):
     conn.execute(update(Channel).values(
         status=False,
         updated_at=datetime.now()).where(Channel.id == id))
+    conn.commit()
 
     return Response(status_code=HTTP_204_NO_CONTENT) # Delete successful, no redirection needed

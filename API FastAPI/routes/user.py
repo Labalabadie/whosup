@@ -22,10 +22,6 @@ f = Fernet(key)
 userAPI = APIRouter()
 conn = engine.connect()
 
-# proximamente ...
-#@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
-#def get_feed():
-
 # QUERIES -------------------
 
 

@@ -6,9 +6,6 @@ engine = create_engine("mariadb+mariadbconnector://dev:password@localhost:3306/s
 
 meta = MetaData()
 
-conn = engine.connect()
-
 Base = declarative_base(metadata=meta)
 
 Session = sessionmaker(bind=engine, autoflush=True)
-sess = Session()

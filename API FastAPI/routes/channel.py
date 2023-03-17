@@ -1,6 +1,6 @@
 from datetime import datetime
 from fastapi import APIRouter, Response, status
-from config.db import conn
+from config.db import engine
 from typing import List
 from models.channel import Channel
 from schemas.channel import ChannelSchema
@@ -8,7 +8,7 @@ from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
 
 channelAPI = APIRouter()
-
+conn = engine.connect()
 
 @channelAPI.get('/channel', response_model=List[ChannelSchema], tags=["Channels"])
 def get_all_channels():

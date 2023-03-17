@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from config.db import conn
+from config.db import engine
 from typing import List
 from models.group import Group
 from schemas.group import GroupSchema
@@ -7,7 +7,7 @@ from starlette.status import HTTP_204_NO_CONTENT
 from sqlalchemy import insert, select, update, delete
 
 groupAPI = APIRouter()
-
+conn = engine.connect()
 
 # GET -----------------------
 @groupAPI.get('/group', response_model=List[GroupSchema], tags=["Groups"])

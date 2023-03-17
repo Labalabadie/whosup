@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from config.db import conn, Session
+from config.db import engine
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -14,7 +14,7 @@ from sqlalchemy import insert, select, update, delete
 from datetime import datetime
 
 eventAPI = APIRouter()
-
+conn = engine.connect()
 
 # GET -----------------------
 """@eventAPI.get('/event/{id}', response_model=EventSchema, tags=["Events"])

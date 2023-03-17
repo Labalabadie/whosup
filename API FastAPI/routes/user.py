@@ -1,5 +1,5 @@
 from datetime import datetime
-from config.db import conn, Session, sess
+from config.db import engine
 from cryptography.fernet import Fernet
 from fastapi import APIRouter, Response, status
 from fastapi.encoders import jsonable_encoder
@@ -20,6 +20,7 @@ key = Fernet.generate_key()
 f = Fernet(key)
 
 userAPI = APIRouter()
+conn = engine.connect()
 
 # proximamente ...
 #@userAPI.get('/feed/:{}', response_model=List[UserSchemaDetail], tags=["Users"])
@@ -30,18 +31,15 @@ userAPI = APIRouter()
 
 # FEED ----------------------
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
-def get_feed(id: int):
+async def get_feed(id: int):
     """ get feed of specified user """
     #query = sess.query(Event).join(User, Event.participants, isouter=True).filter(not_(or_(Event.event_host_id == id, User.id == id)))
     #events_feed = query.all()
-
     events_feed = conn.execute(select(Event)
                                 .where(~Event.participants.any(attending_event_rel.c.user_id==id))      
                                 .filter(not_(Event.event_host_id == id))
                                 .where(and_(Event.status == True))
-                                .order_by(Event.event_datetime.asc())).all()                                     
-
-    print(len(events_feed))
+                                .order_by(Event.event_datetime.asc())).all()
 
     hosted_events_list = conn.execute( # One to many relationship join query
                         select(User.hosted_events, Event) 
@@ -168,7 +166,6 @@ def create_user(this_user: UserSchema):
     new_user["password"] = f.encrypt(this_user.password.encode("utf-8"))
     result = conn.execute(insert(User).values(new_user)) # Realiza la conexion con la base de datos para insertar el nuevo usuario
     conn.commit()
-    print("NEW USER . id: ", result.lastrowid)
     # Busca en la base de datos el ultimo usuario creado y lo retorna para confirmar que se creó
     return conn.execute(select(User).where(User.id == result.lastrowid)).first()
 

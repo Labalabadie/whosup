@@ -22,9 +22,8 @@ f = Fernet(key)
 userAPI = APIRouter()
 conn = engine.connect()
 
+
 # QUERIES -------------------
-
-
 # FEED ----------------------
 @userAPI.get('/user/{id}/feed', response_model=List[EventSchema], tags=["Users"])
 async def get_feed(id: int):

@@ -1,10 +1,11 @@
 from sqlalchemy import Table, Column, ForeignKey
-from models.user_rel import attending_event_rel, contact_rel
+from models.user_rel import attending_event_rel, contact_rel, friendship_rel
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Boolean
 from models.base_model import BaseModel, Base
 
 class User(BaseModel):
+
     __tablename__ = "user_data"
     name = Column(String(255))
 
@@ -24,10 +25,16 @@ class User(BaseModel):
                                     primaryjoin="User.id==contact_rel.c.user_id",
                                     secondaryjoin="User.id==contact_rel.c.contact_id",
                                     back_populates='in_contacts_of')
+
     in_contacts_of = relationship("User", secondary=contact_rel,
                                         primaryjoin="User.id==contact_rel.c.contact_id",
                                         secondaryjoin="User.id==contact_rel.c.user_id",
                                         back_populates='contacts')
+
+    friends = relationship("User", secondary=friendship_rel,
+                                   primaryjoin="User.id==friendship_rel.c.user_id",
+                                   secondaryjoin="User.id==friendship_rel.c.friend_id",
+                                   backref='friend_of')
 
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')

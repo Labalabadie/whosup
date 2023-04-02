@@ -17,3 +17,10 @@ contact_rel = Table(
     Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True),
     Column("contact_id", Integer, ForeignKey("user_data.id"), primary_key=True)
 )
+
+friendship_rel = Table(
+    "friendship_rel",
+    Base.metadata,
+    Column("user_id", Integer, ForeignKey("user_data.id"), primary_key=True),
+    Column("friend_id", Integer, ForeignKey("user_data.id"), primary_key=True),
+)

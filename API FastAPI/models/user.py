@@ -39,32 +39,55 @@ class User(BaseModel):
     admin_groups = relationship('Group', back_populates='group_admin')
     admin_channels = relationship('Channel', back_populates='channel_admin')
 
+    # CUSTOM METHODS --------
+    def get_friends(self):
+        """ Returns a list of friends showing just its public attrs """
+
+        return_list = []
+
+        for friend in self.friends:
+            if friend.status == True:           # return only active users
+                friend_dict = { key: getattr(friend, key)  # parse just public attrs (default)
+                                for key in User.attrs() if hasattr(friend, key) }
+                return_list.append( friend_dict )
+
+        return return_list
+
+
+    # COMMON METHODS --------
     @classmethod
-    def attrs(cls, str=None):
-        """ Returns a list of or attributes for the given class """
+    def attrs(cls, attr_selector=None):
+        """ Returns a list of or attributes for the given class
+            attr_selector is a string that calls a list of attributes
+            as stated below """
+            
         base_attrs = BaseModel.attrs()
 
-        public_attrs = [
+        public_attrs = [ 
                 "name",
                 "email",
                 "phone",
                 "image_URL",
                 "status"]
 
-        priv_attrs = [
+        private_attrs = [
                 "hosted_events",
                 "attending_events",
                 "admin_groups",
-                "admin_channels"
+                "admin_channels",
+                "friends"
                 #"contacts",
-                #"in_contacts_of"
+                #"in_contacts_of",
                 ]
         
         sys_excl = ["password"]
 
-        if str == None:
-            return base_attrs + public_attrs
-        elif str == "all":
-            return base_attrs + public_attrs + priv_attrs
-        elif str == "rel":
-            return priv_attrs
+        match attr_selector:
+            case None:
+                return base_attrs + public_attrs
+            case "all":
+                return base_attrs + public_attrs + private_attrs
+            case "private":
+                return private_attrs
+            case "password":
+                return sys_excl

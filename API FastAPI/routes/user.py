@@ -50,59 +50,31 @@ async def get_feed(id: int):
 @userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"]) #TODO <-
 def get_user_info(id: int):
     """ Get detailed info of the user """
-    public_data = conn.execute(select(User).where(User.id == id)).first()
-    if public_data is None:
-        return Response(status_code=HTTP_404_NOT_FOUND)
+    with Session() as session:
+        this_user = session.get(User, id)
+        if this_user is None:
+            return Response(status_code=HTTP_404_NOT_FOUND)
 
-    hosted_events_list = conn.execute(select(User.hosted_events, Event) # One to many relationship join query
-                                    .join(Event)
-                                    .where(User.id == id)).all()
-                            
-    attending_events_list = conn.execute(select(attending_event_rel, Event) # Many to many relationship join query
-                    .join(Event, attending_event_rel.c.event_id == Event.id)
-                    .where(attending_event_rel.c.user_id == id)).all()
+        public_attrs = { key: getattr(this_user, key) 
+                        for key in User.attrs() 
+                        if hasattr(this_user, key)}
+        
+        hosted_events_list = this_user.hosted_events        # TODO: parsear solo attrs relevantes
+        attending_events_list = this_user.attending_events  # con Event.Attrs()
+        admin_channels_list = this_user.admin_channels      #
+        admin_groups_list = this_user.admin_groups          #
 
-    """contacts_list = conn.execute( # Many to many relationship join query
-        select(contact_rel, User)
-        .join(User, contact_rel.c.user_id == User.id)
-        .where(contact_rel.c.user_id == id)).all()
+        friends_list = this_user.get_friends() 
 
-    in_contacts_of_list = conn.execute(
-        select(contact_rel)
-        .where(contact_rel.c.contact_id == id)
-        .with_entities(contact_rel.c.user_id)).all()"""
+        return_dict = public_attrs
+        
+        return_dict.update({"hosted_events": this_user.hosted_events,
+                    "attending_events": this_user.attending_events,
+                    "admin_channels": this_user.admin_channels,
+                    "admin_groups": admin_groups_list,
+                    "friends": friends_list})
 
-    admin_channels_list = conn.execute(select(User.admin_channels, Channel).join(Channel).where(User.id == id)).all()
-    admin_groups_list = conn.execute(select(User.admin_groups, Group).join(Group).where(User.id == id)).all()
-
-    dic = {}
-    for key in User.attrs():
-            dic[key] = public_data.__getattribute__(key)
-
-    """ these loops parse only needed attrs from the relational query response """
-    dic["hosted_events"] = []
-    for i, row in enumerate(hosted_events_list):
-        dic["hosted_events"].append({})
-        for key in Event.attrs():
-            dic["hosted_events"][i][key] = getattr(row, key)
-
-    dic["attending_events"] = []
-    for i, row in enumerate(attending_events_list):
-        dic["attending_events"].append({})
-        for key in Event.attrs():
-            dic["attending_events"][i][key] = getattr(row, key)
-
-    """dic["contacts"] = []
-    for i, row in enumerate(contacts_list):
-        dic["contacts"].append({})
-        for key in User.attrs(): # This gets the format from the list of attrs
-            dic["contacts"][i][key] = getattr(row, key)
-
-    dic["in_contacts_of"] = []
-    for elem in in_contacts_of_list:
-        dic["in_contacts_of"].append(elem)"""
-
-    return JSONResponse(jsonable_encoder(dic))
+        return JSONResponse(jsonable_encoder(return_dict))
 
 @userAPI.get('/user/{id}', response_model=UserSchema, tags=["Users"])
 def get_user(id: int):

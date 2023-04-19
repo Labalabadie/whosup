@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from config.db import engine
+from config.db import engine, Session
 from typing import List
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -53,24 +53,37 @@ def get_event(id: int):
 
 
 @eventAPI.get('/event', response_model=List[EventSchema], tags=["Events"])
-def get_all_events():
+def get_all_events():                         # TODO: update attr parsing to list comprehension
     """ All active events """
-    public_data =  conn.execute(select(Event).where(Event.status == True)).fetchall()
+    with Session() as session:
 
-    # This loop creates a dict from the query object's basic attributes (not relational)
-    list = []
-    for i, row in enumerate(public_data):
-        list.append({})
-        for key in Event.attrs():
-            list[i][key] = getattr(row, key)
+        public_data = session.query(Event).where(Event.status == True)
 
-    return JSONResponse(jsonable_encoder(list))
+        # This loop creates a dict from the query object's basic attributes (not relational)
+        list = []
+        for i, row in enumerate(public_data):
+            list.append({})
+            for key in Event.attrs():
+                list[i][key] = getattr(row, key)
+
+        return JSONResponse(jsonable_encoder(list))
 
 
-@eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
+"""@eventAPI.get('/event/inactive', response_model=List[EventSchema], tags=["Events"])
 def get_inactive_events():
-    """ All inactive """
-    return conn.execute(select(Event).where(Event.status == False)).fetchall() 
+    #All inactive 
+    with Session() as session:
+
+        public_data = session.query(Event).where(Event.status == False)
+
+        # This loop creates a dict from the query object's basic attributes (not relational)
+        list = []
+        for i, row in enumerate(public_data):
+            list.append({})
+            for key in Event.attrs():
+                list[i][key] = getattr(row, key)
+
+        return JSONResponse(jsonable_encoder(list))"""
 
 
 # CREATE, UPDATE, DELETE ----
@@ -87,12 +100,18 @@ def create_event(this_event: EventSchema):
                  "icon": this_event.icon,
                  "max_people": this_event.max_people, 
                  "config": this_event.config}
+
     # Realiza la conexion con la base de datos para insertar el nuevo usuario
-    result = conn.execute(insert(Event).values(new_event))
-    conn.commit()
-    print("NEW EVENT . id: ", result.lastrowid)
-    # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
-    return conn.execute(select(Event).where(Event.id == result.lastrowid)).first()
+    with Session() as session:
+        result = session.execute(insert(Event).values(new_event))
+        session.commit()
+        if result is None:
+            return HTTP_405_METHOD_NOT_ALLOWED
+        
+        print("NEW EVENT . id: ", result.lastrowid)
+        # Busca en la base de datos el ultimo evento creado y lo retorna para confirmar que se cre
+        new_event["id"] = result.lastrowid
+        return new_event
 
 
 @eventAPI.put('/event/{id}', response_model=EventSchema, tags=["Events"], response_model_exclude_unset=True)

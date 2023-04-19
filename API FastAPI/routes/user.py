@@ -47,7 +47,7 @@ async def get_feed(id: int):
 
 
 # GET -----------------------
-@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"]) #TODO <-
+@userAPI.get('/user/{id}/info', response_model=UserSchemaDetail, tags=["Users"])
 def get_user_info(id: int):
     """ Get detailed info of the user """
     with Session() as session:
@@ -150,29 +150,27 @@ def delete_user(id: int):
 
 
 # CONTACTS ------------------
-@userAPI.post('/user/{user_id}/contacts/add', tags=["Users"])   #pending: refactor conn.execute to session.query
+@userAPI.post('/user/{user_id}/contacts/add', tags=["Users"])   
 def add_contact(user_id: int, contact_id: int):
     """ add contact """
+    with Session() as session:
+        resp = session.execute(select(contact_rel) # Checking for preexisting rel
+                            .where(and_(contact_rel.c.user_id == user_id,
+                                        contact_rel.c.contact_id == contact_id))).first()
 
-    resp = conn.execute(select(contact_rel) # Check for preexisting rel
-                        .where(and_(contact_rel.c.user_id == user_id,
-                                    contact_rel.c.contact_id == contact_id))).first()
-                               
-    if resp is not None:
-        return Response(status_code=HTTP_409_CONFLICT)
-    
-    conn.execute(insert(contact_rel).values(user_id=user_id,
-                                            contact_id=contact_id))
-    conn.commit()
-    # Return < - TODO
+        print(resp)    
+        if resp is not None:
+            return Response(status_code=HTTP_409_CONFLICT)
+        
+        session.execute(insert(contact_rel).values(user_id=user_id,
+                                                contact_id=contact_id))
+        session.commit()
+        # Return < - TODO
 
 
 @userAPI.get('/user/{user_id}/contacts', tags=["Users"])    #pending: refactor conn.execute to session.query
 def get_user_contacts(user_id: int):
     """ get list of all contacts_id for a user """
-
-    #with Session() as session:
-    
     resp = conn.execute(select(contact_rel.c.contact_id)
                         .where(contact_rel.c.user_id == user_id)).all()
 
@@ -191,10 +189,21 @@ def get_user_contacts_info(user_id: int):
 
 # FRIENDS -------------------
 @userAPI.post('/user/{user_id}/friends/add', tags=["Users"])
-def add_friend(user_id: int, friend_id:int):            #TODO: IMPLEMENT ! checking both before committing change
+def add_friend(user_id: int, friend_id:int):
     """ add friend """
 
     with Session() as session:
+        this_user = session.get(User, user_id)
+        this_friend = session.get(User, friend_id)
+
+        if this_user is None or this_user.status == False:
+            return HTTP_404_NOT_FOUND
+        if this_friend is None or this_friend.status == False:
+            return HTTP_404_NOT_FOUND
+
+        if this_friend in this_user.friends:
+            return HTTP_409_CONFLICT
+
         session.execute(insert(friendship_rel).values(user_id=user_id,
                                             friend_id=friend_id))
         session.execute(insert(friendship_rel).values(user_id=friend_id, # Bidirectional Friendship
@@ -202,12 +211,31 @@ def add_friend(user_id: int, friend_id:int):            #TODO: IMPLEMENT ! check
         session.commit()
         return HTTP_200_OK
 
+@userAPI.delete('/user/{user_id}/friends/remove', tags=["Users"])
+def remove_friend(user_id: int, friend_id:int):
+    """ remove friend """
+
+    with Session() as session:
+        this_user_rel = session.query(friendship_rel).filter(friendship_rel.c.user_id == user_id, 
+                                                             friendship_rel.c.friend_id == friend_id)
+        this_friend_rel = session.query(friendship_rel).filter(friendship_rel.c.user_id == friend_id, 
+                                                               friendship_rel.c.friend_id == user_id)
+
+        if this_user_rel.first() is None:
+            return HTTP_404_NOT_FOUND
+        if this_friend_rel.first() is None:
+            return HTTP_404_NOT_FOUND
+
+        this_user_rel.delete()
+        this_friend_rel.delete()
+
+        session.commit()
+        return HTTP_200_OK
 
 @userAPI.get('/user/{user_id}/friends', tags=["Users"])
 def get_user_friends(user_id: int):
     """ get the friends of a user """
 
     with Session() as session:
-        user = session.get(User, user_id)
-        print([x.hosted_events for x in user.friends])
-        return jsonable_encoder([x.id for x in user.friends])
+        this_user = session.get(User, user_id)
+        return this_user.get_friends()

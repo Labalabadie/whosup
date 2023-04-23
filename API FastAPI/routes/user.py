@@ -41,7 +41,7 @@ async def get_feed(id: int):
         
         dic = {'events_feed': events_feed,
                'hosted_events': hosted_events_list,
-               'attending_events_list': attending_events_list}
+               'attending_events': attending_events_list}
 
         return JSONResponse(jsonable_encoder(dic))
 
@@ -101,7 +101,9 @@ def get_inactive_users():
 
 
 # CREATE, UPDATE, DELETE ----
-@userAPI.post('/user', response_model=UserSchemaCreation, tags=["Users"], response_model_exclude_defaults=True)
+@userAPI.post('/user', response_model=UserSchemaCreation, tags=["Users"], 
+                       response_model_exclude_defaults=True,
+                       status_code=201)
 def create_user(this_user: UserSchema):
     """ Create user """
 
